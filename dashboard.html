@@ -407,6 +407,7 @@
     <div class="topbar">
       <div class="topbar-title" id="topbarTitle">Overview</div>
       <div class="topbar-actions" id="topbarActions"></div>
+      <div id="topbarLogo" style="margin-left:16px;height:36px;display:flex;align-items:center;flex-shrink:0;"></div>
     </div>
 
     <div class="content">
@@ -1301,13 +1302,15 @@
   function renderCompanyLogo() {
     const logo = DB.getObj('companyLogo');
     const box = document.getElementById('companyLogoBox');
-    const initials = document.getElementById('companyLogoInitials');
+    const topbarLogo = document.getElementById('topbarLogo');
     if (logo) {
       box.innerHTML = `<img src="${logo}" alt="Company logo">`;
+      if (topbarLogo) topbarLogo.innerHTML = `<img src="${logo}" alt="Company logo" style="max-height:34px;max-width:100px;object-fit:contain;opacity:0.85;">`;
     } else {
       const s = DB.getObj('settings') || {};
       const abbr = s.companyName ? s.companyName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '+';
       box.innerHTML = `<span class="company-logo-initials">${abbr}</span>`;
+      if (topbarLogo) topbarLogo.innerHTML = '';
     }
   }
 

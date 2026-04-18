@@ -247,6 +247,14 @@
     .val-card { border-right: 1px solid rgba(247,246,242,0.18); overflow: hidden; display: flex; flex-direction: column; }
     .val-card:last-child { border-right: none; }
     .val-img { width: 100%; height: 200px; background: var(--ph-d); flex-shrink: 0; }
+
+    /* Timeline strip replacing val-img */
+    .val-timeline { width: 100%; height: 200px; flex-shrink: 0; background: var(--accent); display: flex; align-items: center; padding: 0 28px; position: relative; overflow: hidden; }
+    .val-tl-line { position: absolute; left: 0; right: 0; height: 4px; background: rgba(247,246,242,0.22); }
+    .val-tl-node { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); flex-shrink: 0; position: relative; z-index: 1; }
+    .val-tl-content { position: relative; z-index: 1; padding-left: 18px; }
+    .val-tl-step { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bg); opacity: 0.45; display: block; margin-bottom: 9px; }
+    .val-tl-title { font-family: 'Kaisei Decol', serif; font-size: clamp(19px, 1.8vw, 26px); color: var(--bg); line-height: 1.15; }
     .val-body { padding: 24px 26px 36px; }
     .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
     .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
@@ -254,7 +262,7 @@
     /* ════════ PHOTO ROW ════════ */
     .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 52px; }
     .photo-item { display: flex; flex-direction: column; gap: 10px; }
-    .photo-item-img { background: var(--ph); border-radius: 8px; aspect-ratio: 3/4; }
+    .photo-item-img { background: var(--ph); border-radius: 8px; aspect-ratio: 3/3.4; }
     .photo-item-img.pi-b { background: var(--ph2); }
     .photo-item-img.pi-c { background: #d0ccc6; }
     .photo-item-img.pi-d { background: #cbc8c1; }
@@ -263,6 +271,7 @@
     .photo-item-cap { font-size: 11px; opacity: 0.38; letter-spacing: 0.04em; }
 
     /* ════════ PLANS ════════ */
+    #plans { padding-top: 60px; }
     .plans-header { margin-bottom: 20px; }
 
     .plans-header h2 { font-size: clamp(32px, 4.25vw, 63px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 10px; }
@@ -321,7 +330,7 @@
 
     /* 2-image row at bottom */
     .p-imgs { display: grid; grid-template-columns: 1fr 1fr; flex-shrink: 0; border-top: 1px solid currentColor; order: 2; }
-    .p-img  { height: 140px; background: var(--ph); }
+    .p-img  { height: 161px; background: var(--ph); }
     .p-img-b { background: var(--ph2); }
 
     /* ════════ PROSPECT PANEL ════════ */
@@ -420,7 +429,7 @@
     .video-head p { font-size: 14px; line-height: 1.65; max-width: 32ch; opacity: 0.58; text-align: right; }
     .video-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .video-block { display: flex; flex-direction: column; gap: 14px; }
-    .video-thumb { width: 100%; aspect-ratio: 3/4; background: var(--ph); display: flex; align-items: center; justify-content: center; }
+    .video-thumb { width: 100%; aspect-ratio: 3/3.68; background: var(--ph); display: flex; align-items: center; justify-content: center; }
     .play-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(246,77,37,0.3); display: flex; align-items: center; justify-content: center; }
     .play-btn::after { content: ''; border-style: solid; border-width: 8px 0 8px 15px; border-color: transparent transparent transparent rgba(246,77,37,0.5); margin-left: 4px; }
     .video-cap { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
@@ -666,21 +675,42 @@
 
   <div class="values-grid">
     <div class="val-card">
-      <div class="val-img"></div>
+      <div class="val-timeline">
+        <div class="val-tl-line"></div>
+        <div class="val-tl-node"></div>
+        <div class="val-tl-content">
+          <span class="val-tl-step">01</span>
+          <div class="val-tl-title">Retain your<br>best people</div>
+        </div>
+      </div>
       <div class="val-body">
         <h3>Retain your<br>best people</h3>
         <p>Your top performers have options. Make them feel seen — automatically, on their birthday, at Christmas, every year. The ones who feel valued stay.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-img"></div>
+      <div class="val-timeline">
+        <div class="val-tl-line"></div>
+        <div class="val-tl-node"></div>
+        <div class="val-tl-content">
+          <span class="val-tl-step">02</span>
+          <div class="val-tl-title">Convert prospects<br>into clients</div>
+        </div>
+      </div>
       <div class="val-body">
         <h3>Convert prospects<br>into clients</h3>
         <p>Every competitor sends emails. You send a handmade cake. culturer turns cold outreach into an experience that gets meetings booked and deals closed.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-img"></div>
+      <div class="val-timeline">
+        <div class="val-tl-line"></div>
+        <div class="val-tl-node"></div>
+        <div class="val-tl-content">
+          <span class="val-tl-step">03</span>
+          <div class="val-tl-title">Keep clients<br>for life</div>
+        </div>
+      </div>
       <div class="val-body">
         <h3>Keep clients<br>for life</h3>
         <p>Renewal decisions are made before the contract lands. Stay front of mind with quarterly team celebrations and seasonal gestures that build genuine loyalty.</p>
@@ -772,7 +802,7 @@
             <li>Dates tracked automatically</li>
             <li>Local artisan bakers</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
       <div class="p-card">
@@ -788,7 +818,7 @@
             <li>Delivered before the holidays</li>
             <li>Zero effort on your part</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
       <div class="p-card">
@@ -804,7 +834,7 @@
             <li>Higher-end artisan cake</li>
             <li>Priority delivery &amp; packaging</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
     </div>
@@ -827,7 +857,7 @@
             <li>Delivered on time, automated</li>
             <li>No logistics to manage</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
       <div class="p-card">
@@ -843,7 +873,7 @@
             <li>Custom team message</li>
             <li>Quarterly reminder, automated</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
       <div class="p-card">
@@ -859,7 +889,7 @@
             <li>Premium artisan selection</li>
             <li>Priority logistics &amp; packaging</li>
           </ul>
-          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+
         </div>
       </div>
     </div>
@@ -875,7 +905,6 @@
         <div class="price-unit">one-time per prospect</div>
         <p>Your competitors send emails. You send a handmade cake. Stand out from the first touch and stay present until the deal is done — automatically.</p>
         <p>No reply? A follow-up cake goes out. Deal closed? Champagne and a thank-you. One flow, zero effort.</p>
-        <div style="margin-top:24px;"><a href="login.html" class="btn btn-fill">Get started →</a></div>
       </div>
       <div class="prospect-right">
         <div class="prospect-img"></div>
@@ -886,6 +915,10 @@
         </ul>
       </div>
     </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 52px;">
+    <a href="login.html" class="btn btn-fill">Get started →</a>
   </div>
 </section>
 
@@ -1048,7 +1081,7 @@
         el.style.fontSize = mid + 'px';
         if (el.scrollWidth <= target) lo = mid; else hi = mid;
       }
-      el.style.fontSize = (lo * 0.795) + 'px';
+      el.style.fontSize = (lo * 0.835) + 'px';
     }
     fit();
     window.addEventListener('resize', fit);

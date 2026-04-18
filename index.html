@@ -251,11 +251,16 @@
     .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
     .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
 
-    /* ════════ PHOTO STRIP ════════ */
-    .photo-strip { display: grid; grid-template-columns: repeat(4, 1fr); }
-    .photo-strip-item { aspect-ratio: 20/21; background: var(--ph); }
-    .photo-strip-item:nth-child(2) { background: var(--ph2); }
-    .photo-strip-item:nth-child(4) { background: #c8c5bf; }
+    /* ════════ PHOTO ROW ════════ */
+    .photo-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; padding: 64px 5vw; }
+    .photo-item { display: flex; flex-direction: column; gap: 10px; }
+    .photo-item-img { background: var(--ph); border-radius: 8px; aspect-ratio: 3/4; }
+    .photo-item-img.pi-b { background: var(--ph2); }
+    .photo-item-img.pi-c { background: #d0ccc6; }
+    .photo-item-img.pi-d { background: #cbc8c1; }
+    .photo-item-img.pi-e { background: #bfbcb6; }
+    .photo-item-img.pi-f { background: var(--ph2); }
+    .photo-item-cap { font-size: 11px; opacity: 0.38; letter-spacing: 0.04em; }
 
     /* ════════ PLANS ════════ */
     .plans-header { margin-bottom: 20px; }
@@ -270,7 +275,6 @@
     }
 
     .plans-nav-left { display: flex; align-items: center; gap: 18px; }
-    .plans-count { font-size: 11px; letter-spacing: 0.12em; opacity: 0.35; }
     .plans-tabs { display: flex; gap: 8px; }
 
     .tab-btn {
@@ -370,19 +374,21 @@
     .video-cap { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
 
     /* ════════ CTA ════════ */
-    .final-cta { text-align: center; padding: 160px 5vw; }
-    .final-cta h2 { font-size: clamp(44px, 7vw, 110px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 44px; }
-    .final-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .final-cta { text-align: center; padding: 140px 5vw 160px; position: relative; }
+    .final-cta h2 { font-size: clamp(44px, 7vw, 110px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 44px; position: relative; z-index: 1; }
+    .final-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
 
+    /* Pills float around the heading */
     .cta-pills {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 40px;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: block;
     }
 
     .cta-pill {
+      position: absolute;
+      pointer-events: auto;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -394,11 +400,16 @@
       border-radius: 100px;
       padding: 11px 20px;
       cursor: default;
+      opacity: 0.6;
+      white-space: nowrap;
       transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
                   opacity 0.2s ease,
                   border-color 0.2s ease;
-      opacity: 0.6;
     }
+
+    .cta-pill:nth-child(1) { top: 19%; left: 6%; transform: rotate(-3deg); }
+    .cta-pill:nth-child(2) { top: 34%; right: 5%; transform: rotate(2.5deg); }
+    .cta-pill:nth-child(3) { bottom: 26%; left: 9%; transform: rotate(-1.5deg); }
 
     .cta-pill:hover {
       transform: translateY(-7px) scale(1.04);
@@ -415,12 +426,20 @@
     }
 
     /* ════════ FOOTER ════════ */
-    footer { padding: 44px 5vw; border-top: 1px solid var(--accent); display: flex; justify-content: space-between; align-items: center; gap: 28px; }
-    .footer-logo { font-family: 'Kaisei Decol', serif; font-size: 19px; color: var(--accent); }
-    .footer-links { display: flex; gap: 22px; list-style: none; }
-    .footer-links a { font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.38; transition: opacity 0.2s; }
-    .footer-links a:hover { opacity: 1; }
-    .footer-copy { font-size: 12px; opacity: 0.3; }
+    footer { border-top: 1px solid rgba(246,77,37,0.12); }
+    .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; padding: 56px 5vw 52px; }
+    .footer-col-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.3; margin-bottom: 18px; }
+    .footer-col address { font-style: normal; font-size: 13px; opacity: 0.52; line-height: 1.85; }
+    .footer-col .footer-coc { font-size: 12px; opacity: 0.32; margin-top: 10px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--accent); opacity: 0.52; margin-bottom: 11px; transition: opacity 0.2s; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom { padding: 20px 5vw; border-top: 1px solid rgba(246,77,37,0.07); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .footer-bottom-left { font-size: 11px; opacity: 0.3; }
+    .footer-bottom-right { display: flex; gap: 20px; }
+    .footer-bottom-right a { font-size: 11px; opacity: 0.3; color: var(--accent); transition: opacity 0.2s; }
+    .footer-bottom-right a:hover { opacity: 0.7; }
+    .footer-wordmark { overflow: hidden; padding: 0 5vw; line-height: 0.86; }
+    .footer-wordmark-text { font-family: 'Kaisei Decol', serif; font-size: 21.5vw; letter-spacing: -0.04em; color: var(--accent); opacity: 0.88; display: block; white-space: nowrap; }
 
     /* ════════ RESPONSIVE ════════ */
     @media (max-width: 960px) {
@@ -444,11 +463,13 @@
       .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
       .video-head p { text-align: left; }
       .video-row { grid-template-columns: 1fr; }
-      .photo-strip { grid-template-columns: repeat(2, 1fr); }
+      .photo-row { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 48px 5vw; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      footer { flex-direction: column; text-align: center; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      /* On tablet, revert pills to a row */
+      .cta-pills { position: relative; inset: auto; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+      .cta-pill { position: relative; top: auto; left: auto; right: auto; bottom: auto; transform: none !important; }
       .values-head, .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
       .values-head-note { text-align: left; }
       .plans-nav { flex-direction: column; align-items: flex-start; gap: 14px; }
@@ -474,10 +495,10 @@
       .tab-btn { padding: 10px 20px; font-size: 12px; }
       .nav-cta { display: none; }
       .nav-drawer a { font-size: 17px; }
-      footer { padding: 32px 5vw; }
-      .footer-links { gap: 16px; }
-      .final-cta { padding: 100px 5vw; }
-      .cta-pills { gap: 14px; }
+      .final-cta { padding: 80px 5vw 100px; }
+      .photo-row { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 36px 5vw; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; padding: 40px 5vw 32px; }
+      .footer-wordmark-text { font-size: 22vw; }
       .artisan-photos { grid-template-columns: 1fr; height: 240px; }
       .artisan-photo-b { display: none; }
     }
@@ -613,12 +634,14 @@
 </section>
 
 
-<!-- ════════ PHOTO STRIP ════════ -->
-<div class="photo-strip">
-  <div class="photo-strip-item"></div>
-  <div class="photo-strip-item"></div>
-  <div class="photo-strip-item"></div>
-  <div class="photo-strip-item"></div>
+<!-- ════════ PHOTO ROW ════════ -->
+<div class="photo-row">
+  <div class="photo-item"><div class="photo-item-img"></div><span class="photo-item-cap">Birthday delivery</span></div>
+  <div class="photo-item"><div class="photo-item-img pi-b"></div><span class="photo-item-cap">Deal closed</span></div>
+  <div class="photo-item"><div class="photo-item-img pi-c"></div><span class="photo-item-cap">New client</span></div>
+  <div class="photo-item"><div class="photo-item-img pi-d"></div><span class="photo-item-cap">Team celebration</span></div>
+  <div class="photo-item"><div class="photo-item-img pi-e"></div><span class="photo-item-cap">Investor gift</span></div>
+  <div class="photo-item"><div class="photo-item-img pi-f"></div><span class="photo-item-cap">Work anniversary</span></div>
 </div>
 
 
@@ -632,7 +655,6 @@
 
   <div class="plans-nav">
     <div class="plans-nav-left">
-      <span class="plans-count" id="plansCount">01 / 03</span>
       <div class="plans-tabs">
         <button class="tab-btn active" data-idx="0">Employees</button>
         <button class="tab-btn" data-idx="1">Teams</button>
@@ -839,14 +861,45 @@
 
 <!-- ════════ FOOTER ════════ -->
 <footer>
-  <span class="footer-logo">culturer</span>
-  <ul class="footer-links">
-    <li><a href="#plans">Employees</a></li>
-    <li><a href="#plans">Teams</a></li>
-    <li><a href="#plans">Prospects</a></li>
-    <li><a href="login.html">Get started</a></li>
-  </ul>
-  <span class="footer-copy">© 2026 culturer. All rights reserved.</span>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-col-label">Address</div>
+      <address>culturer BV<br>Herengracht 182<br>1016 BR Amsterdam</address>
+      <p class="footer-coc">CoC: 89234501</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Get in touch</div>
+      <a href="#">Contact us</a>
+      <a href="mailto:hello@culturer.nl">hello@culturer.nl</a>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Menu</div>
+      <a href="#plans" data-tab="0">Employees</a>
+      <a href="#plans" data-tab="1">Teams</a>
+      <a href="#plans" data-tab="2">Prospects</a>
+      <a href="#artisan">Artisan</a>
+      <a href="#plans">Plans</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Account</div>
+      <a href="login.html">Log in</a>
+      <a href="login.html">Get started</a>
+      <a href="#plans">Pricing</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-left">© 2026 culturer BV. All rights reserved.</span>
+    <div class="footer-bottom-right">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+  <div class="footer-wordmark">
+    <span class="footer-wordmark-text">culturer</span>
+  </div>
 </footer>
 
 <script>
@@ -902,7 +955,6 @@
   const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
   const prevBtn = document.getElementById('plansPrev');
   const nextBtn = document.getElementById('plansNext');
-  const countEl = document.getElementById('plansCount');
   let cur = 0;
 
   function setTab(idx) {
@@ -911,7 +963,6 @@
     cur = idx;
     tabPanels[cur].classList.add('active'); tabBtns[cur].classList.add('active');
     prevBtn.disabled = cur === 0; nextBtn.disabled = cur === tabPanels.length - 1;
-    countEl.textContent = `0${cur + 1} / 0${tabPanels.length}`;
   }
 
   tabBtns.forEach((b, i) => b.addEventListener('click', () => setTab(i)));

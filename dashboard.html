@@ -527,7 +527,37 @@
 
       <!-- ══ PROSPECTS ══ -->
       <div class="view" id="view-prospects">
-        <div style="margin-bottom:20px;font-size:13px;opacity:0.45;">Track your prospect gift flow. €140/prospect — 3-touch gifting sequence that converts.</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px;flex-wrap:wrap;">
+          <div style="font-size:13px;opacity:0.45;max-width:44ch;line-height:1.65;">Track your prospect gift flow. €140/prospect — 3-touch gifting sequence that converts cold leads into warm clients.</div>
+          <div>
+            <button class="btn btn-outline" onclick="toggleProspectCSV()" id="btnProspectCSV" style="font-size:12px;">⬆ Bulk import CSV</button>
+          </div>
+        </div>
+
+        <!-- CSV bulk import panel -->
+        <div id="prospectCSVPanel" style="display:none;margin-bottom:24px;">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Bulk import prospects</span>
+              <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;" onclick="toggleProspectCSV()">✕ Close</button>
+            </div>
+            <div class="card-body">
+              <div class="upload-zone" id="prospectUploadZone">
+                <div class="upload-icon">⬆</div>
+                <div class="upload-text"><strong>Drop CSV here</strong> or click to browse<br><span style="font-size:11px;">Columns: first, last, company, email, address, deal, date (YYYY-MM-DD)</span></div>
+                <input type="file" id="prospectCSVInput" accept=".csv" style="display:none">
+              </div>
+              <div id="prospectCSVPreview" style="display:none;">
+                <div style="font-size:12px;opacity:0.5;margin-bottom:12px;" id="prospectCSVLabel"></div>
+                <div style="display:flex;gap:10px;justify-content:flex-end;">
+                  <button class="btn btn-outline" onclick="cancelProspectCSV()">Cancel</button>
+                  <button class="btn btn-primary" onclick="importProspectCSV()">Import prospects →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="prospect-board" id="prospectBoard">
           <div class="funnel-col">
             <div class="funnel-head">Cold outreach <span class="funnel-count" id="cnt-cold">0</span></div>
@@ -1541,6 +1571,68 @@
 
   function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
   document.getElementById('modalBackdrop').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+  // ── Prospect CSV ──
+  let prospectCSVPending = null;
+
+  function toggleProspectCSV() {
+    const panel = document.getElementById('prospectCSVPanel');
+    const visible = panel.style.display !== 'none';
+    panel.style.display = visible ? 'none' : 'block';
+    if (!visible) cancelProspectCSV();
+  }
+
+  const proUploadZone = document.getElementById('prospectUploadZone');
+  const proCSVInput = document.getElementById('prospectCSVInput');
+  proUploadZone.addEventListener('click', () => proCSVInput.click());
+  proUploadZone.addEventListener('dragover', e => { e.preventDefault(); proUploadZone.classList.add('drag-over'); });
+  proUploadZone.addEventListener('dragleave', () => proUploadZone.classList.remove('drag-over'));
+  proUploadZone.addEventListener('drop', e => { e.preventDefault(); proUploadZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) parseProspectCSV(e.dataTransfer.files[0]); });
+  proCSVInput.addEventListener('change', e => { if (e.target.files[0]) parseProspectCSV(e.target.files[0]); });
+
+  function parseProspectCSV(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const lines = e.target.result.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g,''));
+      prospectCSVPending = lines.slice(1).map(line => {
+        const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g,''));
+        const obj = {}; headers.forEach((h, i) => obj[h] = vals[i] || '');
+        return {
+          first: obj.first || obj.firstname || '', last: obj.last || obj.lastname || '',
+          company: obj.company || '', email: obj.email || '',
+          address: obj.address || '', deal: obj.deal || obj.dealvalue || '',
+          sendDate: obj.date || obj.senddate || '', flow: 'full', cake: 'victoria',
+          stage: 'cold', createdAt: new Date().toISOString()
+        };
+      }).filter(r => r.first || r.last || r.company);
+      document.getElementById('prospectCSVLabel').textContent = `${prospectCSVPending.length} prospects found in "${file.name}"`;
+      document.getElementById('prospectCSVPreview').style.display = 'block';
+      proUploadZone.style.display = 'none';
+    };
+    reader.readAsText(file);
+  }
+
+  function cancelProspectCSV() {
+    prospectCSVPending = null;
+    document.getElementById('prospectCSVPreview').style.display = 'none';
+    proUploadZone.style.display = 'block';
+    proCSVInput.value = '';
+  }
+
+  function importProspectCSV() {
+    if (!prospectCSVPending) return;
+    prospectCSVPending.forEach(p => {
+      DB.add('prospects', p);
+      DB.add('deliveries', { name: `${p.first} ${p.last}${p.company ? ' · ' + p.company : ''}`, type: 'Prospect — full', cake: 'victoria', date: p.sendDate || 'TBD', status: 'scheduled' });
+    });
+    const count = prospectCSVPending.length;
+    cancelProspectCSV();
+    document.getElementById('prospectCSVPanel').style.display = 'none';
+    renderProspects();
+    renderOverview();
+    toast(`${count} prospects imported ✓`);
+  }
 
   // ── Init ──
   initAllergyLabels('addEmpAllergies');

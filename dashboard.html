@@ -103,7 +103,7 @@
     /* ── Empty state ── */
     .empty { text-align: center; padding: 56px 24px; opacity: 0.38; }
     .empty-icon { font-size: 32px; margin-bottom: 12px; }
-    .empty-text { font-size: 13px; line-height: 1.6; }
+    .empty-text { font-size: 13px; line-height: 1.36; }
 
     /* ── Delivery rows ── */
     .delivery-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
@@ -144,7 +144,7 @@
     .upload-zone { border: 2px dashed rgba(246,77,37,0.25); border-radius: 4px; padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s; }
     .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(246,77,37,0.04); }
     .upload-icon { font-size: 22px; margin-bottom: 8px; opacity: 0.5; }
-    .upload-text { font-size: 13px; opacity: 0.5; line-height: 1.6; }
+    .upload-text { font-size: 13px; opacity: 0.5; line-height: 1.36; }
     .upload-text strong { opacity: 1; color: var(--accent); }
 
     /* ── Cake catalog (re_grocery inspired) ── */
@@ -167,7 +167,7 @@
     .catalog-detail-name { font-family: 'Kaisei Decol', serif; font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
     .catalog-detail-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
     .catalog-detail-tag { border: 1.5px solid rgba(246,77,37,0.28); border-radius: 100px; padding: 5px 14px; font-size: 12px; }
-    .catalog-detail-desc { font-size: 14px; line-height: 1.72; opacity: 0.62; flex: 1; margin-bottom: 28px; }
+    .catalog-detail-desc { font-size: 14px; line-height: 1.46; opacity: 0.62; flex: 1; margin-bottom: 28px; }
     .catalog-detail-price { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 20px; opacity: 0.55; }
 
     /* ── Plan categories ── */
@@ -293,7 +293,7 @@
     .bulk-allergy-head { background: rgba(201,95,0,0.08); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(201,95,0,0.15); }
     .bulk-allergy-title { font-size: 13px; font-weight: 500; color: #c95f00; }
     .bulk-allergy-body { padding: 16px 20px; }
-    .bulk-allergy-hint { font-size: 12px; opacity: 0.55; margin-bottom: 14px; line-height: 1.6; }
+    .bulk-allergy-hint { font-size: 12px; opacity: 0.55; margin-bottom: 14px; line-height: 1.36; }
     .bulk-select-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
     .bulk-select-label { font-size: 12px; opacity: 0.55; flex-shrink: 0; }
     .bulk-emp-list { max-height: 180px; overflow-y: auto; border: 1px solid var(--border); border-radius: 4px; }
@@ -313,7 +313,7 @@
     /* ── Overview greeting ── */
     .overview-hello { margin-bottom: 32px; }
     .hello-greeting { font-family: 'Kaisei Decol', serif; font-size: clamp(28px, 3.5vw, 44px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 10px; }
-    .hello-quote { font-size: 13px; opacity: 0.5; line-height: 1.7; max-width: 52ch; }
+    .hello-quote { font-size: 13px; opacity: 0.5; line-height: 1.45; max-width: 52ch; }
     .hello-date { font-size: 11px; opacity: 0.3; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 6px; }
 
     /* ── Setup strip ── */
@@ -579,7 +579,7 @@
 
       <!-- ══ GROUPS ══ -->
       <div class="view" id="view-groups">
-        <div style="font-size:13px;opacity:0.45;max-width:52ch;line-height:1.65;margin-bottom:24px;">Groups organise your employees, teams, and prospects in one place. CSV imports automatically create a named group.</div>
+        <div style="font-size:13px;opacity:0.45;max-width:52ch;line-height:1.40;margin-bottom:24px;">Groups organise your employees, teams, and prospects in one place. CSV imports automatically create a named group.</div>
         <div id="groupGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;"></div>
         <div class="card">
           <div class="card-head"><span class="card-title">New group</span></div>
@@ -615,7 +615,7 @@
       <!-- ══ PROSPECTS ══ -->
       <div class="view" id="view-prospects">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px;flex-wrap:wrap;">
-          <div style="font-size:13px;opacity:0.45;max-width:44ch;line-height:1.65;">Track your prospect gift flow. €140/prospect — 3-touch gifting sequence that converts cold leads into warm clients.</div>
+          <div style="font-size:13px;opacity:0.45;max-width:44ch;line-height:1.40;">Track your prospect gift flow. €140/prospect — 3-touch gifting sequence that converts cold leads into warm clients.</div>
           <div>
             <button class="btn btn-outline" onclick="toggleProspectCSV()" id="btnProspectCSV" style="font-size:12px;">⬆ Bulk import CSV</button>
           </div>

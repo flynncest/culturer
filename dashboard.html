@@ -151,7 +151,7 @@
     .catalog-header { margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
     .catalog-heading { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; margin-bottom: 4px; }
     .catalog-sub { font-size: 13px; opacity: 0.45; }
-    .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
+    .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); }
     .catalog-card { background: var(--bg); cursor: pointer; display: flex; flex-direction: column; transition: background 0.15s; }
     .catalog-card:hover .catalog-card-img { background: rgba(246,77,37,0.1); }
     .catalog-card.selected { outline: 2.5px solid var(--accent); outline-offset: -1px; }
@@ -258,9 +258,17 @@
     .step-panel { display: none; }
     .step-panel.active { display: block; }
 
+    /* ── Location filter ── */
+    .location-filter { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .location-filter-label { font-size: 11px; opacity: 0.45; letter-spacing: 0.07em; text-transform: uppercase; flex-shrink: 0; margin-right: 4px; }
+    .loc-btn { padding: 6px 16px; border-radius: 100px; border: 1.5px solid var(--border); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; background: transparent; color: var(--accent); cursor: pointer; transition: all 0.15s; }
+    .loc-btn:hover { border-color: rgba(246,77,37,0.4); }
+    .loc-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .catalog-city-badge { font-size: 10px; opacity: 0.45; margin-top: 5px; }
+
     /* ── Modal catalog (compact grid) ── */
-    .modal-catalog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
-    .modal-catalog .catalog-card-img { font-size: 48px; }
+    .modal-catalog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); }
+    .modal-catalog .catalog-card-img { font-size: 40px; }
 
     /* ── Edit employee modal ── */
     .modal-sm { max-width: 480px; }
@@ -271,12 +279,13 @@
     .settings-section-desc { font-size: 12px; opacity: 0.45; margin-bottom: 20px; }
 
     /* ── Groups ── */
-    .group-card { border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; margin-bottom: 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    .group-card:last-child { margin-bottom: 0; }
-    .group-info { flex: 1; min-width: 0; }
-    .group-name { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+    .group-card { border: 1px solid var(--border); border-radius: 6px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.15s; }
+    .group-card:hover { border-color: rgba(246,77,37,0.35); }
+    .group-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .group-name { font-family: 'Kaisei Decol', serif; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 2px; }
     .group-desc { font-size: 12px; opacity: 0.45; }
-    .group-meta { font-size: 11px; opacity: 0.35; margin-top: 6px; }
+    .group-members-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .group-member-pill { font-size: 11px; opacity: 0.55; background: rgba(246,77,37,0.06); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; }
     .group-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
     /* ── Bulk allergy editor ── */
@@ -330,6 +339,7 @@
       .quick-actions { grid-template-columns: 1fr; }
       .onboard-steps { grid-template-columns: 1fr; }
       .catalog-grid { grid-template-columns: repeat(2, 1fr); }
+      .modal-catalog { grid-template-columns: repeat(2, 1fr); }
       .catalog-detail { grid-template-columns: 1fr; }
       .catalog-detail-img { min-height: 260px; border-right: none; border-bottom: 1px solid var(--border); }
       .flow-opts { grid-template-columns: 1fr; }
@@ -492,9 +502,13 @@
                 </div>
                 <div id="csvPreview" style="display:none;">
                   <div style="font-size:12px;opacity:0.5;margin-bottom:12px;" id="csvPreviewLabel"></div>
+                  <div class="field-group" style="margin-bottom:14px;">
+                    <label>Save as group name</label>
+                    <input type="text" id="csvGroupName" placeholder="e.g. Engineering team Berlin" style="background:transparent;border:1.5px solid var(--border);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 13px;border-radius:3px;width:100%;outline:none;">
+                  </div>
                   <div style="display:flex;gap:10px;justify-content:flex-end;">
                     <button class="btn btn-outline" onclick="cancelCSV()">Cancel</button>
-                    <button class="btn btn-primary" onclick="importCSV()">Import →</button>
+                    <button class="btn btn-primary" onclick="importCSV()">Import & save group →</button>
                   </div>
                 </div>
               </div>
@@ -564,31 +578,35 @@
 
       <!-- ══ GROUPS ══ -->
       <div class="view" id="view-groups">
-        <div class="two-col">
-          <div>
-            <div class="card" style="margin-bottom:20px;">
-              <div class="card-head">
-                <span class="card-title">Your groups</span>
-                <span id="groupCount" style="font-size:12px;opacity:0.4;">0 groups</span>
+        <div style="font-size:13px;opacity:0.45;max-width:52ch;line-height:1.65;margin-bottom:24px;">Groups organise your employees, teams, and prospects in one place. CSV imports automatically create a named group.</div>
+        <div id="groupGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;"></div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">New group</span></div>
+          <div class="card-body">
+            <form id="addGroupForm">
+              <div class="form-grid">
+                <div class="field-group"><label>Group name</label><input type="text" name="name" placeholder="Engineering team, Berlin" required></div>
+                <div class="field-group"><label>Description</label><input type="text" name="desc" placeholder="25 engineers, Q3 2026"></div>
               </div>
-              <div id="groupList"><div class="empty"><div class="empty-icon">🗂</div><div class="empty-text">No groups yet.<br>Create a group to organise your people.</div></div></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title">New group</span></div>
-            <div class="card-body">
-              <form id="addGroupForm">
-                <div class="form-grid full">
-                  <div class="field-group"><label>Group name</label><input type="text" name="name" placeholder="Engineering team" required></div>
-                  <div class="field-group"><label>Description</label><input type="text" name="desc" placeholder="25 engineers, Berlin office"></div>
+              <div style="margin-top:20px;">
+                <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:12px;">Assign members</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                  <div>
+                    <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Employees</div>
+                    <div class="emp-checklist" id="groupEmpChecklist" style="max-height:180px;"></div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Teams</div>
+                    <div class="emp-checklist" id="groupTeamChecklist" style="max-height:180px;"></div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Prospects</div>
+                    <div class="emp-checklist" id="groupProspectChecklist" style="max-height:180px;"></div>
+                  </div>
                 </div>
-                <div style="margin-top:18px;">
-                  <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">Add employees to this group</div>
-                  <div class="emp-checklist" id="groupEmpChecklist" style="max-height:200px;"></div>
-                </div>
-                <div class="form-actions"><button type="submit" class="btn btn-primary">Create group →</button></div>
-              </form>
-            </div>
+              </div>
+              <div class="form-actions"><button type="submit" class="btn btn-primary">Create group →</button></div>
+            </form>
           </div>
         </div>
       </div>
@@ -617,9 +635,13 @@
               </div>
               <div id="prospectCSVPreview" style="display:none;">
                 <div style="font-size:12px;opacity:0.5;margin-bottom:12px;" id="prospectCSVLabel"></div>
+                <div class="field-group" style="margin-bottom:14px;">
+                  <label style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;display:block;margin-bottom:6px;">Save as group name</label>
+                  <input type="text" id="prospectCSVGroupName" placeholder="e.g. Series B prospects Q3" style="background:transparent;border:1.5px solid var(--border);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 13px;border-radius:3px;width:100%;outline:none;">
+                </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;">
                   <button class="btn btn-outline" onclick="cancelProspectCSV()">Cancel</button>
-                  <button class="btn btn-primary" onclick="importProspectCSV()">Import prospects →</button>
+                  <button class="btn btn-primary" onclick="importProspectCSV()">Import & save group →</button>
                 </div>
               </div>
             </div>
@@ -658,8 +680,17 @@
         <div class="catalog-header">
           <div>
             <div class="catalog-heading">Artisan cake catalog</div>
-            <div class="catalog-sub">Handmade to order by our baker partners. Every delivery is baked fresh.</div>
+            <div class="catalog-sub">Handmade to order by local baker partners. Filter by your delivery city.</div>
           </div>
+        </div>
+        <div class="location-filter">
+          <span class="location-filter-label">City</span>
+          <button class="loc-btn active" data-city="All" onclick="setCatalogCity('All',this)">All cities</button>
+          <button class="loc-btn" data-city="Amsterdam" onclick="setCatalogCity('Amsterdam',this)">Amsterdam</button>
+          <button class="loc-btn" data-city="Berlin" onclick="setCatalogCity('Berlin',this)">Berlin</button>
+          <button class="loc-btn" data-city="London" onclick="setCatalogCity('London',this)">London</button>
+          <button class="loc-btn" data-city="Paris" onclick="setCatalogCity('Paris',this)">Paris</button>
+          <button class="loc-btn" data-city="Brussels" onclick="setCatalogCity('Brussels',this)">Brussels</button>
         </div>
         <div class="catalog-grid" id="catalogGrid"></div>
         <div class="catalog-detail" id="catalogDetail" style="display:none;">
@@ -1025,8 +1056,21 @@
           <div class="field-group"><label>Description</label><input type="text" id="edit-group-desc"></div>
         </div>
         <div style="margin-top:18px;">
-          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">Members</div>
-          <div class="emp-checklist" id="editGroupEmpChecklist" style="max-height:220px;"></div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:12px;">Members</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div>
+              <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Employees</div>
+              <div class="emp-checklist" id="editGroupEmpChecklist" style="max-height:200px;"></div>
+            </div>
+            <div>
+              <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Teams</div>
+              <div class="emp-checklist" id="editGroupTeamChecklist" style="max-height:200px;"></div>
+            </div>
+            <div>
+              <div style="font-size:11px;opacity:0.45;margin-bottom:8px;">Prospects</div>
+              <div class="emp-checklist" id="editGroupProspectChecklist" style="max-height:200px;"></div>
+            </div>
+          </div>
         </div>
         <div class="form-actions">
           <button type="button" class="btn btn-outline" onclick="closeEditGroupModal()">Cancel</button>
@@ -1042,12 +1086,14 @@
 <script>
   // ── Cake data ──
   const CAKES = [
-    { id: 'victoria', name: 'Victoria Sponge', emoji: '🎂', tags: ['Classic', 'Layer cake', 'Crowd favourite'], desc: 'Light vanilla sponge layered with fresh whipped cream and strawberry jam. Our most-loved cake — perfect for any celebration, guaranteed to land well.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose'] },
-    { id: 'lemon', name: 'Lemon Drizzle', emoji: '🍋', tags: ['Zesty', 'Single layer', 'GF option'], desc: 'Sharp, tangy lemon with a golden sugar crust. Bright, refreshing, and impossible to forget.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose'] },
-    { id: 'chocolate', name: 'Chocolate Fudge', emoji: '🍫', tags: ['Rich', 'Indulgent', 'Best seller'], desc: 'Dense, dark chocolate cake with a glossy ganache finish. For the moments that deserve something truly special.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose', 'nuts'] },
-    { id: 'carrot', name: 'Carrot Walnut', emoji: '🥕', tags: ['Wholesome', 'Spiced', 'Nut topping'], desc: 'Moist spiced carrot cake with cream cheese frosting and candied walnut topping. Warmth and care in every bite.', price: 'From €14/mo per employee', allergens: ['gluten', 'lactose', 'nuts'] },
-    { id: 'floral', name: 'Floral Vanilla', emoji: '🌸', tags: ['Delicate', 'Earl Grey', 'Flower-topped'], desc: 'Earl Grey-infused vanilla sponge with edible flowers. Elegant and memorable — exactly the impression you want to leave.', price: 'From €14/mo per employee', allergens: ['gluten', 'lactose'] },
-    { id: 'seasonal', name: 'Seasonal Special', emoji: '✨', tags: ['Chef\'s choice', 'Changes monthly', 'Limited'], desc: 'Our bakers\' current seasonal creation. Always fresh, always a little surprising. Ask us what\'s on this month.', price: 'From €20/mo per employee', allergens: ['gluten'] },
+    { id: 'victoria', name: 'Victoria Sponge', emoji: '🎂', tags: ['Classic', 'Layer cake', 'Crowd favourite'], desc: 'Light vanilla sponge layered with fresh whipped cream and strawberry jam. Our most-loved cake — perfect for any celebration, guaranteed to land well.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose'], cities: ['Amsterdam', 'Berlin', 'London', 'Paris'] },
+    { id: 'lemon', name: 'Lemon Drizzle', emoji: '🍋', tags: ['Zesty', 'Single layer', 'GF option'], desc: 'Sharp, tangy lemon with a golden sugar crust. Bright, refreshing, and impossible to forget.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose'], cities: ['Amsterdam', 'London', 'Brussels'] },
+    { id: 'chocolate', name: 'Chocolate Fudge', emoji: '🍫', tags: ['Rich', 'Indulgent', 'Best seller'], desc: 'Dense, dark chocolate cake with a glossy ganache finish. For the moments that deserve something truly special.', price: 'From €8/mo per employee', allergens: ['gluten', 'lactose', 'nuts'], cities: ['Amsterdam', 'Berlin', 'London', 'Paris', 'Brussels'] },
+    { id: 'carrot', name: 'Carrot Walnut', emoji: '🥕', tags: ['Wholesome', 'Spiced', 'Nut topping'], desc: 'Moist spiced carrot cake with cream cheese frosting and candied walnut topping. Warmth and care in every bite.', price: 'From €14/mo per employee', allergens: ['gluten', 'lactose', 'nuts'], cities: ['Amsterdam', 'Berlin'] },
+    { id: 'floral', name: 'Floral Vanilla', emoji: '🌸', tags: ['Delicate', 'Earl Grey', 'Flower-topped'], desc: 'Earl Grey-infused vanilla sponge with edible flowers. Elegant and memorable — exactly the impression you want to leave.', price: 'From €14/mo per employee', allergens: ['gluten', 'lactose'], cities: ['Amsterdam', 'London', 'Paris'] },
+    { id: 'seasonal', name: 'Seasonal Special', emoji: '✨', tags: ['Chef\'s choice', 'Changes monthly', 'Limited'], desc: 'Our bakers\' current seasonal creation. Always fresh, always a little surprising. Ask us what\'s on this month.', price: 'From €20/mo per employee', allergens: ['gluten'], cities: ['Amsterdam', 'Berlin', 'London', 'Paris', 'Brussels'] },
+    { id: 'stroopwafel', name: 'Stroopwafel Cream', emoji: '🧇', tags: ['Dutch', 'Caramel', 'Amsterdam exclusive'], desc: 'Dutch caramel waffle cream cake — a tribute to Amsterdam bakery culture. Only available through our local partners.', price: 'From €14/mo per employee', allergens: ['gluten', 'lactose'], cities: ['Amsterdam'] },
+    { id: 'pistachio', name: 'Pistachio Rose', emoji: '🌹', tags: ['Middle Eastern', 'Floral', 'Berlin exclusive'], desc: 'Pistachio sponge layered with rose cream and candied pistachios. Inspired by Berlin\'s vibrant multicultural bakery scene.', price: 'From €20/mo per employee', allergens: ['gluten', 'lactose', 'nuts'], cities: ['Berlin'] },
   ];
 
   // ── Data layer ──
@@ -1419,16 +1465,19 @@
     reader.readAsText(file);
   }
 
-  function cancelCSV() { csvPending = null; document.getElementById('csvPreview').style.display = 'none'; uploadZone.style.display = 'block'; csvInput.value = ''; }
+  function cancelCSV() { csvPending = null; document.getElementById('csvPreview').style.display = 'none'; uploadZone.style.display = 'block'; csvInput.value = ''; document.getElementById('csvGroupName').value = ''; }
 
   function importCSV() {
     if (!csvPending) return;
-    csvPending.forEach(emp => DB.add('employees', emp));
+    const importedIds = csvPending.map(emp => DB.add('employees', emp).id);
     const count = csvPending.length;
+    // Create a named group for this import
+    const groupName = (document.getElementById('csvGroupName').value.trim()) || ('Employee import ' + new Date().toLocaleDateString('en-GB'));
+    DB.add('groups', { name: groupName, desc: `${count} employees · imported ${new Date().toLocaleDateString('en-GB')}`, memberIds: importedIds, teamIds: [], prospectIds: [] });
     cancelCSV(); renderEmployees(); renderOverview();
-    toast(`${count} employees imported ✓`);
+    toast(`${count} employees imported & saved to group "${groupName}" ✓`);
     // Show bulk allergy editor if any employees are missing dietary info
-    const missing = DB.get('employees').filter(e => !e.allergies || e.allergies.length === 0);
+    const missing = DB.get('employees').filter(e => importedIds.includes(e.id) && (!e.allergies || e.allergies.length === 0));
     if (missing.length > 0) renderBulkAllergyPanel(missing);
   }
 
@@ -1525,10 +1574,24 @@
 
   // ── Catalog ──
   let selectedCatalogCake = null;
+  let catalogCity = 'All';
+
+  function setCatalogCity(city, btn) {
+    catalogCity = city;
+    document.querySelectorAll('.loc-btn').forEach(b => b.classList.toggle('active', b.dataset.city === city));
+    selectedCatalogCake = null;
+    document.getElementById('catalogDetail').style.display = 'none';
+    renderCatalogGrid();
+  }
+
+  function renderCatalogGrid() {
+    const filtered = catalogCity === 'All' ? CAKES : CAKES.filter(c => c.cities && c.cities.includes(catalogCity));
+    const grid = document.getElementById('catalogGrid');
+    grid.innerHTML = filtered.map(cake => `<div class="catalog-card${selectedCatalogCake === cake.id ? ' selected' : ''}" onclick="showCakeDetail('${cake.id}')"><div class="catalog-card-img">${cake.emoji}</div><div class="catalog-card-info"><div class="catalog-card-name">${cake.name}</div><div class="catalog-tags">${cake.tags.slice(0,2).map(t => `<span class="catalog-tag">${t}</span>`).join('')}</div><div class="catalog-city-badge">${cake.cities ? cake.cities.slice(0,3).join(' · ') + (cake.cities.length > 3 ? ' +' + (cake.cities.length-3) : '') : ''}</div></div></div>`).join('');
+  }
 
   function renderCatalog() {
-    const grid = document.getElementById('catalogGrid');
-    grid.innerHTML = CAKES.map(cake => `<div class="catalog-card${selectedCatalogCake === cake.id ? ' selected' : ''}" onclick="showCakeDetail('${cake.id}')"><div class="catalog-card-img">${cake.emoji}</div><div class="catalog-card-info"><div class="catalog-card-name">${cake.name}</div><div class="catalog-tags">${cake.tags.map(t => `<span class="catalog-tag">${t}</span>`).join('')}</div></div></div>`).join('');
+    renderCatalogGrid();
     if (selectedCatalogCake) { const cake = CAKES.find(c => c.id === selectedCatalogCake); if (cake) showCakeDetailPanel(cake); } else { document.getElementById('catalogDetail').style.display = 'none'; }
   }
 
@@ -1536,7 +1599,7 @@
     selectedCatalogCake = id;
     const cake = CAKES.find(c => c.id === id);
     if (!cake) return;
-    document.querySelectorAll('#catalogGrid .catalog-card').forEach((el, i) => el.classList.toggle('selected', CAKES[i].id === id));
+    document.querySelectorAll('#catalogGrid .catalog-card').forEach(el => el.classList.toggle('selected', el.getAttribute('onclick').includes(id)));
     showCakeDetailPanel(cake);
   }
 
@@ -1571,56 +1634,76 @@
   }
 
   // ── Groups ──
+  function buildMemberChecklist(containerId, items, selectedIds, labelFn, metaFn) {
+    const cl = document.getElementById(containerId);
+    if (!cl) return;
+    if (!items.length) { cl.innerHTML = '<div style="padding:10px;font-size:11px;opacity:0.35;text-align:center;">None added yet</div>'; return; }
+    cl.innerHTML = items.map(item => `
+      <div class="emp-check-row" onclick="toggleGroupCheck(this)">
+        <div class="emp-checkbox ${(selectedIds || []).includes(item.id) ? 'on' : ''}">✓</div>
+        <div class="emp-check-info"><div class="emp-check-name">${labelFn(item)}</div><div class="emp-check-meta">${metaFn(item)}</div></div>
+        <input type="hidden" value="${item.id}">
+      </div>`).join('');
+  }
+
   function renderGroups() {
     const groups = DB.get('groups');
     const emps = DB.get('employees');
-    document.getElementById('groupCount').textContent = groups.length + ' groups';
-    const container = document.getElementById('groupList');
+    const teams = DB.get('teams');
+    const prospects = DB.get('prospects');
+    const grid = document.getElementById('groupGrid');
     if (groups.length === 0) {
-      container.innerHTML = '<div class="empty"><div class="empty-icon">🗂</div><div class="empty-text">No groups yet.<br>Create a group to organise your people.</div></div>';
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">🗂</div><div class="empty-text">No groups yet.<br>Create a group or import a CSV to get started.</div></div>';
     } else {
-      container.innerHTML = groups.map(g => {
-        const members = emps.filter(e => (g.memberIds || []).includes(e.id));
+      grid.innerHTML = groups.map(g => {
+        const empMembers = emps.filter(e => (g.memberIds || []).includes(e.id));
+        const teamMembers = teams.filter(t => (g.teamIds || []).includes(t.id));
+        const prospectMembers = prospects.filter(p => (g.prospectIds || []).includes(p.id));
+        const pills = [
+          empMembers.length ? `<span class="group-member-pill">👥 ${empMembers.length} employee${empMembers.length !== 1 ? 's' : ''}</span>` : '',
+          teamMembers.length ? `<span class="group-member-pill">🏢 ${teamMembers.length} team${teamMembers.length !== 1 ? 's' : ''}</span>` : '',
+          prospectMembers.length ? `<span class="group-member-pill">🎯 ${prospectMembers.length} prospect${prospectMembers.length !== 1 ? 's' : ''}</span>` : '',
+        ].filter(Boolean).join('');
         return `<div class="group-card">
-          <div class="group-info">
-            <div class="group-name">${g.name}</div>
-            ${g.desc ? `<div class="group-desc">${g.desc}</div>` : ''}
-            <div class="group-meta">${members.length} member${members.length !== 1 ? 's' : ''}${members.length > 0 ? ' · ' + members.slice(0,3).map(e => e.first).join(', ') + (members.length > 3 ? ' +' + (members.length - 3) : '') : ''}</div>
+          <div class="group-card-top">
+            <div>
+              <div class="group-name">${g.name}</div>
+              ${g.desc ? `<div class="group-desc">${g.desc}</div>` : ''}
+            </div>
+            <div class="group-actions">
+              <button class="btn btn-outline" style="padding:4px 10px;font-size:11px;" onclick="openEditGroup('${g.id}')">Edit</button>
+              <button class="btn btn-outline" style="padding:4px 10px;font-size:11px;" onclick="removeGroup('${g.id}')">✕</button>
+            </div>
           </div>
-          <div class="group-actions">
-            <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="openEditGroup('${g.id}')">Edit</button>
-            <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeGroup('${g.id}')">Remove</button>
-          </div>
+          <div class="group-members-row">${pills || '<span style="font-size:11px;opacity:0.3;">No members yet</span>'}</div>
         </div>`;
       }).join('');
     }
-    // Populate add-group employee checklist
-    const cl = document.getElementById('groupEmpChecklist');
-    if (emps.length === 0) {
-      cl.innerHTML = '<div style="padding:14px;font-size:12px;opacity:0.4;text-align:center;">Add employees first</div>';
-    } else {
-      cl.innerHTML = emps.map(e => `
-        <div class="emp-check-row" onclick="toggleGroupCheck(this)">
-          <div class="emp-checkbox">✓</div>
-          <div class="emp-check-info"><div class="emp-check-name">${e.first} ${e.last}</div><div class="emp-check-meta">${e.email || ''}</div></div>
-          <input type="hidden" value="${e.id}">
-        </div>`).join('');
-      cl.querySelectorAll('.emp-check-row').forEach(row => {
-        row.querySelector('.emp-checkbox').classList.remove('on');
-      });
-    }
+    // Populate add-group checklists
+    buildMemberChecklist('groupEmpChecklist', emps, [], e => `${e.first} ${e.last}`, e => e.email || '');
+    buildMemberChecklist('groupTeamChecklist', teams, [], t => t.name, t => t.size || '');
+    buildMemberChecklist('groupProspectChecklist', prospects, [], p => `${p.first} ${p.last}`, p => p.company || '');
   }
 
   function toggleGroupCheck(row) {
-    const box = row.querySelector('.emp-checkbox');
-    box.classList.toggle('on');
+    row.querySelector('.emp-checkbox').classList.toggle('on');
+  }
+
+  function getCheckedIds(containerId) {
+    return Array.from(document.querySelectorAll(`#${containerId} .emp-checkbox.on`))
+      .map(b => b.closest('.emp-check-row').querySelector('input[type=hidden]').value);
   }
 
   document.getElementById('addGroupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(this).entries());
-    const memberIds = Array.from(document.querySelectorAll('#groupEmpChecklist .emp-checkbox.on')).map(b => b.closest('.emp-check-row').querySelector('input[type=hidden]').value);
-    DB.add('groups', { name: data.name, desc: data.desc || '', memberIds });
+    DB.add('groups', {
+      name: data.name,
+      desc: data.desc || '',
+      memberIds: getCheckedIds('groupEmpChecklist'),
+      teamIds: getCheckedIds('groupTeamChecklist'),
+      prospectIds: getCheckedIds('groupProspectChecklist')
+    });
     this.reset();
     renderGroups();
     toast('Group created ✓');
@@ -1632,16 +1715,14 @@
     const group = DB.get('groups').find(g => g.id === id);
     if (!group) return;
     const emps = DB.get('employees');
+    const teams = DB.get('teams');
+    const prospects = DB.get('prospects');
     document.getElementById('edit-group-id').value = id;
     document.getElementById('edit-group-name').value = group.name || '';
     document.getElementById('edit-group-desc').value = group.desc || '';
-    const cl = document.getElementById('editGroupEmpChecklist');
-    cl.innerHTML = emps.map(e => `
-      <div class="emp-check-row" onclick="toggleGroupCheck(this)">
-        <div class="emp-checkbox ${(group.memberIds || []).includes(e.id) ? 'on' : ''}">✓</div>
-        <div class="emp-check-info"><div class="emp-check-name">${e.first} ${e.last}</div><div class="emp-check-meta">${e.email || ''}</div></div>
-        <input type="hidden" value="${e.id}">
-      </div>`).join('');
+    buildMemberChecklist('editGroupEmpChecklist', emps, group.memberIds || [], e => `${e.first} ${e.last}`, e => e.email || '');
+    buildMemberChecklist('editGroupTeamChecklist', teams, group.teamIds || [], t => t.name, t => t.size || '');
+    buildMemberChecklist('editGroupProspectChecklist', prospects, group.prospectIds || [], p => `${p.first} ${p.last}`, p => p.company || '');
     document.getElementById('editGroupModal').classList.add('open');
   }
 
@@ -1650,11 +1731,12 @@
   document.getElementById('editGroupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const id = document.getElementById('edit-group-id').value;
-    const memberIds = Array.from(document.querySelectorAll('#editGroupEmpChecklist .emp-checkbox.on')).map(b => b.closest('.emp-check-row').querySelector('input[type=hidden]').value);
     DB.update('groups', id, {
       name: document.getElementById('edit-group-name').value,
       desc: document.getElementById('edit-group-desc').value,
-      memberIds
+      memberIds: getCheckedIds('editGroupEmpChecklist'),
+      teamIds: getCheckedIds('editGroupTeamChecklist'),
+      prospectIds: getCheckedIds('editGroupProspectChecklist')
     });
     closeEditGroupModal();
     renderGroups();
@@ -1994,20 +2076,24 @@
     document.getElementById('prospectCSVPreview').style.display = 'none';
     proUploadZone.style.display = 'block';
     proCSVInput.value = '';
+    const gn = document.getElementById('prospectCSVGroupName'); if (gn) gn.value = '';
   }
 
   function importProspectCSV() {
     if (!prospectCSVPending) return;
-    prospectCSVPending.forEach(p => {
-      DB.add('prospects', p);
+    const importedIds = prospectCSVPending.map(p => {
+      const added = DB.add('prospects', p);
       DB.add('deliveries', { name: `${p.first} ${p.last}${p.company ? ' · ' + p.company : ''}`, type: 'Prospect — full', cake: 'victoria', date: p.sendDate || 'TBD', status: 'scheduled' });
+      return added.id;
     });
     const count = prospectCSVPending.length;
+    const groupName = (document.getElementById('prospectCSVGroupName')?.value.trim()) || ('Prospect import ' + new Date().toLocaleDateString('en-GB'));
+    DB.add('groups', { name: groupName, desc: `${count} prospects · imported ${new Date().toLocaleDateString('en-GB')}`, memberIds: [], teamIds: [], prospectIds: importedIds });
     cancelProspectCSV();
     document.getElementById('prospectCSVPanel').style.display = 'none';
     renderProspects();
     renderOverview();
-    toast(`${count} prospects imported ✓`);
+    toast(`${count} prospects imported & saved to group "${groupName}" ✓`);
   }
 
   // ── Init ──

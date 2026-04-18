@@ -236,7 +236,6 @@
     .values-head {
       display: flex; justify-content: space-between; align-items: flex-end;
       margin-bottom: 56px; padding-bottom: 32px;
-      border-bottom: 1px solid rgba(247,246,242,0.18);
     }
 
     .values-head h2 { font-size: clamp(32px, 4.42vw, 65px); line-height: 0.99; letter-spacing: -0.03em; }
@@ -248,15 +247,12 @@
     .val-card:last-child { border-right: none; }
     .val-img { width: 100%; height: 200px; background: var(--ph-d); flex-shrink: 0; }
 
-    /* Timeline strip replacing val-img */
-    .val-timeline { width: 100%; height: 200px; flex-shrink: 0; background: var(--accent); display: flex; align-items: center; justify-content: center; }
-    .val-tl-node { width: 18px; height: 18px; border-radius: 50%; background: var(--bg); opacity: 0.88; }
     .val-body { padding: 24px 26px 36px; }
     .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
     .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
 
     /* ════════ PHOTO ROW ════════ */
-    .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 52px; }
+    .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 47px; }
     .photo-item { display: flex; flex-direction: column; gap: 10px; }
     .photo-item-img { background: var(--ph); border-radius: 8px; aspect-ratio: 3/3.4; }
     .photo-item-img.pi-b { background: var(--ph2); }
@@ -267,7 +263,7 @@
     .photo-item-cap { font-size: 11px; opacity: 0.38; letter-spacing: 0.04em; }
 
     /* ════════ PLANS ════════ */
-    #plans { padding-top: 60px; }
+    #plans { padding-top: 51px; }
     .plans-header { margin-bottom: 20px; }
 
     .plans-header h2 { font-size: clamp(32px, 4.25vw, 63px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 10px; }
@@ -434,7 +430,7 @@
     #contact.section { padding: 0; }
     .final-cta {
       text-align: center;
-      min-height: 70vh;
+      min-height: 65vh;
       padding: 0 5vw;
       display: flex;
       flex-direction: column;
@@ -671,21 +667,21 @@
 
   <div class="values-grid">
     <div class="val-card">
-      <div class="val-timeline"><div class="val-tl-node"></div></div>
+
       <div class="val-body">
         <h3>Retain your<br>best people</h3>
         <p>Your top performers have options. Make them feel seen — automatically, on their birthday, at Christmas, every year. The ones who feel valued stay.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-timeline"><div class="val-tl-node"></div></div>
+
       <div class="val-body">
         <h3>Convert prospects<br>into clients</h3>
         <p>Every competitor sends emails. You send a handmade cake. culturer turns cold outreach into an experience that gets meetings booked and deals closed.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-timeline"><div class="val-tl-node"></div></div>
+
       <div class="val-body">
         <h3>Keep clients<br>for life</h3>
         <p>Renewal decisions are made before the contract lands. Stay front of mind with quarterly team celebrations and seasonal gestures that build genuine loyalty.</p>
@@ -1056,7 +1052,7 @@
         el.style.fontSize = mid + 'px';
         if (el.scrollWidth <= target) lo = mid; else hi = mid;
       }
-      el.style.fontSize = (lo * 0.835) + 'px';
+      el.style.fontSize = (lo * 0.877) + 'px';
     }
     fit();
     window.addEventListener('resize', fit);

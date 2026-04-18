@@ -270,6 +270,29 @@
     .settings-section-title { font-family: 'Kaisei Decol', serif; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 4px; }
     .settings-section-desc { font-size: 12px; opacity: 0.45; margin-bottom: 20px; }
 
+    /* ── Groups ── */
+    .group-card { border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; margin-bottom: 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .group-card:last-child { margin-bottom: 0; }
+    .group-info { flex: 1; min-width: 0; }
+    .group-name { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+    .group-desc { font-size: 12px; opacity: 0.45; }
+    .group-meta { font-size: 11px; opacity: 0.35; margin-top: 6px; }
+    .group-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── Bulk allergy editor ── */
+    .bulk-allergy-panel { margin-top: 20px; border: 1.5px solid rgba(201,95,0,0.3); border-radius: 6px; overflow: hidden; }
+    .bulk-allergy-head { background: rgba(201,95,0,0.08); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(201,95,0,0.15); }
+    .bulk-allergy-title { font-size: 13px; font-weight: 500; color: #c95f00; }
+    .bulk-allergy-body { padding: 16px 20px; }
+    .bulk-allergy-hint { font-size: 12px; opacity: 0.55; margin-bottom: 14px; line-height: 1.6; }
+    .bulk-select-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .bulk-select-label { font-size: 12px; opacity: 0.55; flex-shrink: 0; }
+    .bulk-emp-list { max-height: 180px; overflow-y: auto; border: 1px solid var(--border); border-radius: 4px; }
+    .bulk-emp-row { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .bulk-emp-row:last-child { border-bottom: none; }
+    .bulk-emp-name { flex: 1; font-weight: 500; }
+    .bulk-emp-allergy-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+
     /* ── Company logo ── */
     .company-logo-area { padding: 16px 24px 12px; border-bottom: 1px solid var(--border); }
     .company-logo-box { width: 52px; height: 52px; border: 1.5px dashed rgba(246,77,37,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; transition: border-color 0.2s; background: rgba(246,77,37,0.03); }
@@ -336,6 +359,7 @@
       <div class="nav-section">
         <div class="nav-label">People</div>
         <div class="nav-item" data-view="employees"><span class="nav-icon">👥</span>Employees</div>
+        <div class="nav-item" data-view="groups"><span class="nav-icon">🗂</span>Groups</div>
         <div class="nav-item" data-view="teams"><span class="nav-icon">🏢</span>Teams</div>
         <div class="nav-item" data-view="prospects"><span class="nav-icon">🎯</span>Prospects</div>
       </div>
@@ -475,6 +499,25 @@
                 </div>
               </div>
             </div>
+            <!-- Bulk allergy editor (shown after import if dietary info missing) -->
+            <div id="bulkAllergyPanel" class="bulk-allergy-panel" style="display:none;">
+              <div class="bulk-allergy-head">
+                <span class="bulk-allergy-title">⚠ Dietary info missing for some employees</span>
+                <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;color:#c95f00;" onclick="dismissBulkAllergy()">Dismiss</button>
+              </div>
+              <div class="bulk-allergy-body">
+                <div class="bulk-allergy-hint">These employees were imported without dietary information. Select multiple employees and apply allergies in bulk, or edit individually.</div>
+                <div class="bulk-select-row">
+                  <span class="bulk-select-label">Apply to selected:</span>
+                  <label class="allergy-label" id="ba-lactose"><input type="checkbox" value="lactose"> 🥛 Lactose free</label>
+                  <label class="allergy-label" id="ba-nuts"><input type="checkbox" value="nuts"> 🥜 Nut free</label>
+                  <label class="allergy-label" id="ba-gluten"><input type="checkbox" value="gluten"> 🌾 Gluten free</label>
+                  <label class="allergy-label" id="ba-vegan"><input type="checkbox" value="vegan"> 🌱 Vegan</label>
+                  <button class="btn btn-outline" style="padding:6px 14px;font-size:11px;" onclick="applyBulkAllergies()">Apply →</button>
+                </div>
+                <div class="bulk-emp-list" id="bulkEmpList"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -513,6 +556,37 @@
                   <div class="field-group"><label>Contact email</label><input type="email" name="contact" placeholder="manager@company.com"></div>
                 </div>
                 <div class="form-actions"><button type="submit" class="btn btn-primary">Add team →</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ GROUPS ══ -->
+      <div class="view" id="view-groups">
+        <div class="two-col">
+          <div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="card-head">
+                <span class="card-title">Your groups</span>
+                <span id="groupCount" style="font-size:12px;opacity:0.4;">0 groups</span>
+              </div>
+              <div id="groupList"><div class="empty"><div class="empty-icon">🗂</div><div class="empty-text">No groups yet.<br>Create a group to organise your people.</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">New group</span></div>
+            <div class="card-body">
+              <form id="addGroupForm">
+                <div class="form-grid full">
+                  <div class="field-group"><label>Group name</label><input type="text" name="name" placeholder="Engineering team" required></div>
+                  <div class="field-group"><label>Description</label><input type="text" name="desc" placeholder="25 engineers, Berlin office"></div>
+                </div>
+                <div style="margin-top:18px;">
+                  <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">Add employees to this group</div>
+                  <div class="emp-checklist" id="groupEmpChecklist" style="max-height:200px;"></div>
+                </div>
+                <div class="form-actions"><button type="submit" class="btn btn-primary">Create group →</button></div>
               </form>
             </div>
           </div>
@@ -625,17 +699,17 @@
               <div class="plan-card" id="pc-employee-birthday">
                 <div class="plan-card-head light"><div class="plan-name">Birthday</div><div class="plan-price">€8<span>/employee/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">Handmade birthday cake delivery</div><div class="plan-feature">Personalised message card</div><div class="plan-feature">Same-city delivery</div><div class="plan-feature">Dashboard management</div></div>
-                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-birthday','Birthday','€8/employee/mo',100)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="contactSales('Birthday')">Get started →</button></div>
               </div>
               <div class="plan-card featured" id="pc-employee-christmas">
                 <div class="plan-card-head"><div class="plan-name">Birthday + Christmas</div><div class="plan-price">€14<span>/employee/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">Everything in Birthday</div><div class="plan-feature">Christmas gift delivery</div><div class="plan-feature">Premium packaging</div><div class="plan-feature">Priority scheduling</div></div>
-                <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('employee-christmas','Birthday + Christmas','€14/employee/mo',100)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="contactSales('Birthday + Christmas')">Get started →</button></div>
               </div>
               <div class="plan-card" id="pc-employee-premium">
                 <div class="plan-card-head light"><div class="plan-name">Premium</div><div class="plan-price">€20<span>/employee/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">Everything in Birthday + Christmas</div><div class="plan-feature">Work anniversary celebration</div><div class="plan-feature">Premium artisan selection</div><div class="plan-feature">Dedicated account manager</div></div>
-                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-premium','Premium','€20/employee/mo',100)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="contactSales('Premium')">Get started →</button></div>
               </div>
             </div>
           </div>
@@ -658,17 +732,17 @@
               <div class="plan-card" id="pc-team-s">
                 <div class="plan-card-head light"><div class="plan-name">Team S</div><div class="plan-price">€30<span>/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">12–16 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Artisan cake + drinks</div></div>
-                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-s','Team S','€30/mo',16)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="contactSales('Team S')">Get started →</button></div>
               </div>
               <div class="plan-card" id="pc-team-m">
                 <div class="plan-card-head light"><div class="plan-name">Team M</div><div class="plan-price">€40<span>/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">16–20 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Artisan cake + premium drinks</div></div>
-                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-m','Team M','€40/mo',20)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="contactSales('Team M')">Get started →</button></div>
               </div>
               <div class="plan-card" id="pc-team-l">
                 <div class="plan-card-head light"><div class="plan-name">Team L</div><div class="plan-price">€50<span>/mo</span></div></div>
                 <div class="plan-body"><div class="plan-feature">20–24 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Full artisan spread</div></div>
-                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-l','Team L','€50/mo',24)">Select plan →</button></div>
+                <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="contactSales('Team L')">Get started →</button></div>
               </div>
             </div>
           </div>
@@ -691,7 +765,7 @@
               <div class="plan-card featured" id="pc-prospect">
                 <div class="plan-card-head"><div class="plan-name">Prospect flow</div><div class="plan-price">€140<span>/prospect</span></div></div>
                 <div class="plan-body"><div class="plan-feature">Cold outreach cake delivery</div><div class="plan-feature">Follow-up reminder cake</div><div class="plan-feature">Deal won — cake + champagne</div><div class="plan-feature">Tracked 3-step flow</div><div class="plan-feature">Personalised message per touch</div></div>
-                <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('prospect','Prospect flow','€140/prospect',999)">Get started →</button></div>
+                <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="contactSales('Prospect flow')">Get started →</button></div>
               </div>
             </div>
           </div>
@@ -791,7 +865,11 @@
 
         <!-- Emp Step 2: Cake -->
         <div class="step-panel" id="esp-1">
-          <div style="font-size:13px;opacity:0.55;margin-bottom:14px;">Choose the cake. Click to select.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px;flex-wrap:wrap;">
+            <div style="font-size:13px;opacity:0.55;">Choose a cake for everyone, or use smart assign for variety.</div>
+            <button class="btn btn-outline" style="font-size:11px;padding:6px 14px;flex-shrink:0;" onclick="smartAssignCakes()">✦ Smart assign</button>
+          </div>
+          <div id="smartAssignPreview" style="display:none;margin-bottom:14px;border:1px solid var(--border);border-radius:4px;overflow:hidden;"></div>
           <div class="modal-catalog" id="empModalCatalogGrid"></div>
         </div>
 
@@ -932,6 +1010,33 @@
   </div>
 </div>
 
+<!-- Edit group modal -->
+<div class="modal-backdrop" id="editGroupModal">
+  <div class="modal modal-sm">
+    <div class="modal-head">
+      <div><div class="modal-title">Edit group</div></div>
+      <button class="modal-close" onclick="closeEditGroupModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="editGroupForm">
+        <input type="hidden" id="edit-group-id">
+        <div class="form-grid full">
+          <div class="field-group"><label>Group name</label><input type="text" id="edit-group-name" required></div>
+          <div class="field-group"><label>Description</label><input type="text" id="edit-group-desc"></div>
+        </div>
+        <div style="margin-top:18px;">
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">Members</div>
+          <div class="emp-checklist" id="editGroupEmpChecklist" style="max-height:220px;"></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" onclick="closeEditGroupModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -963,11 +1068,12 @@
   const VIEW_META = {
     overview:   { title: 'Overview',      actions: '' },
     employees:  { title: 'Employees',     actions: '' },
+    groups:     { title: 'Groups',        actions: '' },
     teams:      { title: 'Teams',         actions: '' },
     prospects:  { title: 'Prospects',     actions: '<button class="btn btn-primary" onclick="openSendCake(\'prospect\')">+ New prospect</button>' },
     deliveries: { title: 'Deliveries',    actions: '' },
     catalog:    { title: 'Cake catalog',  actions: '' },
-    plans:      { title: 'Plans',         actions: '' },
+    plans:      { title: 'Plans &amp; pricing', actions: '' },
     settings:   { title: 'Settings',      actions: '' }
   };
 
@@ -982,7 +1088,7 @@
     const meta = VIEW_META[name] || { title: name, actions: '' };
     topbarTitle.textContent = meta.title;
     topbarActions.innerHTML = meta.actions;
-    const renders = { overview: renderOverview, employees: renderEmployees, teams: renderTeams, prospects: renderProspects, deliveries: renderDeliveries, catalog: renderCatalog, plans: renderPlans, settings: renderSettings };
+    const renders = { overview: renderOverview, employees: renderEmployees, groups: renderGroups, teams: renderTeams, prospects: renderProspects, deliveries: renderDeliveries, catalog: renderCatalog, plans: renderPlans, settings: renderSettings };
     if (renders[name]) renders[name]();
   }
 
@@ -1161,16 +1267,13 @@
 
   // ── Setup strip ──
   function renderSetupStrip() {
-    const plan = DB.getObj('activePlan');
     const emps = DB.get('employees');
     const deliveries = DB.get('deliveries');
-    const hasPlan = !!plan, hasPeople = emps.length > 0, hasSent = deliveries.length > 0;
-    const allDone = hasPlan && hasPeople && hasSent;
+    const hasPeople = emps.length > 0, hasSent = deliveries.length > 0;
     const strip = document.getElementById('setupStrip');
-    if (allDone) { strip.style.display = 'none'; return; }
+    if (hasPeople && hasSent) { strip.style.display = 'none'; return; }
     strip.style.display = 'flex';
     const steps = [
-      { label: 'Choose a plan', done: hasPlan, action: "navigate('plans')" },
       { label: 'Add your people', done: hasPeople, action: "navigate('employees')" },
       { label: 'Send your first cake', done: hasSent, action: 'openSendCake()' }
     ];
@@ -1324,6 +1427,60 @@
     const count = csvPending.length;
     cancelCSV(); renderEmployees(); renderOverview();
     toast(`${count} employees imported ✓`);
+    // Show bulk allergy editor if any employees are missing dietary info
+    const missing = DB.get('employees').filter(e => !e.allergies || e.allergies.length === 0);
+    if (missing.length > 0) renderBulkAllergyPanel(missing);
+  }
+
+  // ── Bulk allergy editor ──
+  let bulkAllergyTargetIds = [];
+
+  function renderBulkAllergyPanel(employees) {
+    bulkAllergyTargetIds = employees.map(e => e.id);
+    const list = document.getElementById('bulkEmpList');
+    list.innerHTML = employees.map(e =>
+      `<div class="bulk-emp-row" data-id="${e.id}">
+        <input type="checkbox" style="margin-right:4px;" checked>
+        <span class="bulk-emp-name">${e.first} ${e.last}</span>
+        <div class="bulk-emp-allergy-pills" id="bap-${e.id}"><span style="font-size:11px;opacity:0.35;">None set</span></div>
+      </div>`
+    ).join('');
+    // Init bulk allergy toggle labels
+    ['ba-lactose','ba-nuts','ba-gluten','ba-vegan'].forEach(id => {
+      const lbl = document.getElementById(id);
+      if (!lbl) return;
+      const cb = lbl.querySelector('input');
+      cb.checked = false;
+      lbl.classList.remove('active');
+      lbl.onclick = () => setTimeout(() => lbl.classList.toggle('active', cb.checked), 0);
+    });
+    document.getElementById('bulkAllergyPanel').style.display = 'block';
+  }
+
+  function applyBulkAllergies() {
+    const chosen = ['lactose','nuts','gluten','vegan'].filter(v => {
+      const el = document.querySelector(`#ba-${v} input`);
+      return el && el.checked;
+    });
+    if (chosen.length === 0) { toast('Select at least one dietary option'); return; }
+    const rows = document.querySelectorAll('#bulkEmpList .bulk-emp-row');
+    rows.forEach(row => {
+      const cb = row.querySelector('input[type=checkbox]');
+      if (!cb || !cb.checked) return;
+      const id = row.dataset.id;
+      const emp = DB.get('employees').find(e => e.id === id);
+      if (!emp) return;
+      const merged = Array.from(new Set([...(emp.allergies || []), ...chosen]));
+      DB.update('employees', id, { allergies: merged });
+      const pillEl = document.getElementById('bap-' + id);
+      if (pillEl) pillEl.innerHTML = merged.map(a => `<span class="badge badge-amber" style="font-size:10px;">${ALLERGY_LABELS[a]||a}</span>`).join('');
+    });
+    renderEmployees();
+    toast(`Dietary info updated for selected employees ✓`);
+  }
+
+  function dismissBulkAllergy() {
+    document.getElementById('bulkAllergyPanel').style.display = 'none';
   }
 
   // ── Teams ──
@@ -1409,11 +1566,100 @@
     if (activeCard) activeCard.classList.add('active-plan');
   }
 
-  function selectPlan(id, name, price, max) {
-    DB.setObj('activePlan', { id, name, price, max });
-    toast('Plan activated: ' + name + ' ✓');
-    navigate('overview');
+  function contactSales(planName) {
+    toast('Contact us at hello@culturer.nl to activate ' + planName + ' →');
   }
+
+  // ── Groups ──
+  function renderGroups() {
+    const groups = DB.get('groups');
+    const emps = DB.get('employees');
+    document.getElementById('groupCount').textContent = groups.length + ' groups';
+    const container = document.getElementById('groupList');
+    if (groups.length === 0) {
+      container.innerHTML = '<div class="empty"><div class="empty-icon">🗂</div><div class="empty-text">No groups yet.<br>Create a group to organise your people.</div></div>';
+    } else {
+      container.innerHTML = groups.map(g => {
+        const members = emps.filter(e => (g.memberIds || []).includes(e.id));
+        return `<div class="group-card">
+          <div class="group-info">
+            <div class="group-name">${g.name}</div>
+            ${g.desc ? `<div class="group-desc">${g.desc}</div>` : ''}
+            <div class="group-meta">${members.length} member${members.length !== 1 ? 's' : ''}${members.length > 0 ? ' · ' + members.slice(0,3).map(e => e.first).join(', ') + (members.length > 3 ? ' +' + (members.length - 3) : '') : ''}</div>
+          </div>
+          <div class="group-actions">
+            <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="openEditGroup('${g.id}')">Edit</button>
+            <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeGroup('${g.id}')">Remove</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    // Populate add-group employee checklist
+    const cl = document.getElementById('groupEmpChecklist');
+    if (emps.length === 0) {
+      cl.innerHTML = '<div style="padding:14px;font-size:12px;opacity:0.4;text-align:center;">Add employees first</div>';
+    } else {
+      cl.innerHTML = emps.map(e => `
+        <div class="emp-check-row" onclick="toggleGroupCheck(this)">
+          <div class="emp-checkbox">✓</div>
+          <div class="emp-check-info"><div class="emp-check-name">${e.first} ${e.last}</div><div class="emp-check-meta">${e.email || ''}</div></div>
+          <input type="hidden" value="${e.id}">
+        </div>`).join('');
+      cl.querySelectorAll('.emp-check-row').forEach(row => {
+        row.querySelector('.emp-checkbox').classList.remove('on');
+      });
+    }
+  }
+
+  function toggleGroupCheck(row) {
+    const box = row.querySelector('.emp-checkbox');
+    box.classList.toggle('on');
+  }
+
+  document.getElementById('addGroupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(this).entries());
+    const memberIds = Array.from(document.querySelectorAll('#groupEmpChecklist .emp-checkbox.on')).map(b => b.closest('.emp-check-row').querySelector('input[type=hidden]').value);
+    DB.add('groups', { name: data.name, desc: data.desc || '', memberIds });
+    this.reset();
+    renderGroups();
+    toast('Group created ✓');
+  });
+
+  function removeGroup(id) { DB.remove('groups', id); renderGroups(); toast('Group removed'); }
+
+  function openEditGroup(id) {
+    const group = DB.get('groups').find(g => g.id === id);
+    if (!group) return;
+    const emps = DB.get('employees');
+    document.getElementById('edit-group-id').value = id;
+    document.getElementById('edit-group-name').value = group.name || '';
+    document.getElementById('edit-group-desc').value = group.desc || '';
+    const cl = document.getElementById('editGroupEmpChecklist');
+    cl.innerHTML = emps.map(e => `
+      <div class="emp-check-row" onclick="toggleGroupCheck(this)">
+        <div class="emp-checkbox ${(group.memberIds || []).includes(e.id) ? 'on' : ''}">✓</div>
+        <div class="emp-check-info"><div class="emp-check-name">${e.first} ${e.last}</div><div class="emp-check-meta">${e.email || ''}</div></div>
+        <input type="hidden" value="${e.id}">
+      </div>`).join('');
+    document.getElementById('editGroupModal').classList.add('open');
+  }
+
+  function closeEditGroupModal() { document.getElementById('editGroupModal').classList.remove('open'); }
+
+  document.getElementById('editGroupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-group-id').value;
+    const memberIds = Array.from(document.querySelectorAll('#editGroupEmpChecklist .emp-checkbox.on')).map(b => b.closest('.emp-check-row').querySelector('input[type=hidden]').value);
+    DB.update('groups', id, {
+      name: document.getElementById('edit-group-name').value,
+      desc: document.getElementById('edit-group-desc').value,
+      memberIds
+    });
+    closeEditGroupModal();
+    renderGroups();
+    toast('Group saved ✓');
+  });
 
   // ══ SEND CAKE MODAL ══
   let modalMode = null; // 'employee' | 'prospect'
@@ -1431,7 +1677,9 @@
     proCurrentStep = 0;
     selectedCake = preselectedCake || 'victoria';
     selectedFlow = 'full';
+    smartAssignMap = null;
     empSelections.clear();
+    document.getElementById('smartAssignPreview').style.display = 'none';
     document.getElementById('modalTypeSelect').style.display = 'block';
     document.getElementById('empFlow').style.display = 'none';
     document.getElementById('proFlow').style.display = 'none';
@@ -1527,21 +1775,70 @@
 
   function selectEmpCake(id, el) {
     selectedCake = id;
+    smartAssignMap = null; // clear smart assign when manual selection made
+    document.getElementById('smartAssignPreview').style.display = 'none';
     document.querySelectorAll('#empModalCatalogGrid .catalog-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
+  }
+
+  // Smart cake assignment: distribute different flavors avoiding allergens per person
+  let smartAssignMap = null; // { empId → cakeId }
+
+  function smartAssignCakes() {
+    const emps = DB.get('employees').filter(e => empSelections.has(e.id));
+    if (emps.length === 0) { toast('Select at least one employee first'); return; }
+    smartAssignMap = {};
+    // Rotate through cakes, skipping allergen conflicts
+    let cakeIndex = 0;
+    emps.forEach(emp => {
+      const allergies = emp.allergies || [];
+      // Find next safe cake (no allergen conflict), cycling with variety
+      let tried = 0;
+      while (tried < CAKES.length) {
+        const cake = CAKES[cakeIndex % CAKES.length];
+        const conflict = allergies.some(a => (cake.allergens || []).includes(a));
+        cakeIndex++;
+        tried++;
+        if (!conflict) { smartAssignMap[emp.id] = cake.id; break; }
+      }
+      if (!smartAssignMap[emp.id]) {
+        // fallback: assign seasonal (gluten only)
+        smartAssignMap[emp.id] = CAKES[CAKES.length - 1].id;
+      }
+    });
+    // Show preview
+    const preview = document.getElementById('smartAssignPreview');
+    preview.style.display = 'block';
+    preview.innerHTML = `<div style="padding:10px 14px;font-size:11px;opacity:0.45;border-bottom:1px solid var(--border);letter-spacing:0.05em;text-transform:uppercase;">Smart assignments</div>` +
+      emps.map(emp => {
+        const cake = CAKES.find(c => c.id === smartAssignMap[emp.id]);
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;">
+          <span style="font-weight:500;">${emp.first} ${emp.last}</span>
+          <span style="opacity:0.65;">${cake ? cake.emoji + ' ' + cake.name : '—'}</span>
+        </div>`;
+      }).join('') + `<div style="padding:10px 14px;font-size:11px;opacity:0.4;">Each person gets a different flavour, allergen-checked.</div>`;
+    toast('Smart assignments done — each person gets a different cake ✓');
   }
 
   function buildEmpConfirm() {
     const emps = DB.get('employees').filter(e => empSelections.has(e.id));
     const s = DB.getObj('settings') || {};
-    const cake = CAKES.find(c => c.id === selectedCake);
-    const allergyWarning = cake && emps.some(e => e.allergies && e.allergies.some(a => cake.allergens && cake.allergens.includes(a)));
     const row = (label, val) => `<div><span style="opacity:0.4;display:inline-block;width:120px;">${label}</span>${val}</div>`;
+    const usingSmart = smartAssignMap && Object.keys(smartAssignMap).length > 0;
+    let cakeInfo, allergyWarning;
+    if (usingSmart) {
+      cakeInfo = `Smart assign (${Object.keys(smartAssignMap).length} varieties)`;
+      allergyWarning = false;
+    } else {
+      const cake = CAKES.find(c => c.id === selectedCake);
+      cakeInfo = cake ? `${cake.emoji} ${cake.name}` : '—';
+      allergyWarning = cake && emps.some(e => e.allergies && e.allergies.some(a => cake.allergens && cake.allergens.includes(a)));
+    }
     document.getElementById('empConfirmDetails').innerHTML = [
       row('Recipients', emps.length > 0 ? emps.map(e => `${e.first} ${e.last}`).join(', ') : 'None selected'),
       row('Delivery to', s.officeAddress || '—'),
       row('Occasion', document.getElementById('e-occasion')?.value || '—'),
-      row('Cake', cake ? `${cake.emoji} ${cake.name}` : '—'),
+      row('Cake', cakeInfo),
       row('Date', document.getElementById('e-date')?.value || '—'),
       allergyWarning ? `<div style="margin-top:12px;padding:10px 14px;background:rgba(201,95,0,0.08);border-radius:3px;font-size:12px;color:#c95f00;">⚠ Some employees have dietary notes that may conflict with this cake. Consider checking before confirming.</div>` : ''
     ].join('');
@@ -1620,8 +1917,10 @@
     if (emps.length === 0) { toast('Select at least one employee'); return; }
     const occasion = document.getElementById('e-occasion')?.value || 'Celebration';
     const date = document.getElementById('e-date')?.value || 'TBD';
+    const usingSmart = smartAssignMap && Object.keys(smartAssignMap).length > 0;
     emps.forEach(emp => {
-      DB.add('deliveries', { name: `${emp.first} ${emp.last}`, type: `Employee — ${occasion}`, cake: selectedCake, date, status: 'scheduled' });
+      const cakeId = usingSmart ? (smartAssignMap[emp.id] || selectedCake) : selectedCake;
+      DB.add('deliveries', { name: `${emp.first} ${emp.last}`, type: `Employee — ${occasion}`, cake: cakeId, date, status: 'scheduled' });
     });
     closeModal();
     renderOverview();

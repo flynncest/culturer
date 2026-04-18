@@ -116,7 +116,7 @@
 
     /* H1 */
     .hero-text h1 {
-      font-size: clamp(42px, 6.27vw, 95px);
+      font-size: clamp(40px, 5.96vw, 90px);
       line-height: 0.97;
       letter-spacing: -0.03em;
     }
@@ -252,7 +252,7 @@
     .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
 
     /* ════════ PHOTO ROW ════════ */
-    .photo-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; padding: 64px 5vw; }
+    .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 64px 5vw; }
     .photo-item { display: flex; flex-direction: column; gap: 10px; }
     .photo-item-img { background: var(--ph); border-radius: 8px; aspect-ratio: 3/4; }
     .photo-item-img.pi-b { background: var(--ph2); }
@@ -377,7 +377,7 @@
     #contact.section { padding: 0; }
     .final-cta {
       text-align: center;
-      min-height: 80vh;
+      min-height: 75vh;
       padding: 0 5vw;
       display: flex;
       flex-direction: column;
@@ -385,7 +385,7 @@
       justify-content: center;
       position: relative;
     }
-    .final-cta h2 { font-size: clamp(44px, 7vw, 110px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 44px; position: relative; z-index: 1; }
+    .final-cta h2 { font-size: clamp(37px, 5.95vw, 93px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 44px; position: relative; z-index: 1; }
     .final-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
 
     /* Pills float around the heading */
@@ -474,7 +474,7 @@
       .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
       .video-head p { text-align: left; }
       .video-row { grid-template-columns: 1fr; }
-      .photo-row { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 48px 5vw; }
+      .photo-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 48px 5vw; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
       .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -524,6 +524,7 @@
     <li><a href="#plans" data-tab="0">Employees</a></li>
     <li><a href="#plans" data-tab="1">Teams</a></li>
     <li><a href="#plans" data-tab="2">Prospects</a></li>
+    <li><a href="automations.html">How it works</a></li>
     <li><a href="#artisan">Artisan</a></li>
   </ul>
   <div class="nav-right">
@@ -651,8 +652,6 @@
   <div class="photo-item"><div class="photo-item-img pi-b"></div><span class="photo-item-cap">Deal closed</span></div>
   <div class="photo-item"><div class="photo-item-img pi-c"></div><span class="photo-item-cap">New client</span></div>
   <div class="photo-item"><div class="photo-item-img pi-d"></div><span class="photo-item-cap">Team celebration</span></div>
-  <div class="photo-item"><div class="photo-item-img pi-e"></div><span class="photo-item-cap">Investor gift</span></div>
-  <div class="photo-item"><div class="photo-item-img pi-f"></div><span class="photo-item-cap">Work anniversary</span></div>
 </div>
 
 
@@ -890,6 +889,7 @@
       <a href="#plans" data-tab="0">Employees</a>
       <a href="#plans" data-tab="1">Teams</a>
       <a href="#plans" data-tab="2">Prospects</a>
+      <a href="automations.html">How it works</a>
       <a href="#artisan">Artisan</a>
       <a href="#plans">Plans</a>
     </div>
@@ -995,7 +995,7 @@
         el.style.fontSize = mid + 'px';
         if (el.scrollWidth <= target) lo = mid; else hi = mid;
       }
-      el.style.fontSize = lo + 'px';
+      el.style.fontSize = (lo * 0.85) + 'px';
     }
     fit();
     window.addEventListener('resize', fit);

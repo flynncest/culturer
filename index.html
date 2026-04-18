@@ -263,7 +263,8 @@
     .photo-item-cap { font-size: 11px; opacity: 0.38; letter-spacing: 0.04em; }
 
     /* ════════ PLANS ════════ */
-    #plans { padding-top: 51px; }
+    #plans { padding-top: 41px; }
+    #reactions { padding-top: 80px; }
     .plans-header { margin-bottom: 20px; }
 
     .plans-header h2 { font-size: clamp(32px, 4.25vw, 63px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 10px; }
@@ -308,7 +309,7 @@
     .p-card:last-child { border-right: none; }
 
     .p-body { padding: 22px 26px 20px; display: flex; flex-direction: column; flex: 1; order: 1; }
-    .p-tier { font-size: 10px; letter-spacing: 0.17em; text-transform: uppercase; opacity: 0.55; margin-bottom: 10px; }
+    .p-tier { font-size: 10px; letter-spacing: 0.17em; text-transform: uppercase; opacity: 0.55; margin-bottom: 10px; padding-top: 14px; }
     .p-price { font-family: 'Kaisei Decol', serif; font-size: clamp(36px, 3.4vw, 56px); line-height: 1; letter-spacing: -0.02em; }
     .p-unit { font-size: 12px; opacity: 0.55; margin-top: 4px; margin-bottom: 18px; }
     .p-rule { height: 1px; background: currentColor; opacity: 0.12; margin-bottom: 16px; }
@@ -328,13 +329,15 @@
     /* ════════ PROSPECT PANEL ════════ */
     .prospect-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
     .prospect-left { display: flex; flex-direction: column; }
-    .prospect-left h2 { font-size: clamp(34px, 4.68vw, 73px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 28px; }
+    .prospect-left h2 { font-size: clamp(26px, 3.51vw, 55px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 28px; }
 
-    .big-price { font-family: 'Kaisei Decol', serif; font-size: clamp(56px, 6vw, 96px); line-height: 1; letter-spacing: -0.02em; }
+    .big-price { font-family: 'Kaisei Decol', serif; font-size: clamp(42px, 4.5vw, 72px); line-height: 1; letter-spacing: -0.02em; }
+    .prospect-imgs-stack { display: flex; flex-direction: column; gap: 3px; }
+    .prospect-img-b { background: var(--ph2); }
     .price-unit { font-size: 11px; opacity: 0.42; margin-top: 4px; margin-bottom: 28px; }
     .prospect-left p { font-size: clamp(13px, 1.2vw, 16px); line-height: 1.72; opacity: 0.62; margin-bottom: 14px; }
     .prospect-right { display: flex; flex-direction: column; gap: 20px; }
-    .prospect-img { width: 100%; height: 240px; background: var(--ph); }
+    .prospect-img { width: 100%; height: 190px; background: var(--ph); }
 
     .flow-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.1); }
     .flow-list li { display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.1); align-items: flex-start; }
@@ -582,11 +585,9 @@
 <nav id="mainNav">
   <a class="nav-logo" href="/">culturer</a>
   <ul class="nav-links">
-    <li><a href="#plans" data-tab="0">Employees</a></li>
-    <li><a href="#plans" data-tab="1">Teams</a></li>
-    <li><a href="#plans" data-tab="2">Prospects</a></li>
     <li><a href="automations.html">Automation</a></li>
-    <li><a href="#artisan">Artisan</a></li>
+    <li><a href="our-bakers.html">Our bakers</a></li>
+    <li><a href="contact.html">Contact us</a></li>
   </ul>
   <div class="nav-right">
     <a href="login.html" class="nav-cta">Get started ↗</a>
@@ -595,11 +596,9 @@
 </nav>
 
 <div class="nav-drawer" id="navDrawer">
-  <a href="#plans" data-tab="0" data-close>Employees</a>
-  <a href="#plans" data-tab="1" data-close>Teams</a>
-  <a href="#plans" data-tab="2" data-close>Prospects</a>
   <a href="automations.html" data-close>Automation</a>
   <a href="our-bakers.html" data-close>Our bakers</a>
+  <a href="contact.html" data-close>Contact us</a>
   <a href="login.html" data-close>Get started ↗</a>
 </div>
 
@@ -878,7 +877,10 @@
         <p>No reply? A follow-up cake goes out. Deal closed? Champagne and a thank-you. One flow, zero effort.</p>
       </div>
       <div class="prospect-right">
-        <div class="prospect-img"></div>
+        <div class="prospect-imgs-stack">
+          <div class="prospect-img"></div>
+          <div class="prospect-img prospect-img-b"></div>
+        </div>
         <ul class="flow-list">
           <li><span class="flow-n">01</span><span class="flow-t">First touch — a handmade cake arrives the same day your email lands. Impossible to ignore.</span></li>
           <li><span class="flow-n">02</span><span class="flow-t">No reply? A second cake ships automatically — a gentle, tangible reminder.</span></li>

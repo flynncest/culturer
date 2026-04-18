@@ -362,6 +362,48 @@
     .artisan-text { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
     .artisan-text p { font-size: clamp(14px, 1.2vw, 17px); line-height: 1.72; opacity: 0.62; }
 
+    /* ════════ WHY IT MATTERS — 4-col facts ════════ */
+    .why-matters-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(247,246,242,0.18);
+    }
+
+    .why-matters-card {
+      padding: 32px 28px 32px 0;
+      border-right: 1px solid rgba(247,246,242,0.15);
+      padding-right: 28px;
+    }
+
+    .why-matters-card:first-child { padding-left: 0; }
+    .why-matters-card:last-child { border-right: none; padding-right: 0; }
+    .why-matters-card + .why-matters-card { padding-left: 28px; }
+
+    .why-matters-num {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(36px, 3.8vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      color: var(--bg);
+      margin-bottom: 10px;
+    }
+
+    .why-matters-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--bg);
+      opacity: 0.85;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .why-matters-desc {
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--bg);
+      opacity: 0.48;
+    }
+
     /* ════════ VIDEO — cream background ════════ */
     .video-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; padding-bottom: 28px; border-bottom: 1px solid rgba(246,77,37,0.12); }
     .video-head h2 { font-size: clamp(32px, 4.42vw, 65px); line-height: 0.99; letter-spacing: -0.03em; }
@@ -471,6 +513,11 @@
       .artisan-stack-head-note { text-align: left; }
       .artisan-text { grid-template-columns: 1fr; gap: 0; }
       .artisan-text p { margin-bottom: 16px; }
+      .why-matters-grid { grid-template-columns: 1fr 1fr; }
+      .why-matters-card { border-right: none; border-bottom: 1px solid rgba(247,246,242,0.15); padding: 24px 0; }
+      .why-matters-card:nth-child(odd) { padding-right: 20px; }
+      .why-matters-card:nth-child(even) { padding-left: 20px; }
+      .why-matters-card:nth-last-child(-n+2) { border-bottom: none; }
       .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
       .video-head p { text-align: left; }
       .video-row { grid-template-columns: 1fr; }
@@ -512,6 +559,9 @@
       /* wordmark js handles mobile size */
       .artisan-photos { grid-template-columns: 1fr; height: 240px; }
       .artisan-photo-b { display: none; }
+      .why-matters-grid { grid-template-columns: 1fr; }
+      .why-matters-card { border-right: none; padding: 20px 0; }
+      .why-matters-card:nth-child(odd), .why-matters-card:nth-child(even) { padding-left: 0; padding-right: 0; }
     }
   </style>
 </head>
@@ -524,7 +574,7 @@
     <li><a href="#plans" data-tab="0">Employees</a></li>
     <li><a href="#plans" data-tab="1">Teams</a></li>
     <li><a href="#plans" data-tab="2">Prospects</a></li>
-    <li><a href="automations.html">How it works</a></li>
+    <li><a href="automations.html">Automation</a></li>
     <li><a href="#artisan">Artisan</a></li>
   </ul>
   <div class="nav-right">
@@ -537,7 +587,8 @@
   <a href="#plans" data-tab="0" data-close>Employees</a>
   <a href="#plans" data-tab="1" data-close>Teams</a>
   <a href="#plans" data-tab="2" data-close>Prospects</a>
-  <a href="#artisan" data-close>Artisan</a>
+  <a href="automations.html" data-close>Automation</a>
+  <a href="our-bakers.html" data-close>Our bakers</a>
   <a href="login.html" data-close>Get started ↗</a>
 </div>
 
@@ -812,27 +863,44 @@
 </section>
 
 
-<!-- ════════ ARTISAN ════════ -->
+<!-- ════════ WHY IT MATTERS ════════ -->
 <section class="section section-dark" id="artisan">
   <div class="artisan-stack">
     <div class="artisan-stack-head">
       <div>
-        <span class="section-tag">Our commitment</span>
-        <h2>Baked by hand.<br>Never by algorithm.</h2>
+        <span class="section-tag">Why it matters</span>
+        <h2>In an AI world, give your<br>people something real.</h2>
       </div>
       <p class="artisan-stack-head-note">
-        Made by hand, from scratch,<br>
-        by people who genuinely care<br>
-        about their craft.
+        The numbers are unambiguous.<br>
+        Recognition retains people,<br>
+        closes deals, and compounds.
       </p>
     </div>
-    <div class="artisan-photos">
-      <div class="artisan-photo"></div>
-      <div class="artisan-photo artisan-photo-b"></div>
+    <div class="why-matters-grid">
+      <div class="why-matters-card">
+        <div class="why-matters-num">€15,000</div>
+        <div class="why-matters-label">Average cost to replace one employee</div>
+        <div class="why-matters-desc">Recruitment, onboarding, lost productivity, team disruption. The ROI on retention is enormous — and care is the cheapest tool available.</div>
+      </div>
+      <div class="why-matters-card">
+        <div class="why-matters-num">4.6×</div>
+        <div class="why-matters-label">More likely to stay when regularly recognised</div>
+        <div class="why-matters-desc">Gallup data. Employees who feel consistently seen are dramatically less likely to leave within 12 months of their last milestone.</div>
+      </div>
+      <div class="why-matters-card">
+        <div class="why-matters-num">82%</div>
+        <div class="why-matters-label">Remember an unexpected gesture for months</div>
+        <div class="why-matters-desc">A birthday cake outlasts any team lunch. Physical, personal gestures create emotional memory that digital perks simply don't.</div>
+      </div>
+      <div class="why-matters-card">
+        <div class="why-matters-num">40%</div>
+        <div class="why-matters-label">Faster prospect conversion with gift outreach</div>
+        <div class="why-matters-desc">Sales teams using physical gifting see shorter cycles and warmer calls. The cake gets you the meeting the cold email never could.</div>
+      </div>
     </div>
-    <div class="artisan-text">
-      <p>We refused to automate the part that matters. Every cake that arrives at someone's door was made by hand, from scratch, by a person who genuinely cares about their craft — not a factory optimised for volume.</p>
-      <p>culturer sits in the gap between convenience and meaning. Technology handles the timing. Artisans handle the making. The result doesn't feel like a corporate program. It feels like someone thought of you.</p>
+    <div style="text-align:center;padding-top:12px;">
+      <a href="our-bakers.html" style="font-size:13px;color:var(--bg);opacity:0.5;border-bottom:1px solid rgba(247,246,242,0.3);padding-bottom:2px;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">Meet our bakers ↗</a>
     </div>
   </div>
 </section>
@@ -889,7 +957,8 @@
       <a href="#plans" data-tab="0">Employees</a>
       <a href="#plans" data-tab="1">Teams</a>
       <a href="#plans" data-tab="2">Prospects</a>
-      <a href="automations.html">How it works</a>
+      <a href="automations.html">Automation</a>
+      <a href="our-bakers.html">Our bakers</a>
       <a href="#artisan">Artisan</a>
       <a href="#plans">Plans</a>
     </div>
@@ -995,7 +1064,7 @@
         el.style.fontSize = mid + 'px';
         if (el.scrollWidth <= target) lo = mid; else hi = mid;
       }
-      el.style.fontSize = (lo * 0.7225) + 'px';
+      el.style.fontSize = (lo * 0.795) + 'px';
     }
     fit();
     window.addEventListener('resize', fit);

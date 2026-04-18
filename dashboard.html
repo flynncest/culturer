@@ -9,287 +9,117 @@
   <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --accent: #f64d25;
-      --bg: #f7f6f2;
-      --sidebar-w: 220px;
-      --border: rgba(246,77,37,0.14);
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-    }
-
+    :root { --accent: #f64d25; --bg: #f7f6f2; --sidebar-w: 220px; --border: rgba(246,77,37,0.14); }
+    html, body { height: 100%; background: var(--bg); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 14px; }
     a { text-decoration: none; color: inherit; }
 
-    .shell {
-      display: flex;
-      min-height: 100vh;
-    }
+    /* ── Shell ── */
+    .shell { display: flex; min-height: 100vh; }
 
     /* ── Sidebar ── */
-    .sidebar {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 28px 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    .sidebar-logo {
-      font-family: 'Kaisei Decol', serif;
-      font-size: 18px;
-      color: var(--accent);
-      padding: 0 24px 28px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .sidebar-nav { flex: 1; padding: 20px 0; }
-
+    .sidebar { width: var(--sidebar-w); flex-shrink: 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 28px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sidebar-logo { font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--accent); padding: 0 24px 28px; border-bottom: 1px solid var(--border); }
+    .sidebar-nav { flex: 1; padding: 16px 0; }
     .nav-section { padding: 0 14px; margin-bottom: 4px; }
-
-    .nav-label {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.35;
-      margin-bottom: 6px;
-      margin-top: 18px;
-      padding: 0 10px;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 13px;
-      opacity: 0.55;
-      transition: all 0.15s;
-      margin-bottom: 2px;
-    }
-
+    .nav-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.35; margin-bottom: 6px; margin-top: 18px; padding: 0 10px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; opacity: 0.55; transition: all 0.15s; margin-bottom: 2px; }
     .nav-item:hover { opacity: 0.9; background: rgba(246,77,37,0.06); }
     .nav-item.active { opacity: 1; background: rgba(246,77,37,0.1); font-weight: 500; }
-
     .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
-
-    .sidebar-foot {
-      padding: 20px 24px 0;
-      border-top: 1px solid var(--border);
-    }
-
+    .sidebar-foot { padding: 20px 24px 0; border-top: 1px solid var(--border); }
     .sidebar-org { font-size: 12px; opacity: 0.4; margin-bottom: 10px; }
-
     .sidebar-user { display: flex; align-items: center; gap: 10px; }
-
-    .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--bg);
-      font-size: 11px;
-      font-weight: 500;
-      flex-shrink: 0;
-    }
-
+    .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 11px; font-weight: 500; flex-shrink: 0; }
     .user-name { font-size: 13px; font-weight: 500; }
     .user-role { font-size: 11px; opacity: 0.45; }
 
     /* ── Main ── */
-    .main {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .topbar {
-      border-bottom: 1px solid var(--border);
-      padding: 0 36px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .topbar-title {
-      font-family: 'Kaisei Decol', serif;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
-
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .topbar { border-bottom: 1px solid var(--border); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .topbar-title { font-family: 'Kaisei Decol', serif; font-size: 18px; letter-spacing: -0.01em; }
     .topbar-actions { display: flex; gap: 10px; align-items: center; }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 9px 18px;
-      border-radius: 3px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      border: none;
-    }
-
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; transition: opacity 0.15s; border: none; }
     .btn-primary { background: var(--accent); color: var(--bg); }
     .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid rgba(246,77,37,0.3); }
     .btn:hover { opacity: 0.8; }
 
     /* ── Content ── */
-    .content {
-      flex: 1;
-      padding: 36px;
-      overflow-y: auto;
-    }
-
+    .content { flex: 1; padding: 36px; overflow-y: auto; }
     .view { display: none; }
     .view.active { display: block; }
 
-    /* ── Stats row ── */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+    /* ── Onboarding banner ── */
+    .onboard-banner {
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 28px 32px;
       margin-bottom: 32px;
+      background: rgba(246,77,37,0.03);
     }
-
-    .stat-card {
+    .onboard-intro { font-family: 'Kaisei Decol', serif; font-size: 18px; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .onboard-sub { font-size: 13px; opacity: 0.5; margin-bottom: 24px; }
+    .onboard-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .onboard-step {
       border: 1px solid var(--border);
-      padding: 20px 22px;
       border-radius: 4px;
+      padding: 18px 20px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
+    .onboard-step.done { opacity: 0.45; }
+    .onboard-step-num { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.35; }
+    .onboard-step-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+    .onboard-step-desc { font-size: 12px; opacity: 0.5; line-height: 1.5; }
+    .onboard-check { font-size: 13px; color: #16a34a; font-weight: 500; }
 
-    .stat-num {
-      font-family: 'Kaisei Decol', serif;
-      font-size: 34px;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-
+    /* ── Stats row ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card { border: 1px solid var(--border); padding: 20px 22px; border-radius: 4px; }
+    .stat-num { font-family: 'Kaisei Decol', serif; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 6px; }
     .stat-label { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
 
+    /* ── Quick actions ── */
+    .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .quick-card { border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; cursor: pointer; transition: all 0.15s; }
+    .quick-card:hover { border-color: var(--accent); background: rgba(246,77,37,0.03); }
+    .quick-icon { font-size: 26px; margin-bottom: 12px; }
+    .quick-title { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+    .quick-desc { font-size: 12px; opacity: 0.5; line-height: 1.55; }
+
     /* ── Two-column ── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 24px;
-      align-items: start;
-    }
+    .two-col { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
 
     /* ── Cards ── */
-    .card {
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-family: 'Kaisei Decol', serif;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-    }
-
+    .card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-family: 'Kaisei Decol', serif; font-size: 15px; letter-spacing: -0.01em; }
     .card-body { padding: 20px; }
 
     /* ── Tables ── */
     .tbl { width: 100%; border-collapse: collapse; }
-
-    .tbl th {
-      text-align: left;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.4;
-      padding: 0 16px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tbl td {
-      padding: 13px 16px;
-      font-size: 13px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-
+    .tbl th { text-align: left; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4; padding: 0 16px 12px; border-bottom: 1px solid var(--border); }
+    .tbl td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
     .tbl tr:hover td { background: rgba(246,77,37,0.03); }
 
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
     .badge-orange { background: rgba(246,77,37,0.12); color: var(--accent); }
     .badge-green { background: rgba(34,197,94,0.12); color: #16a34a; }
     .badge-grey { background: rgba(0,0,0,0.06); color: rgba(246,77,37,0.6); }
 
     /* ── Empty state ── */
-    .empty {
-      text-align: center;
-      padding: 56px 24px;
-      opacity: 0.38;
-    }
-
+    .empty { text-align: center; padding: 56px 24px; opacity: 0.38; }
     .empty-icon { font-size: 32px; margin-bottom: 12px; }
     .empty-text { font-size: 13px; line-height: 1.6; }
 
     /* ── Delivery rows ── */
-    .delivery-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .delivery-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .delivery-row:last-child { border-bottom: none; }
-
-    .delivery-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(246,77,37,0.1);
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
+    .delivery-icon { width: 36px; height: 36px; background: rgba(246,77,37,0.1); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
     .delivery-info { flex: 1; min-width: 0; }
     .delivery-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .delivery-meta { font-size: 11px; opacity: 0.45; margin-top: 2px; }
@@ -304,247 +134,131 @@
     /* ── Forms ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-grid.full { grid-template-columns: 1fr; }
-
     .field-group { display: flex; flex-direction: column; gap: 6px; }
     .field-group.span2 { grid-column: span 2; }
-
-    .field-group label {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.45;
-    }
-
-    .field-group input,
-    .field-group select,
-    .field-group textarea {
-      padding: 11px 14px;
-      background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      outline: none;
-      border-radius: 3px;
-      transition: border-color 0.2s;
-      width: 100%;
-    }
-
-    .field-group input:focus,
-    .field-group select:focus,
-    .field-group textarea:focus { border-color: var(--accent); }
-
-    .field-group input::placeholder,
-    .field-group textarea::placeholder { opacity: 0.3; }
-
+    .field-group label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.45; }
+    .field-group input, .field-group select, .field-group textarea { padding: 11px 14px; background: transparent; border: 1.5px solid var(--border); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; border-radius: 3px; transition: border-color 0.2s; width: 100%; }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--accent); }
+    .field-group input::placeholder, .field-group textarea::placeholder { opacity: 0.3; }
     .field-group select { appearance: none; cursor: pointer; }
     .field-group textarea { resize: vertical; min-height: 80px; }
-
-    .form-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
+    .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
 
     /* ── CSV Upload ── */
-    .upload-zone {
-      border: 2px dashed rgba(246,77,37,0.25);
-      border-radius: 4px;
-      padding: 32px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--accent);
-      background: rgba(246,77,37,0.04);
-    }
-
-    .upload-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
+    .upload-zone { border: 2px dashed rgba(246,77,37,0.25); border-radius: 4px; padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(246,77,37,0.04); }
+    .upload-icon { font-size: 22px; margin-bottom: 8px; opacity: 0.5; }
     .upload-text { font-size: 13px; opacity: 0.5; line-height: 1.6; }
     .upload-text strong { opacity: 1; color: var(--accent); }
 
-    /* ── Modal ── */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(247,246,242,0.85);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
+    /* ══════════════════════════════════
+       CAKE CATALOG (re_grocery inspired)
+       ══════════════════════════════════ */
+    .catalog-header { margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .catalog-header-left {}
+    .catalog-heading { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .catalog-sub { font-size: 13px; opacity: 0.45; }
 
-    .modal-backdrop.open { display: flex; }
+    /* Product grid */
+    .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); }
 
-    .modal {
+    .catalog-card {
       background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      width: 100%;
-      max-width: 580px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(246,77,37,0.12);
-    }
-
-    .modal-head {
-      padding: 22px 26px 18px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-
-    .modal-title {
-      font-family: 'Kaisei Decol', serif;
-      font-size: 20px;
-      letter-spacing: -0.01em;
-    }
-
-    .modal-sub { font-size: 12px; opacity: 0.45; margin-top: 4px; }
-
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 20px;
       cursor: pointer;
-      opacity: 0.4;
-      transition: opacity 0.15s;
-      color: var(--accent);
-      line-height: 1;
-      padding: 2px;
-    }
-
-    .modal-close:hover { opacity: 0.9; }
-    .modal-body { padding: 24px 26px; }
-
-    /* ── Steps ── */
-    .steps { display: flex; gap: 0; margin-bottom: 28px; }
-
-    .step {
-      flex: 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      position: relative;
+      transition: background 0.15s;
     }
 
-    .step + .step::before {
-      content: '';
-      position: absolute;
-      left: -50%;
-      top: 13px;
-      width: 100%;
-      height: 1px;
-      background: var(--border);
-    }
+    .catalog-card:hover .catalog-card-img { background: rgba(246,77,37,0.1); }
+    .catalog-card.selected { outline: 2.5px solid var(--accent); outline-offset: -1px; }
 
-    .step.done + .step::before { background: var(--accent); }
-
-    .step-dot {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
+    .catalog-card-img {
+      background: rgba(246,77,37,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      font-weight: 500;
-      position: relative;
-      z-index: 1;
-      background: var(--bg);
-      transition: all 0.2s;
+      font-size: 72px;
+      aspect-ratio: 1/1;
+      transition: background 0.2s;
     }
 
-    .step.active .step-dot { border-color: var(--accent); background: var(--accent); color: var(--bg); }
-    .step.done .step-dot { border-color: var(--accent); color: var(--accent); background: rgba(246,77,37,0.1); }
-
-    .step-label {
-      font-size: 10px;
-      opacity: 0.45;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .step.active .step-label { opacity: 1; font-weight: 500; }
-
-    .step-panel { display: none; }
-    .step-panel.active { display: block; }
-
-    /* ── Cake grid ── */
-    .cake-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-
-    .cake-opt {
-      border: 1.5px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .cake-opt:hover { border-color: rgba(246,77,37,0.4); }
-    .cake-opt.selected { border-color: var(--accent); }
-
-    .cake-img {
-      height: 80px;
-      background: rgba(246,77,37,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-    }
-
-    .cake-label {
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 500;
+    .catalog-card-info {
+      padding: 16px 18px 20px;
       border-top: 1px solid var(--border);
     }
 
-    /* ── Flow options ── */
-    .flow-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    .flow-opt {
-      border: 1.5px solid var(--border);
-      border-radius: 4px;
-      padding: 18px;
-      cursor: pointer;
-      transition: all 0.15s;
+    .catalog-card-name {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
     }
 
-    .flow-opt:hover { border-color: rgba(246,77,37,0.4); }
-    .flow-opt.selected { border-color: var(--accent); background: rgba(246,77,37,0.04); }
+    .catalog-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 
-    .flow-opt-icon { font-size: 22px; margin-bottom: 10px; }
-    .flow-opt-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
-    .flow-opt-desc { font-size: 12px; opacity: 0.5; line-height: 1.5; }
+    .catalog-tag {
+      border: 1px solid rgba(246,77,37,0.22);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 11px;
+      opacity: 0.65;
+    }
+
+    /* Product detail (re_grocery product page) */
+    .catalog-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      min-height: 480px;
+      margin-top: 2px;
+    }
+
+    .catalog-detail-img {
+      background: rgba(246,77,37,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 110px;
+      border-right: 1px solid var(--border);
+    }
+
+    .catalog-detail-info {
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .catalog-detail-brand { font-size: 12px; opacity: 0.4; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .catalog-detail-name { font-family: 'Kaisei Decol', serif; font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+
+    .catalog-detail-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .catalog-detail-tag { border: 1.5px solid rgba(246,77,37,0.28); border-radius: 100px; padding: 5px 14px; font-size: 12px; font-weight: 400; }
+
+    .catalog-detail-desc { font-size: 14px; line-height: 1.72; opacity: 0.62; flex: 1; margin-bottom: 28px; }
+
+    .catalog-detail-price { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 20px; opacity: 0.55; }
+
+    /* ── Prospect board ── */
+    .prospect-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .funnel-col { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .funnel-head { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between; }
+    .funnel-count { background: rgba(246,77,37,0.1); color: var(--accent); font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+    .funnel-items { padding: 10px; min-height: 100px; }
+    .prospect-card { border: 1px solid var(--border); border-radius: 3px; padding: 10px 12px; margin-bottom: 8px; font-size: 12px; cursor: pointer; transition: border-color 0.15s; }
+    .prospect-card:hover { border-color: rgba(246,77,37,0.4); }
+    .prospect-card-name { font-weight: 500; margin-bottom: 2px; }
+    .prospect-card-meta { opacity: 0.45; }
 
     /* ── Plans ── */
     .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-
-    .plan-card {
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
-
+    .plan-card { border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; transition: border-color 0.2s; }
     .plan-card:hover { border-color: rgba(246,77,37,0.4); }
     .plan-card.featured { border-color: var(--accent); }
-
     .plan-card-head { background: var(--accent); color: var(--bg); padding: 20px 22px 16px; }
     .plan-card-head.light { background: rgba(246,77,37,0.06); color: var(--accent); }
-
     .plan-name { font-family: 'Kaisei Decol', serif; font-size: 20px; margin-bottom: 4px; }
     .plan-price { font-size: 28px; font-weight: 300; letter-spacing: -0.03em; }
     .plan-price span { font-size: 13px; font-weight: 400; opacity: 0.7; }
@@ -553,65 +267,45 @@
     .plan-feature::before { content: '✓'; color: var(--accent); font-weight: 600; flex-shrink: 0; }
     .plan-cta { padding: 0 22px 22px; }
 
-    /* ── Prospect board ── */
-    .prospect-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    /* ── Modal ── */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(247,246,242,0.88); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .modal-backdrop.open { display: flex; }
+    .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(246,77,37,0.12); }
+    .modal-head { padding: 22px 26px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; }
+    .modal-title { font-family: 'Kaisei Decol', serif; font-size: 20px; letter-spacing: -0.01em; }
+    .modal-sub { font-size: 12px; opacity: 0.45; margin-top: 4px; }
+    .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; opacity: 0.4; transition: opacity 0.15s; color: var(--accent); line-height: 1; padding: 2px; }
+    .modal-close:hover { opacity: 0.9; }
+    .modal-body { padding: 24px 26px; }
 
-    .funnel-col { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    /* ── Steps ── */
+    .steps { display: flex; gap: 0; margin-bottom: 28px; }
+    .step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; }
+    .step + .step::before { content: ''; position: absolute; left: -50%; top: 13px; width: 100%; height: 1px; background: var(--border); }
+    .step.done + .step::before { background: var(--accent); }
+    .step-dot { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; position: relative; z-index: 1; background: var(--bg); transition: all 0.2s; }
+    .step.active .step-dot { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+    .step.done .step-dot { border-color: var(--accent); color: var(--accent); background: rgba(246,77,37,0.1); }
+    .step-label { font-size: 10px; opacity: 0.45; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
+    .step.active .step-label { opacity: 1; font-weight: 500; }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
 
-    .funnel-head {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    /* ── Modal catalog (compact grid for step 3) ── */
+    .modal-catalog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); margin-bottom: 0; }
+    .modal-catalog .catalog-card-img { font-size: 48px; }
 
-    .funnel-count {
-      background: rgba(246,77,37,0.1);
-      color: var(--accent);
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-weight: 500;
-    }
-
-    .funnel-items { padding: 10px; min-height: 100px; }
-
-    .prospect-card {
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: border-color 0.15s;
-    }
-
-    .prospect-card:hover { border-color: rgba(246,77,37,0.4); }
-    .prospect-card-name { font-weight: 500; margin-bottom: 2px; }
-    .prospect-card-meta { opacity: 0.45; }
+    /* ── Flow options ── */
+    .flow-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .flow-opt { border: 1.5px solid var(--border); border-radius: 4px; padding: 18px; cursor: pointer; transition: all 0.15s; }
+    .flow-opt:hover { border-color: rgba(246,77,37,0.4); }
+    .flow-opt.selected { border-color: var(--accent); background: rgba(246,77,37,0.04); }
+    .flow-opt-icon { font-size: 22px; margin-bottom: 10px; }
+    .flow-opt-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .flow-opt-desc { font-size: 12px; opacity: 0.5; line-height: 1.5; }
 
     /* ── Toast ── */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--accent);
-      color: var(--bg);
-      padding: 12px 20px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 500;
-      z-index: 200;
-      transform: translateY(80px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      pointer-events: none;
-    }
-
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: var(--bg); padding: 12px 20px; border-radius: 4px; font-size: 13px; font-weight: 500; z-index: 200; transform: translateY(80px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
     /* ── Responsive ── */
@@ -620,6 +314,11 @@
       .two-col { grid-template-columns: 1fr; }
       .plans-grid { grid-template-columns: 1fr; }
       .prospect-board { grid-template-columns: 1fr; }
+      .quick-actions { grid-template-columns: 1fr; }
+      .onboard-steps { grid-template-columns: 1fr; }
+      .catalog-grid { grid-template-columns: repeat(2, 1fr); }
+      .catalog-detail { grid-template-columns: 1fr; }
+      .catalog-detail-img { min-height: 260px; border-right: none; border-bottom: 1px solid var(--border); }
     }
 
     @media (max-width: 680px) {
@@ -628,13 +327,11 @@
       .topbar { padding: 0 20px; }
       .form-grid { grid-template-columns: 1fr; }
       .field-group.span2 { grid-column: span 1; }
-      .cake-grid { grid-template-columns: repeat(2, 1fr); }
-      .flow-opts { grid-template-columns: 1fr; }
+      .modal-catalog { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
-
 <div class="shell">
 
   <!-- Sidebar -->
@@ -653,6 +350,10 @@
         <div class="nav-item" data-view="prospects"><span class="nav-icon">🎯</span>Prospects</div>
       </div>
       <div class="nav-section">
+        <div class="nav-label">Cakes</div>
+        <div class="nav-item" data-view="catalog"><span class="nav-icon">🎂</span>Cake catalog</div>
+      </div>
+      <div class="nav-section">
         <div class="nav-label">Account</div>
         <div class="nav-item" data-view="plans"><span class="nav-icon">✦</span>Plans</div>
       </div>
@@ -669,7 +370,6 @@
     </div>
   </aside>
 
-  <!-- Main -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title" id="topbarTitle">Overview</div>
@@ -678,14 +378,68 @@
 
     <div class="content">
 
-      <!-- OVERVIEW -->
+      <!-- ══ OVERVIEW ══ -->
       <div class="view active" id="view-overview">
+
+        <!-- Onboarding wizard (visible when setup incomplete) -->
+        <div class="onboard-banner" id="onboardBanner" style="display:none;">
+          <div class="onboard-intro">Welcome to culturer. Let's get you set up.</div>
+          <div class="onboard-sub">Three steps to your first delivery.</div>
+          <div class="onboard-steps">
+            <div class="onboard-step" id="ob-plan">
+              <div class="onboard-step-num">Step 01</div>
+              <div>
+                <div class="onboard-step-title">Choose a plan</div>
+                <div class="onboard-step-desc">Select which type of celebration you want to automate.</div>
+              </div>
+              <button class="btn btn-primary" onclick="navigate('plans')">Choose plan →</button>
+            </div>
+            <div class="onboard-step" id="ob-people">
+              <div class="onboard-step-num">Step 02</div>
+              <div>
+                <div class="onboard-step-title">Add your people</div>
+                <div class="onboard-step-desc">Import employees via CSV or add them one by one.</div>
+              </div>
+              <button class="btn btn-outline" onclick="navigate('employees')">Add people →</button>
+            </div>
+            <div class="onboard-step" id="ob-cake">
+              <div class="onboard-step-num">Step 03</div>
+              <div>
+                <div class="onboard-step-title">Send your first cake</div>
+                <div class="onboard-step-desc">Start a prospect flow or celebrate an employee.</div>
+              </div>
+              <button class="btn btn-outline" onclick="openSendCake()">Send a cake →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
         <div class="stats-row">
           <div class="stat-card"><div class="stat-num" id="stat-employees">0</div><div class="stat-label">Active employees</div></div>
           <div class="stat-card"><div class="stat-num" id="stat-deliveries">0</div><div class="stat-label">Total deliveries</div></div>
           <div class="stat-card"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
           <div class="stat-card"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Upcoming this month</div></div>
         </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+          <div class="quick-card" onclick="navigate('employees')">
+            <div class="quick-icon">👥</div>
+            <div class="quick-title">Add your team</div>
+            <div class="quick-desc">Import employees via CSV or add them manually. Birthdays tracked automatically.</div>
+          </div>
+          <div class="quick-card" onclick="openSendCake()">
+            <div class="quick-icon">🎂</div>
+            <div class="quick-title">Send a cake</div>
+            <div class="quick-desc">Start a prospect outreach flow or schedule a one-off celebration.</div>
+          </div>
+          <div class="quick-card" onclick="navigate('catalog')">
+            <div class="quick-icon">✦</div>
+            <div class="quick-title">Browse the catalog</div>
+            <div class="quick-desc">Explore our artisan cake selection. Choose what gets delivered to your people.</div>
+          </div>
+        </div>
+
         <div class="two-col">
           <div class="card">
             <div class="card-head">
@@ -705,7 +459,7 @@
         </div>
       </div>
 
-      <!-- EMPLOYEES -->
+      <!-- ══ EMPLOYEES ══ -->
       <div class="view" id="view-employees">
         <div class="two-col">
           <div class="card">
@@ -713,11 +467,8 @@
               <span class="card-title">Employee roster</span>
               <span id="empCount" style="font-size:12px;opacity:0.4;">0 people</span>
             </div>
-            <div id="empTable">
-              <div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div>
-            </div>
+            <div id="empTable"><div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div></div>
           </div>
-
           <div>
             <div class="card" style="margin-bottom:20px;">
               <div class="card-head"><span class="card-title">Add employee</span></div>
@@ -737,13 +488,10 @@
                     </div>
                     <div class="field-group span2"><label>Delivery address</label><input type="text" name="address" placeholder="Keizersgracht 123, Amsterdam"></div>
                   </div>
-                  <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Add employee →</button>
-                  </div>
+                  <div class="form-actions"><button type="submit" class="btn btn-primary">Add employee →</button></div>
                 </form>
               </div>
             </div>
-
             <div class="card">
               <div class="card-head"><span class="card-title">CSV import</span></div>
               <div class="card-body">
@@ -765,7 +513,7 @@
         </div>
       </div>
 
-      <!-- TEAMS -->
+      <!-- ══ TEAMS ══ -->
       <div class="view" id="view-teams">
         <div class="two-col">
           <div class="card">
@@ -773,11 +521,8 @@
               <span class="card-title">Teams</span>
               <span id="teamCount" style="font-size:12px;opacity:0.4;">0 teams</span>
             </div>
-            <div id="teamTable">
-              <div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.<br>Create a team to send group gifts.</div></div>
-            </div>
+            <div id="teamTable"><div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.</div></div></div>
           </div>
-
           <div class="card">
             <div class="card-head"><span class="card-title">Add team</span></div>
             <div class="card-body">
@@ -801,18 +546,16 @@
                   <div class="field-group"><label>Next celebration</label><input type="date" name="nextDate" required></div>
                   <div class="field-group"><label>Contact email</label><input type="email" name="contact" placeholder="manager@company.com"></div>
                 </div>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">Add team →</button>
-                </div>
+                <div class="form-actions"><button type="submit" class="btn btn-primary">Add team →</button></div>
               </form>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PROSPECTS -->
+      <!-- ══ PROSPECTS ══ -->
       <div class="view" id="view-prospects">
-        <div style="margin-bottom:20px;font-size:13px;opacity:0.45;">Manage your prospect gift flow. €140/prospect — 3-touch gifting sequence.</div>
+        <div style="margin-bottom:20px;font-size:13px;opacity:0.45;">Track your prospect gift flow. €140/prospect — 3-touch gifting sequence that converts.</div>
         <div class="prospect-board" id="prospectBoard">
           <div class="funnel-col">
             <div class="funnel-head">Cold outreach <span class="funnel-count" id="cnt-cold">0</span></div>
@@ -829,20 +572,44 @@
         </div>
       </div>
 
-      <!-- DELIVERIES -->
+      <!-- ══ DELIVERIES ══ -->
       <div class="view" id="view-deliveries">
         <div class="card">
           <div class="card-head">
             <span class="card-title">All deliveries</span>
             <span id="deliveryCount" style="font-size:12px;opacity:0.4;"></span>
           </div>
-          <div id="deliveriesTable">
-            <div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div>
+          <div id="deliveriesTable"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div></div>
+        </div>
+      </div>
+
+      <!-- ══ CAKE CATALOG ══ -->
+      <div class="view" id="view-catalog">
+        <div class="catalog-header">
+          <div class="catalog-header-left">
+            <div class="catalog-heading">Artisan cake catalog</div>
+            <div class="catalog-sub">Handmade to order by our baker partners. Every delivery is baked fresh.</div>
+          </div>
+        </div>
+
+        <!-- Product grid -->
+        <div class="catalog-grid" id="catalogGrid"></div>
+
+        <!-- Product detail panel (shown on click) -->
+        <div class="catalog-detail" id="catalogDetail" style="display:none;">
+          <div class="catalog-detail-img" id="catalogDetailImg">🎂</div>
+          <div class="catalog-detail-info">
+            <div class="catalog-detail-brand">culturer artisan</div>
+            <div class="catalog-detail-name" id="catalogDetailName">Victoria Sponge</div>
+            <div class="catalog-detail-tags" id="catalogDetailTags"></div>
+            <div class="catalog-detail-desc" id="catalogDetailDesc"></div>
+            <div class="catalog-detail-price" id="catalogDetailPrice">From €8/mo per employee</div>
+            <button class="btn btn-primary" onclick="openSendCakeWithCake()">Send this cake →</button>
           </div>
         </div>
       </div>
 
-      <!-- PLANS -->
+      <!-- ══ PLANS ══ -->
       <div class="view" id="view-plans">
         <div style="margin-bottom:28px;">
           <div style="font-family:'Kaisei Decol',serif;font-size:24px;letter-spacing:-0.02em;margin-bottom:8px;">Choose your plan</div>
@@ -854,32 +621,17 @@
           <div class="plans-grid">
             <div class="plan-card">
               <div class="plan-card-head light"><div class="plan-name">Birthday</div><div class="plan-price">€8<span>/employee/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">Handmade birthday cake delivery</div>
-                <div class="plan-feature">Personalised message card</div>
-                <div class="plan-feature">Same-city delivery</div>
-                <div class="plan-feature">Dashboard management</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">Handmade birthday cake delivery</div><div class="plan-feature">Personalised message card</div><div class="plan-feature">Same-city delivery</div><div class="plan-feature">Dashboard management</div></div>
               <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-birthday','Birthday','€8/employee/mo',100)">Select plan →</button></div>
             </div>
             <div class="plan-card featured">
               <div class="plan-card-head"><div class="plan-name">Birthday + Christmas</div><div class="plan-price">€14<span>/employee/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">Everything in Birthday</div>
-                <div class="plan-feature">Christmas gift delivery</div>
-                <div class="plan-feature">Premium packaging</div>
-                <div class="plan-feature">Priority scheduling</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">Everything in Birthday</div><div class="plan-feature">Christmas gift delivery</div><div class="plan-feature">Premium packaging</div><div class="plan-feature">Priority scheduling</div></div>
               <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('employee-christmas','Birthday + Christmas','€14/employee/mo',100)">Select plan →</button></div>
             </div>
             <div class="plan-card">
               <div class="plan-card-head light"><div class="plan-name">Premium</div><div class="plan-price">€20<span>/employee/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">Everything in Birthday + Christmas</div>
-                <div class="plan-feature">Premium anniversary gift</div>
-                <div class="plan-feature">Work anniversary celebration</div>
-                <div class="plan-feature">Dedicated account manager</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">Everything in Birthday + Christmas</div><div class="plan-feature">Premium anniversary gift</div><div class="plan-feature">Work anniversary celebration</div><div class="plan-feature">Dedicated account manager</div></div>
               <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-premium','Premium','€20/employee/mo',100)">Select plan →</button></div>
             </div>
           </div>
@@ -890,29 +642,17 @@
           <div class="plans-grid">
             <div class="plan-card">
               <div class="plan-card-head light"><div class="plan-name">Team S</div><div class="plan-price">€30<span>/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">12–16 people</div>
-                <div class="plan-feature">Quarterly group celebration</div>
-                <div class="plan-feature">Artisan cake + drinks</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">12–16 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Artisan cake + drinks</div></div>
               <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-s','Team S','€30/mo',16)">Select plan →</button></div>
             </div>
             <div class="plan-card">
               <div class="plan-card-head light"><div class="plan-name">Team M</div><div class="plan-price">€40<span>/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">16–20 people</div>
-                <div class="plan-feature">Quarterly group celebration</div>
-                <div class="plan-feature">Artisan cake + premium drinks</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">16–20 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Artisan cake + premium drinks</div></div>
               <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-m','Team M','€40/mo',20)">Select plan →</button></div>
             </div>
             <div class="plan-card">
               <div class="plan-card-head light"><div class="plan-name">Team L</div><div class="plan-price">€50<span>/mo</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">20–24 people</div>
-                <div class="plan-feature">Quarterly group celebration</div>
-                <div class="plan-feature">Full artisan spread</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">20–24 people</div><div class="plan-feature">Quarterly group celebration</div><div class="plan-feature">Full artisan spread</div></div>
               <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-l','Team L','€50/mo',24)">Select plan →</button></div>
             </div>
           </div>
@@ -920,33 +660,27 @@
 
         <div>
           <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">For prospects</div>
-          <div style="max-width:340px;">
+          <div style="max-width:360px;">
             <div class="plan-card featured">
               <div class="plan-card-head"><div class="plan-name">Prospect flow</div><div class="plan-price">€140<span>/prospect</span></div></div>
-              <div class="plan-body">
-                <div class="plan-feature">Cold outreach cake delivery</div>
-                <div class="plan-feature">Follow-up reminder cake</div>
-                <div class="plan-feature">Deal won — cake + champagne</div>
-                <div class="plan-feature">Tracked 3-step flow</div>
-                <div class="plan-feature">Personalised message per touch</div>
-              </div>
+              <div class="plan-body"><div class="plan-feature">Cold outreach cake delivery</div><div class="plan-feature">Follow-up reminder cake</div><div class="plan-feature">Deal won — cake + champagne</div><div class="plan-feature">Tracked 3-step flow</div><div class="plan-feature">Personalised message per touch</div></div>
               <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('prospect','Prospect flow','€140/prospect',999);navigate('prospects')">Get started →</button></div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
 
-<!-- Send Cake Modal -->
+<!-- ══ SEND CAKE MODAL ══ -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <div class="modal-head">
       <div>
         <div class="modal-title">Send a cake</div>
-        <div class="modal-sub">New prospect gift flow</div>
+        <div class="modal-sub">New prospect gift flow · €140/prospect</div>
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
@@ -976,40 +710,17 @@
       <div class="step-panel" id="sp-1">
         <div style="font-size:13px;opacity:0.55;margin-bottom:18px;">Select the outreach sequence for this prospect.</div>
         <div class="flow-opts">
-          <div class="flow-opt selected" data-flow="full" onclick="selectFlow(this)">
-            <div class="flow-opt-icon">🎂🎂🎂</div>
-            <div class="flow-opt-name">Full flow (3 touches)</div>
-            <div class="flow-opt-desc">Cold outreach → follow-up → deal won. €140 total.</div>
-          </div>
-          <div class="flow-opt" data-flow="intro" onclick="selectFlow(this)">
-            <div class="flow-opt-icon">🎂</div>
-            <div class="flow-opt-name">Intro only</div>
-            <div class="flow-opt-desc">Single cold outreach cake. €50.</div>
-          </div>
-          <div class="flow-opt" data-flow="two" onclick="selectFlow(this)">
-            <div class="flow-opt-icon">🎂🎂</div>
-            <div class="flow-opt-name">Two-touch</div>
-            <div class="flow-opt-desc">Cold outreach + follow-up. €95.</div>
-          </div>
-          <div class="flow-opt" data-flow="won" onclick="selectFlow(this)">
-            <div class="flow-opt-icon">🥂</div>
-            <div class="flow-opt-name">Deal won</div>
-            <div class="flow-opt-desc">Celebrate a closed deal. Cake + champagne. €60.</div>
-          </div>
+          <div class="flow-opt selected" data-flow="full" onclick="selectFlow(this)"><div class="flow-opt-icon">🎂🎂🎂</div><div class="flow-opt-name">Full flow (3 touches)</div><div class="flow-opt-desc">Cold → follow-up → deal won. €140 total.</div></div>
+          <div class="flow-opt" data-flow="intro" onclick="selectFlow(this)"><div class="flow-opt-icon">🎂</div><div class="flow-opt-name">Intro only</div><div class="flow-opt-desc">Single cold outreach cake. €50.</div></div>
+          <div class="flow-opt" data-flow="two" onclick="selectFlow(this)"><div class="flow-opt-icon">🎂🎂</div><div class="flow-opt-name">Two-touch</div><div class="flow-opt-desc">Cold outreach + follow-up. €95.</div></div>
+          <div class="flow-opt" data-flow="won" onclick="selectFlow(this)"><div class="flow-opt-icon">🥂</div><div class="flow-opt-name">Deal won</div><div class="flow-opt-desc">Cake + champagne to celebrate. €60.</div></div>
         </div>
       </div>
 
-      <!-- Step 3: Cake -->
+      <!-- Step 3: Cake selection (catalog inline) -->
       <div class="step-panel" id="sp-2">
-        <div style="font-size:13px;opacity:0.55;margin-bottom:18px;">Choose the cake style for this prospect.</div>
-        <div class="cake-grid">
-          <div class="cake-opt selected" data-cake="classic" onclick="selectCake(this)"><div class="cake-img">🎂</div><div class="cake-label">Classic layer</div></div>
-          <div class="cake-opt" data-cake="lemon" onclick="selectCake(this)"><div class="cake-img">🍋</div><div class="cake-label">Lemon drizzle</div></div>
-          <div class="cake-opt" data-cake="choco" onclick="selectCake(this)"><div class="cake-img">🍫</div><div class="cake-label">Chocolate fudge</div></div>
-          <div class="cake-opt" data-cake="carrot" onclick="selectCake(this)"><div class="cake-img">🥕</div><div class="cake-label">Carrot walnut</div></div>
-          <div class="cake-opt" data-cake="floral" onclick="selectCake(this)"><div class="cake-img">🌸</div><div class="cake-label">Floral vanilla</div></div>
-          <div class="cake-opt" data-cake="seasonal" onclick="selectCake(this)"><div class="cake-img">✨</div><div class="cake-label">Seasonal special</div></div>
-        </div>
+        <div style="font-size:13px;opacity:0.55;margin-bottom:14px;">Choose the cake for this prospect. Click to select.</div>
+        <div class="modal-catalog" id="modalCatalogGrid"></div>
       </div>
 
       <!-- Step 4: Message -->
@@ -1027,7 +738,7 @@
           <div style="font-size:11px;opacity:0.4;margin-bottom:14px;letter-spacing:0.06em;text-transform:uppercase;">Order summary</div>
           <div id="confirmDetails" style="font-size:13px;line-height:2.2;"></div>
         </div>
-        <div style="font-size:12px;opacity:0.45;line-height:1.7;">By confirming, you authorise culturer to schedule this delivery and charge the agreed amount. A confirmation email will be sent once the order is placed with our artisan partners.</div>
+        <div style="font-size:12px;opacity:0.45;line-height:1.7;">By confirming, you authorise culturer to schedule this delivery. A confirmation email will be sent once the order is placed with our artisan partners.</div>
       </div>
 
       <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
@@ -1041,6 +752,16 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  // ── Cake catalog data ──
+  const CAKES = [
+    { id: 'victoria', name: 'Victoria Sponge', emoji: '🎂', tags: ['Classic', 'Layer cake', 'Crowd favourite'], desc: 'Light vanilla sponge layered with fresh whipped cream and strawberry jam. Our most-loved cake — perfect for any celebration, guaranteed to land well.', price: 'From €8/mo per employee' },
+    { id: 'lemon', name: 'Lemon Drizzle', emoji: '🍋', tags: ['Zesty', 'Single layer', 'Gluten-free option'], desc: 'Sharp, tangy lemon with a golden sugar crust. Bright, refreshing, and impossible to forget. The one that always surprises.', price: 'From €8/mo per employee' },
+    { id: 'chocolate', name: 'Chocolate Fudge', emoji: '🍫', tags: ['Rich', 'Indulgent', 'Best seller'], desc: 'Dense, dark chocolate cake with a glossy ganache finish. For the moments that deserve something truly special. Unambiguously excellent.', price: 'From €8/mo per employee' },
+    { id: 'carrot', name: 'Carrot Walnut', emoji: '🥕', tags: ['Wholesome', 'Spiced', 'Nut topping'], desc: 'Moist spiced carrot cake with cream cheese frosting and candied walnut topping. Warmth and care in every bite.', price: 'From €14/mo per employee' },
+    { id: 'floral', name: 'Floral Vanilla', emoji: '🌸', tags: ['Delicate', 'Earl Grey', 'Flower-topped'], desc: 'Earl Grey-infused vanilla sponge with edible flowers. Elegant and memorable — exactly the impression you want to leave.', price: 'From €14/mo per employee' },
+    { id: 'seasonal', name: 'Seasonal Special', emoji: '✨', tags: ['Changes monthly', 'Chef\'s choice', 'Limited'], desc: 'Our bakers\' current seasonal creation. Always fresh, always a little surprising. Ask us what\'s on this month.', price: 'From €20/mo per employee' },
+  ];
+
   // ── Data layer ──
   const DB = {
     get: k => JSON.parse(localStorage.getItem('cult_' + k) || '[]'),
@@ -1062,23 +783,25 @@
   const topbarActions = document.getElementById('topbarActions');
 
   const VIEW_META = {
-    overview:   { title: 'Overview',   actions: '' },
-    employees:  { title: 'Employees',  actions: '' },
-    teams:      { title: 'Teams',      actions: '' },
-    prospects:  { title: 'Prospects',  actions: '<button class="btn btn-primary" onclick="openSendCake()">+ New prospect</button>' },
-    deliveries: { title: 'Deliveries', actions: '' },
-    plans:      { title: 'Plans',      actions: '' }
+    overview:   { title: 'Overview',      actions: '' },
+    employees:  { title: 'Employees',     actions: '' },
+    teams:      { title: 'Teams',         actions: '' },
+    prospects:  { title: 'Prospects',     actions: '<button class="btn btn-primary" onclick="openSendCake()">+ New prospect</button>' },
+    deliveries: { title: 'Deliveries',    actions: '' },
+    catalog:    { title: 'Cake catalog',  actions: '' },
+    plans:      { title: 'Plans',         actions: '' }
   };
 
   function navigate(name) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
-    document.querySelector(`[data-view="${name}"]`).classList.add('active');
+    const ni = document.querySelector(`[data-view="${name}"]`);
+    if (ni) ni.classList.add('active');
     const meta = VIEW_META[name];
     topbarTitle.textContent = meta.title;
     topbarActions.innerHTML = meta.actions;
-    const renders = { overview: renderOverview, employees: renderEmployees, teams: renderTeams, prospects: renderProspects, deliveries: renderDeliveries };
+    const renders = { overview: renderOverview, employees: renderEmployees, teams: renderTeams, prospects: renderProspects, deliveries: renderDeliveries, catalog: renderCatalog };
     if (renders[name]) renders[name]();
   }
 
@@ -1094,13 +817,39 @@
     setTimeout(() => el.classList.remove('show'), 2800);
   }
 
-  // ── Helpers ──
   function formatDate(d) {
     return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(d));
   }
 
   function tierLabel(t) {
     return { birthday: 'Birthday', christmas: '+ Christmas', premium: 'Premium' }[t] || (t || 'Birthday');
+  }
+
+  // ── Onboarding ──
+  function renderOnboarding() {
+    const plan = DB.getObj('activePlan');
+    const emps = DB.get('employees');
+    const deliveries = DB.get('deliveries');
+    const banner = document.getElementById('onboardBanner');
+
+    const hasPlan = !!plan;
+    const hasPeople = emps.length > 0;
+    const hasSent = deliveries.length > 0;
+
+    if (hasPlan && hasPeople && hasSent) { banner.style.display = 'none'; return; }
+    banner.style.display = 'block';
+
+    document.getElementById('ob-plan').className = 'onboard-step' + (hasPlan ? ' done' : '');
+    document.getElementById('ob-plan').querySelector('.btn').textContent = hasPlan ? '✓ Done' : 'Choose plan →';
+    if (hasPlan) document.getElementById('ob-plan').querySelector('.btn').disabled = true;
+
+    document.getElementById('ob-people').className = 'onboard-step' + (hasPeople ? ' done' : '');
+    document.getElementById('ob-people').querySelector('.btn').textContent = hasPeople ? '✓ Done' : 'Add people →';
+    if (hasPeople) document.getElementById('ob-people').querySelector('.btn').disabled = true;
+
+    document.getElementById('ob-cake').className = 'onboard-step' + (hasSent ? ' done' : '');
+    document.getElementById('ob-cake').querySelector('.btn').textContent = hasSent ? '✓ Done' : 'Send a cake →';
+    if (hasSent) document.getElementById('ob-cake').querySelector('.btn').disabled = true;
   }
 
   // ── Overview ──
@@ -1112,21 +861,18 @@
       if (!emp.birthday) return;
       const bday = new Date(emp.birthday);
       const thisYear = new Date(now.getFullYear(), bday.getMonth(), bday.getDate());
-      if (thisYear >= now && thisYear <= limit) {
-        results.push({ name: `${emp.first} ${emp.last}`, type: 'Birthday cake', date: thisYear, icon: '🎂' });
-      }
+      if (thisYear >= now && thisYear <= limit) results.push({ name: `${emp.first} ${emp.last}`, type: 'Birthday cake', date: thisYear, icon: '🎂' });
     });
     DB.get('prospects').forEach(p => {
       if (!p.sendDate) return;
       const d = new Date(p.sendDate);
-      if (d >= now && d <= limit) {
-        results.push({ name: `${p.first} ${p.last}${p.company ? ' · ' + p.company : ''}`, type: 'Prospect — ' + p.flow, date: d, icon: '🎁' });
-      }
+      if (d >= now && d <= limit) results.push({ name: `${p.first} ${p.last}${p.company ? ' · ' + p.company : ''}`, type: 'Prospect — ' + p.flow, date: d, icon: '🎁' });
     });
     return results.sort((a, b) => a.date - b.date);
   }
 
   function renderOverview() {
+    renderOnboarding();
     const emps = DB.get('employees');
     const prospects = DB.get('prospects');
     const deliveries = DB.get('deliveries');
@@ -1138,20 +884,14 @@
     document.getElementById('stat-upcoming').textContent = upcoming.length;
 
     const list = document.getElementById('upcomingList');
-    if (upcoming.length === 0) {
-      list.innerHTML = '<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries.<br>Add employees or prospects to get started.</div></div>';
-    } else {
-      list.innerHTML = upcoming.slice(0, 6).map(d => `
-        <div class="delivery-row">
-          <div class="delivery-icon">${d.icon}</div>
-          <div class="delivery-info">
-            <div class="delivery-name">${d.name}</div>
-            <div class="delivery-meta">${d.type}</div>
-          </div>
-          <div class="delivery-date">${formatDate(d.date)}</div>
-        </div>
-      `).join('');
-    }
+    list.innerHTML = upcoming.length === 0
+      ? '<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries.<br>Add employees or prospects to get started.</div></div>'
+      : upcoming.slice(0, 6).map(d => `
+          <div class="delivery-row">
+            <div class="delivery-icon">${d.icon}</div>
+            <div class="delivery-info"><div class="delivery-name">${d.name}</div><div class="delivery-meta">${d.type}</div></div>
+            <div class="delivery-date">${formatDate(d.date)}</div>
+          </div>`).join('');
 
     const plan = DB.getObj('activePlan');
     const planEl = document.getElementById('planUsage');
@@ -1167,8 +907,7 @@
         <div class="plan-bar-wrap">
           <div class="plan-bar-label"><span>Employees enrolled</span><span>${used} / ${max}</span></div>
           <div class="plan-bar-track"><div class="plan-bar-fill" style="width:${pct}%"></div></div>
-        </div>
-      `;
+        </div>`;
     } else {
       planEl.innerHTML = '<div style="opacity:0.4;font-size:13px;text-align:center;padding:20px 0;">No active plan. <a href="#" onclick="navigate(\'plans\');return false;" style="font-weight:500;border-bottom:1px solid currentColor;">Browse plans →</a></div>';
     }
@@ -1181,20 +920,14 @@
     const emps = DB.get('employees');
     document.getElementById('empCount').textContent = emps.length + ' people';
     const container = document.getElementById('empTable');
-    if (emps.length === 0) {
-      container.innerHTML = '<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div>';
-      return;
-    }
-    container.innerHTML = `<table class="tbl">
-      <thead><tr><th>Name</th><th>Email</th><th>Birthday</th><th>Plan</th><th></th></tr></thead>
-      <tbody>${emps.map(e => `<tr>
-        <td><strong>${e.first} ${e.last}</strong></td>
-        <td style="opacity:0.55">${e.email || '—'}</td>
-        <td>${e.birthday || '—'}</td>
-        <td><span class="badge badge-orange">${tierLabel(e.tier)}</span></td>
-        <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeEmployee('${e.id}')">Remove</button></td>
-      </tr>`).join('')}</tbody>
-    </table>`;
+    if (emps.length === 0) { container.innerHTML = '<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div>'; return; }
+    container.innerHTML = `<table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Birthday</th><th>Plan</th><th></th></tr></thead><tbody>${emps.map(e => `<tr>
+      <td><strong>${e.first} ${e.last}</strong></td>
+      <td style="opacity:0.55">${e.email || '—'}</td>
+      <td>${e.birthday || '—'}</td>
+      <td><span class="badge badge-orange">${tierLabel(e.tier)}</span></td>
+      <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeEmployee('${e.id}')">Remove</button></td>
+    </tr>`).join('')}</tbody></table>`;
   }
 
   document.getElementById('addEmpForm').addEventListener('submit', function(e) {
@@ -1206,17 +939,10 @@
     toast('Employee added ✓');
   });
 
-  function removeEmployee(id) {
-    DB.remove('employees', id);
-    renderEmployees();
-    renderOverview();
-    toast('Employee removed');
-  }
+  function removeEmployee(id) { DB.remove('employees', id); renderEmployees(); renderOverview(); toast('Employee removed'); }
 
-  // CSV
   const uploadZone = document.getElementById('uploadZone');
   const csvInput = document.getElementById('csvInput');
-
   uploadZone.addEventListener('click', () => csvInput.click());
   uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
   uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
@@ -1232,16 +958,8 @@
         const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
         const obj = {};
         headers.forEach((h, i) => obj[h] = vals[i] || '');
-        return {
-          first: obj.first || obj.firstname || obj['first name'] || '',
-          last: obj.last || obj.lastname || obj['last name'] || '',
-          email: obj.email || '',
-          birthday: obj.birthday || obj.birthdate || '',
-          address: obj.address || '',
-          tier: obj.tier || 'birthday'
-        };
+        return { first: obj.first || obj.firstname || '', last: obj.last || obj.lastname || '', email: obj.email || '', birthday: obj.birthday || obj.birthdate || '', address: obj.address || '', tier: obj.tier || 'birthday' };
       }).filter(r => r.first || r.last);
-
       document.getElementById('csvPreviewLabel').textContent = `${csvPending.length} employees found in "${file.name}"`;
       document.getElementById('csvPreview').style.display = 'block';
       uploadZone.style.display = 'none';
@@ -1249,12 +967,7 @@
     reader.readAsText(file);
   }
 
-  function cancelCSV() {
-    csvPending = null;
-    document.getElementById('csvPreview').style.display = 'none';
-    uploadZone.style.display = 'block';
-    csvInput.value = '';
-  }
+  function cancelCSV() { csvPending = null; document.getElementById('csvPreview').style.display = 'none'; uploadZone.style.display = 'block'; csvInput.value = ''; }
 
   function importCSV() {
     if (!csvPending) return;
@@ -1271,20 +984,11 @@
     const teams = DB.get('teams');
     document.getElementById('teamCount').textContent = teams.length + ' teams';
     const container = document.getElementById('teamTable');
-    if (teams.length === 0) {
-      container.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.</div></div>';
-      return;
-    }
-    container.innerHTML = `<table class="tbl">
-      <thead><tr><th>Name</th><th>Size</th><th>Frequency</th><th>Next event</th><th></th></tr></thead>
-      <tbody>${teams.map(t => `<tr>
-        <td><strong>${t.name}</strong></td>
-        <td>${t.size}</td>
-        <td style="opacity:0.55;text-transform:capitalize">${t.frequency}</td>
-        <td>${t.nextDate || '—'}</td>
-        <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeTeam('${t.id}')">Remove</button></td>
-      </tr>`).join('')}</tbody>
-    </table>`;
+    if (teams.length === 0) { container.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.</div></div>'; return; }
+    container.innerHTML = `<table class="tbl"><thead><tr><th>Name</th><th>Size</th><th>Frequency</th><th>Next event</th><th></th></tr></thead><tbody>${teams.map(t => `<tr>
+      <td><strong>${t.name}</strong></td><td>${t.size}</td><td style="opacity:0.55;text-transform:capitalize">${t.frequency}</td><td>${t.nextDate || '—'}</td>
+      <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeTeam('${t.id}')">Remove</button></td>
+    </tr>`).join('')}</tbody></table>`;
   }
 
   document.getElementById('addTeamForm').addEventListener('submit', function(e) {
@@ -1295,27 +999,18 @@
     toast('Team added ✓');
   });
 
-  function removeTeam(id) {
-    DB.remove('teams', id);
-    renderTeams();
-    toast('Team removed');
-  }
+  function removeTeam(id) { DB.remove('teams', id); renderTeams(); toast('Team removed'); }
 
   // ── Prospects ──
   function renderProspects() {
     const prospects = DB.get('prospects');
     const cols = { cold: [], followup: [], won: [] };
     prospects.forEach(p => { const c = p.stage || 'cold'; if (cols[c]) cols[c].push(p); });
-
     Object.keys(cols).forEach(key => {
       document.getElementById('cnt-' + key).textContent = cols[key].length;
-      const el = document.getElementById('col-' + key);
-      el.innerHTML = cols[key].length === 0
+      document.getElementById('col-' + key).innerHTML = cols[key].length === 0
         ? '<div style="text-align:center;padding:20px 0;font-size:12px;opacity:0.3;">Empty</div>'
-        : cols[key].map(p => `<div class="prospect-card">
-            <div class="prospect-card-name">${p.first} ${p.last}</div>
-            <div class="prospect-card-meta">${[p.company, p.flow].filter(Boolean).join(' · ')}</div>
-          </div>`).join('');
+        : cols[key].map(p => `<div class="prospect-card"><div class="prospect-card-name">${p.first} ${p.last}</div><div class="prospect-card-meta">${[p.company, p.flow].filter(Boolean).join(' · ')}</div></div>`).join('');
     });
   }
 
@@ -1324,19 +1019,59 @@
     const deliveries = DB.get('deliveries');
     document.getElementById('deliveryCount').textContent = deliveries.length + ' deliveries';
     const container = document.getElementById('deliveriesTable');
-    if (deliveries.length === 0) {
-      container.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div>';
-      return;
+    if (deliveries.length === 0) { container.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div>'; return; }
+    container.innerHTML = `<table class="tbl"><thead><tr><th>Recipient</th><th>Type</th><th>Cake</th><th>Date</th><th>Status</th></tr></thead><tbody>${deliveries.map(d => `<tr>
+      <td><strong>${d.name}</strong></td><td style="opacity:0.55">${d.type}</td>
+      <td>${d.cake ? CAKES.find(c=>c.id===d.cake)?.name || d.cake : '—'}</td>
+      <td>${d.date || '—'}</td>
+      <td><span class="badge ${d.status === 'delivered' ? 'badge-green' : 'badge-grey'}">${d.status || 'scheduled'}</span></td>
+    </tr>`).join('')}</tbody></table>`;
+  }
+
+  // ── Cake catalog ──
+  let selectedCatalogCake = null;
+
+  function renderCatalog() {
+    const grid = document.getElementById('catalogGrid');
+    grid.innerHTML = CAKES.map(cake => `
+      <div class="catalog-card${selectedCatalogCake === cake.id ? ' selected' : ''}" onclick="showCakeDetail('${cake.id}')">
+        <div class="catalog-card-img">${cake.emoji}</div>
+        <div class="catalog-card-info">
+          <div class="catalog-card-name">${cake.name}</div>
+          <div class="catalog-tags">${cake.tags.map(t => `<span class="catalog-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>`).join('');
+
+    // Show detail for selected cake
+    if (selectedCatalogCake) {
+      const cake = CAKES.find(c => c.id === selectedCatalogCake);
+      if (cake) showCakeDetailPanel(cake);
+    } else {
+      document.getElementById('catalogDetail').style.display = 'none';
     }
-    container.innerHTML = `<table class="tbl">
-      <thead><tr><th>Recipient</th><th>Type</th><th>Date</th><th>Status</th></tr></thead>
-      <tbody>${deliveries.map(d => `<tr>
-        <td><strong>${d.name}</strong></td>
-        <td style="opacity:0.55">${d.type}</td>
-        <td>${d.date || '—'}</td>
-        <td><span class="badge ${d.status === 'delivered' ? 'badge-green' : 'badge-grey'}">${d.status || 'scheduled'}</span></td>
-      </tr>`).join('')}</tbody>
-    </table>`;
+  }
+
+  function showCakeDetail(id) {
+    selectedCatalogCake = id;
+    const cake = CAKES.find(c => c.id === id);
+    if (!cake) return;
+    document.querySelectorAll('.catalog-card').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('#catalogGrid .catalog-card').forEach((el, i) => { if (CAKES[i].id === id) el.classList.add('selected'); });
+    showCakeDetailPanel(cake);
+  }
+
+  function showCakeDetailPanel(cake) {
+    document.getElementById('catalogDetailImg').textContent = cake.emoji;
+    document.getElementById('catalogDetailName').textContent = cake.name;
+    document.getElementById('catalogDetailTags').innerHTML = cake.tags.map(t => `<span class="catalog-detail-tag">${t}</span>`).join('');
+    document.getElementById('catalogDetailDesc').textContent = cake.desc;
+    document.getElementById('catalogDetailPrice').textContent = cake.price;
+    document.getElementById('catalogDetail').style.display = 'grid';
+    document.getElementById('catalogDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function openSendCakeWithCake() {
+    openSendCake(selectedCatalogCake);
   }
 
   // ── Plans ──
@@ -1350,62 +1085,62 @@
   let currentStep = 0;
   const TOTAL_STEPS = 5;
   let selectedFlow = 'full';
-  let selectedCake = 'classic';
+  let selectedCake = 'victoria';
 
-  function openSendCake() {
+  function renderModalCatalog() {
+    const grid = document.getElementById('modalCatalogGrid');
+    grid.innerHTML = CAKES.map(cake => `
+      <div class="catalog-card${selectedCake === cake.id ? ' selected' : ''}" onclick="selectModalCake('${cake.id}', this)">
+        <div class="catalog-card-img">${cake.emoji}</div>
+        <div class="catalog-card-info">
+          <div class="catalog-card-name">${cake.name}</div>
+          <div class="catalog-tags">${cake.tags.slice(0,2).map(t => `<span class="catalog-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  function selectModalCake(id, el) {
+    selectedCake = id;
+    document.querySelectorAll('#modalCatalogGrid .catalog-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function openSendCake(preselectedCake) {
     currentStep = 0;
     selectedFlow = 'full';
-    selectedCake = 'classic';
-    ['p-first','p-last','p-company','p-email','p-address','p-deal','p-date','p-message','p-sender']
-      .forEach(id => document.getElementById(id).value = '');
+    selectedCake = preselectedCake || 'victoria';
+    ['p-first','p-last','p-company','p-email','p-address','p-deal','p-date','p-message','p-sender'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     document.querySelectorAll('.flow-opt').forEach(el => el.classList.toggle('selected', el.dataset.flow === 'full'));
-    document.querySelectorAll('.cake-opt').forEach(el => el.classList.toggle('selected', el.dataset.cake === 'classic'));
+    renderModalCatalog();
     renderStep();
     document.getElementById('modalBackdrop').classList.add('open');
   }
 
-  function closeModal() {
-    document.getElementById('modalBackdrop').classList.remove('open');
-  }
+  function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
 
-  document.getElementById('modalBackdrop').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  document.getElementById('modalBackdrop').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 
   function renderStep() {
     document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i === currentStep));
-    document.querySelectorAll('.steps .step').forEach((s, i) => {
-      s.classList.toggle('active', i === currentStep);
-      s.classList.toggle('done', i < currentStep);
-    });
+    document.querySelectorAll('.steps .step').forEach((s, i) => { s.classList.toggle('active', i === currentStep); s.classList.toggle('done', i < currentStep); });
     document.getElementById('btnBack').style.display = currentStep > 0 ? 'inline-flex' : 'none';
     document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS - 1 ? 'Confirm & send →' : 'Next →';
     if (currentStep === TOTAL_STEPS - 1) buildConfirmSummary();
   }
 
-  function selectFlow(el) {
-    document.querySelectorAll('.flow-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedFlow = el.dataset.flow;
-  }
-
-  function selectCake(el) {
-    document.querySelectorAll('.cake-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedCake = el.dataset.cake;
-  }
+  function selectFlow(el) { document.querySelectorAll('.flow-opt').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); selectedFlow = el.dataset.flow; }
 
   function buildConfirmSummary() {
     const flowPrices = { full: '€140', intro: '€50', two: '€95', won: '€60' };
     const flowNames = { full: 'Full 3-touch', intro: 'Intro only', two: 'Two-touch', won: 'Deal won' };
-    const cakeNames = { classic: 'Classic layer', lemon: 'Lemon drizzle', choco: 'Chocolate fudge', carrot: 'Carrot walnut', floral: 'Floral vanilla', seasonal: 'Seasonal special' };
+    const cake = CAKES.find(c => c.id === selectedCake);
     const row = (label, val) => `<div><span style="opacity:0.4;display:inline-block;width:110px;">${label}</span>${val}</div>`;
     document.getElementById('confirmDetails').innerHTML = [
       row('Recipient', `${document.getElementById('p-first').value} ${document.getElementById('p-last').value}`),
       row('Company', document.getElementById('p-company').value || '—'),
       row('Address', document.getElementById('p-address').value || '—'),
       row('Flow', flowNames[selectedFlow]),
-      row('Cake', cakeNames[selectedCake]),
+      row('Cake', cake ? `${cake.emoji} ${cake.name}` : '—'),
       row('First send', document.getElementById('p-date').value || '—'),
       `<div style="margin-top:12px;font-weight:500;font-size:16px;font-family:'Kaisei Decol',serif;">${flowPrices[selectedFlow]}</div>`
     ].join('');
@@ -1417,39 +1152,20 @@
     renderStep();
   }
 
-  function stepBack() {
-    currentStep = Math.max(0, currentStep - 1);
-    renderStep();
-  }
+  function stepBack() { currentStep = Math.max(0, currentStep - 1); renderStep(); }
 
   function confirmProspect() {
     const first = document.getElementById('p-first').value.trim();
     if (!first) { toast('Please enter a first name'); return; }
-
     const prospect = {
-      first,
-      last: document.getElementById('p-last').value,
-      company: document.getElementById('p-company').value,
-      email: document.getElementById('p-email').value,
-      address: document.getElementById('p-address').value,
-      deal: document.getElementById('p-deal').value,
-      sendDate: document.getElementById('p-date').value,
-      flow: selectedFlow,
-      cake: selectedCake,
-      message: document.getElementById('p-message').value,
-      sender: document.getElementById('p-sender').value,
-      stage: 'cold',
-      createdAt: new Date().toISOString()
+      first, last: document.getElementById('p-last').value, company: document.getElementById('p-company').value,
+      email: document.getElementById('p-email').value, address: document.getElementById('p-address').value,
+      deal: document.getElementById('p-deal').value, sendDate: document.getElementById('p-date').value,
+      flow: selectedFlow, cake: selectedCake, message: document.getElementById('p-message').value,
+      sender: document.getElementById('p-sender').value, stage: 'cold', createdAt: new Date().toISOString()
     };
-
     DB.add('prospects', prospect);
-    DB.add('deliveries', {
-      name: `${prospect.first} ${prospect.last}`,
-      type: 'Prospect — ' + prospect.flow,
-      date: prospect.sendDate || 'TBD',
-      status: 'scheduled'
-    });
-
+    DB.add('deliveries', { name: `${prospect.first} ${prospect.last}`, type: 'Prospect — ' + prospect.flow, cake: prospect.cake, date: prospect.sendDate || 'TBD', status: 'scheduled' });
     closeModal();
     renderProspects();
     renderOverview();

@@ -315,8 +315,7 @@
     .p-rule { height: 1px; background: currentColor; opacity: 0.12; margin-bottom: 16px; }
 
     .p-features { list-style: none; flex: 1; }
-    .p-features li { font-size: 13px; line-height: 1.36; padding: 7px 0; border-bottom: 1px solid currentColor; opacity: 0.72; display: flex; gap: 9px; align-items: flex-start; }
-    .p-features li:last-child { border-bottom: none; }
+    .p-features li { font-size: 13px; line-height: 1.36; padding: 7px 0; opacity: 0.72; display: flex; gap: 9px; align-items: flex-start; }
     .p-features li::before { content: '—'; opacity: 0.35; flex-shrink: 0; }
 
     .p-cta { margin-top: 18px; margin-bottom: 20px; }
@@ -512,10 +511,9 @@
     @media (max-width: 960px) {
       .hero-photo-wrap { display: none; }
       .hero-body { padding: calc(var(--nav-h) + 32px) 5vw 40px; }
-      .data-grid { grid-template-columns: 1fr 1fr; }
-      .data-card { border-bottom: 1px solid rgba(246,77,37,0.12); }
-      .data-card:nth-child(3), .data-card:nth-child(4) { border-bottom: none; }
-      .data-card:first-child { padding-left: 24px; }
+      .data-grid { grid-template-columns: 1fr; }
+      .data-card { border-right: none; border-bottom: 1px solid rgba(246,77,37,0.12); padding-left: 0; padding-right: 0; }
+      .data-card:last-child { border-bottom: none; }
       .values-grid { grid-template-columns: 1fr; }
       .val-card { border-right: none; border-bottom: 1px solid rgba(247,246,242,0.18); }
       .val-card:last-child { border-bottom: none; }
@@ -536,7 +534,7 @@
       .video-head p { text-align: left; }
       .video-row { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 14px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .video-row::-webkit-scrollbar { display: none; }
-      .video-block { flex: 0 0 280px; scroll-snap-align: start; }
+      .video-block { flex: 0 0 364px; scroll-snap-align: start; }
       .video-thumb { aspect-ratio: 3/4.416; }
       .photo-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding-top: 36px; }
       .nav-links { display: none; }

@@ -249,12 +249,8 @@
     .val-img { width: 100%; height: 200px; background: var(--ph-d); flex-shrink: 0; }
 
     /* Timeline strip replacing val-img */
-    .val-timeline { width: 100%; height: 200px; flex-shrink: 0; background: var(--accent); display: flex; align-items: center; padding: 0 28px; position: relative; overflow: hidden; }
-    .val-tl-line { position: absolute; left: 0; right: 0; height: 4px; background: rgba(247,246,242,0.22); }
-    .val-tl-node { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); flex-shrink: 0; position: relative; z-index: 1; }
-    .val-tl-content { position: relative; z-index: 1; padding-left: 18px; }
-    .val-tl-step { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bg); opacity: 0.45; display: block; margin-bottom: 9px; }
-    .val-tl-title { font-family: 'Kaisei Decol', serif; font-size: clamp(19px, 1.8vw, 26px); color: var(--bg); line-height: 1.15; }
+    .val-timeline { width: 100%; height: 200px; flex-shrink: 0; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+    .val-tl-node { width: 18px; height: 18px; border-radius: 50%; background: var(--bg); opacity: 0.88; }
     .val-body { padding: 24px 26px 36px; }
     .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
     .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
@@ -675,42 +671,21 @@
 
   <div class="values-grid">
     <div class="val-card">
-      <div class="val-timeline">
-        <div class="val-tl-line"></div>
-        <div class="val-tl-node"></div>
-        <div class="val-tl-content">
-          <span class="val-tl-step">01</span>
-          <div class="val-tl-title">Retain your<br>best people</div>
-        </div>
-      </div>
+      <div class="val-timeline"><div class="val-tl-node"></div></div>
       <div class="val-body">
         <h3>Retain your<br>best people</h3>
         <p>Your top performers have options. Make them feel seen — automatically, on their birthday, at Christmas, every year. The ones who feel valued stay.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-timeline">
-        <div class="val-tl-line"></div>
-        <div class="val-tl-node"></div>
-        <div class="val-tl-content">
-          <span class="val-tl-step">02</span>
-          <div class="val-tl-title">Convert prospects<br>into clients</div>
-        </div>
-      </div>
+      <div class="val-timeline"><div class="val-tl-node"></div></div>
       <div class="val-body">
         <h3>Convert prospects<br>into clients</h3>
         <p>Every competitor sends emails. You send a handmade cake. culturer turns cold outreach into an experience that gets meetings booked and deals closed.</p>
       </div>
     </div>
     <div class="val-card">
-      <div class="val-timeline">
-        <div class="val-tl-line"></div>
-        <div class="val-tl-node"></div>
-        <div class="val-tl-content">
-          <span class="val-tl-step">03</span>
-          <div class="val-tl-title">Keep clients<br>for life</div>
-        </div>
-      </div>
+      <div class="val-timeline"><div class="val-tl-node"></div></div>
       <div class="val-body">
         <h3>Keep clients<br>for life</h3>
         <p>Renewal decisions are made before the contract lands. Stay front of mind with quarterly team celebrations and seasonal gestures that build genuine loyalty.</p>

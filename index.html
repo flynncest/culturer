@@ -374,7 +374,17 @@
     .video-cap { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
 
     /* ════════ CTA ════════ */
-    .final-cta { text-align: center; padding: 140px 5vw 160px; position: relative; }
+    #contact.section { padding: 0; }
+    .final-cta {
+      text-align: center;
+      min-height: 80vh;
+      padding: 0 5vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
     .final-cta h2 { font-size: clamp(44px, 7vw, 110px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 44px; position: relative; z-index: 1; }
     .final-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
 
@@ -407,9 +417,9 @@
                   border-color 0.2s ease;
     }
 
-    .cta-pill:nth-child(1) { top: 19%; left: 6%; transform: rotate(-3deg); }
-    .cta-pill:nth-child(2) { top: 34%; right: 5%; transform: rotate(2.5deg); }
-    .cta-pill:nth-child(3) { bottom: 26%; left: 9%; transform: rotate(-1.5deg); }
+    .cta-pill:nth-child(1) { top: 20%; left: 6%; }
+    .cta-pill:nth-child(2) { top: 36%; right: 5%; }
+    .cta-pill:nth-child(3) { bottom: 24%; left: 9%; }
 
     .cta-pill:hover {
       transform: translateY(-7px) scale(1.04);
@@ -438,8 +448,9 @@
     .footer-bottom-right { display: flex; gap: 20px; }
     .footer-bottom-right a { font-size: 11px; opacity: 0.3; color: var(--accent); transition: opacity 0.2s; }
     .footer-bottom-right a:hover { opacity: 0.7; }
-    .footer-wordmark { overflow: hidden; padding: 0 5vw; line-height: 0.86; }
-    .footer-wordmark-text { font-family: 'Kaisei Decol', serif; font-size: 21.5vw; letter-spacing: -0.04em; color: var(--accent); opacity: 0.88; display: block; white-space: nowrap; }
+    .footer-wordmark { overflow: hidden; padding: 0 4vw; line-height: 0.88; }
+    .footer-wordmark-text { font-family: 'Kaisei Decol', serif; font-size: 23vw; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9; display: block; white-space: nowrap; }
+    .footer-stripe { height: 80px; flex-shrink: 0; background: repeating-linear-gradient(-52deg, var(--accent) 0px, var(--accent) 34px, var(--bg) 34px, var(--bg) 68px); margin-top: -2px; }
 
     /* ════════ RESPONSIVE ════════ */
     @media (max-width: 960px) {
@@ -498,7 +509,7 @@
       .final-cta { padding: 80px 5vw 100px; }
       .photo-row { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 36px 5vw; }
       .footer-grid { grid-template-columns: 1fr; gap: 24px; padding: 40px 5vw 32px; }
-      .footer-wordmark-text { font-size: 22vw; }
+      /* wordmark js handles mobile size */
       .artisan-photos { grid-template-columns: 1fr; height: 240px; }
       .artisan-photo-b { display: none; }
     }
@@ -898,8 +909,9 @@
     </div>
   </div>
   <div class="footer-wordmark">
-    <span class="footer-wordmark-text">culturer</span>
+    <span class="footer-wordmark-text" id="footerWordmark">culturer</span>
   </div>
+  <div class="footer-stripe"></div>
 </footer>
 
 <script>
@@ -969,6 +981,25 @@
   prevBtn.addEventListener('click', () => { if (cur > 0) setTab(cur - 1); });
   nextBtn.addEventListener('click', () => { if (cur < tabPanels.length - 1) setTab(cur + 1); });
   document.querySelectorAll('[data-tab]').forEach(l => l.addEventListener('click', () => setTimeout(() => setTab(parseInt(l.dataset.tab)), 150)));
+
+  /* Fit footer wordmark to full container width */
+  (function() {
+    const el = document.getElementById('footerWordmark');
+    if (!el) return;
+    function fit() {
+      const target = el.parentElement.clientWidth;
+      let lo = 12, hi = 600, mid;
+      el.style.fontSize = '12px';
+      for (let i = 0; i < 24; i++) {
+        mid = (lo + hi) / 2;
+        el.style.fontSize = mid + 'px';
+        if (el.scrollWidth <= target) lo = mid; else hi = mid;
+      }
+      el.style.fontSize = lo + 'px';
+    }
+    fit();
+    window.addEventListener('resize', fit);
+  })();
 </script>
 </body>
 </html>

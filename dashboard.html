@@ -270,6 +270,30 @@
     .settings-section-title { font-family: 'Kaisei Decol', serif; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 4px; }
     .settings-section-desc { font-size: 12px; opacity: 0.45; margin-bottom: 20px; }
 
+    /* ── Company logo ── */
+    .company-logo-area { padding: 16px 24px 12px; border-bottom: 1px solid var(--border); }
+    .company-logo-box { width: 52px; height: 52px; border: 1.5px dashed rgba(246,77,37,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; transition: border-color 0.2s; background: rgba(246,77,37,0.03); }
+    .company-logo-box:hover { border-color: var(--accent); }
+    .company-logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    .company-logo-initials { font-family: 'Kaisei Decol', serif; font-size: 18px; opacity: 0.4; line-height: 1; }
+    .company-logo-hint { font-size: 10px; opacity: 0.35; margin-top: 6px; letter-spacing: 0.05em; }
+
+    /* ── Overview greeting ── */
+    .overview-hello { margin-bottom: 32px; }
+    .hello-greeting { font-family: 'Kaisei Decol', serif; font-size: clamp(28px, 3.5vw, 44px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 10px; }
+    .hello-quote { font-size: 13px; opacity: 0.5; line-height: 1.7; max-width: 52ch; }
+    .hello-date { font-size: 11px; opacity: 0.3; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 6px; }
+
+    /* ── Setup strip ── */
+    .setup-strip { display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; margin-bottom: 28px; background: rgba(246,77,37,0.025); flex-wrap: wrap; }
+    .setup-strip-label { font-size: 12px; font-weight: 500; opacity: 0.6; flex-shrink: 0; }
+    .setup-steps-row { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+    .setup-step-pill { display: flex; align-items: center; gap: 7px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .setup-step-pill:hover { border-color: rgba(246,77,37,0.4); opacity: 0.9; }
+    .setup-step-pill.done { opacity: 0.38; text-decoration: line-through; cursor: default; }
+    .setup-step-pill.done:hover { border-color: var(--border); opacity: 0.38; }
+    .setup-step-check { font-size: 13px; }
+
     /* ── Toast ── */
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: var(--bg); padding: 12px 20px; border-radius: 4px; font-size: 13px; font-weight: 500; z-index: 200; transform: translateY(80px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; }
     .toast.show { transform: translateY(0); opacity: 1; }
@@ -325,6 +349,13 @@
         <div class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Settings</div>
       </div>
     </nav>
+    <div class="company-logo-area">
+      <input type="file" id="logoFileInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+      <div class="company-logo-box" onclick="document.getElementById('logoFileInput').click()" id="companyLogoBox" title="Click to upload company logo">
+        <span class="company-logo-initials" id="companyLogoInitials">+</span>
+      </div>
+      <div class="company-logo-hint">Company logo</div>
+    </div>
     <div class="sidebar-foot">
       <div class="sidebar-org" id="sidebarOrg">Your company</div>
       <div class="sidebar-user">
@@ -348,35 +379,16 @@
 
       <!-- ══ OVERVIEW ══ -->
       <div class="view active" id="view-overview">
-        <div class="onboard-banner" id="onboardBanner" style="display:none;">
-          <div class="onboard-intro">Welcome to culturer. Let's get you set up.</div>
-          <div class="onboard-sub">Three steps to your first delivery.</div>
-          <div class="onboard-steps">
-            <div class="onboard-step" id="ob-plan">
-              <div class="onboard-step-num">Step 01</div>
-              <div>
-                <div class="onboard-step-title">Choose a plan</div>
-                <div class="onboard-step-desc">Select which type of celebration to automate.</div>
-              </div>
-              <button class="btn btn-primary" onclick="navigate('plans')">Choose plan →</button>
-            </div>
-            <div class="onboard-step" id="ob-people">
-              <div class="onboard-step-num">Step 02</div>
-              <div>
-                <div class="onboard-step-title">Add your people</div>
-                <div class="onboard-step-desc">Import employees via CSV or add them one by one.</div>
-              </div>
-              <button class="btn btn-outline" onclick="navigate('employees')">Add people →</button>
-            </div>
-            <div class="onboard-step" id="ob-cake">
-              <div class="onboard-step-num">Step 03</div>
-              <div>
-                <div class="onboard-step-title">Send your first cake</div>
-                <div class="onboard-step-desc">Celebrate an employee or start a prospect flow.</div>
-              </div>
-              <button class="btn btn-outline" onclick="openSendCake()">Send a cake →</button>
-            </div>
-          </div>
+
+        <div class="overview-hello">
+          <div class="hello-greeting" id="helloGreeting">Good morning.</div>
+          <div class="hello-quote" id="helloQuote"></div>
+          <div class="hello-date" id="helloDate"></div>
+        </div>
+
+        <div class="setup-strip" id="setupStrip" style="display:none;">
+          <div class="setup-strip-label">Get started →</div>
+          <div class="setup-steps-row" id="setupStepsRow"></div>
         </div>
 
         <div class="stats-row">
@@ -384,24 +396,6 @@
           <div class="stat-card"><div class="stat-num" id="stat-deliveries">0</div><div class="stat-label">Total deliveries</div></div>
           <div class="stat-card"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
           <div class="stat-card"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Upcoming this month</div></div>
-        </div>
-
-        <div class="quick-actions">
-          <div class="quick-card" onclick="navigate('employees')">
-            <div class="quick-icon">👥</div>
-            <div class="quick-title">Manage your team</div>
-            <div class="quick-desc">Add, edit or remove employees. Birthdays and allergies tracked automatically.</div>
-          </div>
-          <div class="quick-card" onclick="openSendCake()">
-            <div class="quick-icon">🎂</div>
-            <div class="quick-title">Send a cake</div>
-            <div class="quick-desc">Celebrate your employees or start a new prospect outreach flow.</div>
-          </div>
-          <div class="quick-card" onclick="navigate('catalog')">
-            <div class="quick-icon">✦</div>
-            <div class="quick-title">Browse the catalog</div>
-            <div class="quick-desc">Explore our artisan cake selection and choose what your people receive.</div>
-          </div>
         </div>
 
         <div class="two-col">
@@ -1044,7 +1038,7 @@
 
   // ── Logout ──
   function doLogout() {
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   }
 
   // ── Settings ──
@@ -1068,6 +1062,7 @@
       document.getElementById('sidebarAvatar').textContent = initials;
     }
     if (s.contactRole) document.getElementById('sidebarRole').textContent = s.contactRole;
+    renderCompanyLogo();
   }
 
   function renderSettings() {
@@ -1089,23 +1084,101 @@
     toast('Settings saved ✓');
   });
 
-  // ── Onboarding ──
-  function renderOnboarding() {
+  // ── Daily quotes ──
+  const DAILY_QUOTES = [
+    "Small gestures build cultures that last.",
+    "The best teams are built one moment of care at a time.",
+    "Celebrate the people who show up every day.",
+    "Recognition is the simplest form of leadership.",
+    "A handmade cake says more than any performance review.",
+    "Culture isn't a perk. It's the product of consistent attention.",
+    "The teams that celebrate together, stay together.",
+    "Every birthday is a chance to say: we see you.",
+    "Joy in the workplace isn't accidental. It's designed.",
+    "Your people remember how you made them feel.",
+    "Thoughtful gestures compound, just like good work does.",
+    "Great culture starts with small, repeated acts of kindness.",
+    "The secret to retention? Make people feel genuinely valued.",
+    "An unexpected cake changes someone's whole day.",
+    "People don't leave companies. They leave cultures.",
+    "Celebrating milestones is a leadership superpower.",
+    "The best workplaces feel like something worth coming back to.",
+    "One birthday cake, well placed, beats a dozen all-hands.",
+    "Recognition costs less than replacement — by far.",
+    "Culture is built in the margins: the quiet gestures that add up.",
+    "Show up for your people before they need you to ask.",
+    "A warm team is a productive team. Invest accordingly.",
+    "The smallest celebrations carry the biggest meaning.",
+    "You can't automate trust — but you can automate care.",
+    "Every prospecting gift is a conversation starter.",
+    "Clients remember the cake long after the pitch deck.",
+    "Warmth travels. A cake at their door opens doors.",
+    "The best cold outreach feels nothing like cold outreach.",
+    "Deals close faster when the relationship feels human.",
+    "Send something sweet. Watch the conversation warm up."
+  ];
+
+  function getDayOfYear() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    return Math.floor((now - start) / 86400000);
+  }
+
+  function getDailyQuote() {
+    return DAILY_QUOTES[getDayOfYear() % DAILY_QUOTES.length];
+  }
+
+  function getGreeting(name) {
+    const h = new Date().getHours();
+    const time = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    return name ? `${time}, ${name.split(' ')[0]}.` : `${time}.`;
+  }
+
+  // ── Company logo ──
+  function handleLogoUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      DB.setObj('companyLogo', ev.target.result);
+      renderCompanyLogo();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderCompanyLogo() {
+    const logo = DB.getObj('companyLogo');
+    const box = document.getElementById('companyLogoBox');
+    const initials = document.getElementById('companyLogoInitials');
+    if (logo) {
+      box.innerHTML = `<img src="${logo}" alt="Company logo">`;
+    } else {
+      const s = DB.getObj('settings') || {};
+      const abbr = s.companyName ? s.companyName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase() : '+';
+      box.innerHTML = `<span class="company-logo-initials">${abbr}</span>`;
+    }
+  }
+
+  // ── Setup strip ──
+  function renderSetupStrip() {
     const plan = DB.getObj('activePlan');
     const emps = DB.get('employees');
     const deliveries = DB.get('deliveries');
-    const banner = document.getElementById('onboardBanner');
     const hasPlan = !!plan, hasPeople = emps.length > 0, hasSent = deliveries.length > 0;
-    if (hasPlan && hasPeople && hasSent) { banner.style.display = 'none'; return; }
-    banner.style.display = 'block';
-    ['ob-plan','ob-people','ob-cake'].forEach((id, i) => {
-      const done = [hasPlan, hasPeople, hasSent][i];
-      const el = document.getElementById(id);
-      el.className = 'onboard-step' + (done ? ' done' : '');
-      const btn = el.querySelector('.btn');
-      if (done) { btn.textContent = '✓ Done'; btn.disabled = true; }
-      else { btn.disabled = false; }
-    });
+    const allDone = hasPlan && hasPeople && hasSent;
+    const strip = document.getElementById('setupStrip');
+    if (allDone) { strip.style.display = 'none'; return; }
+    strip.style.display = 'flex';
+    const steps = [
+      { label: 'Choose a plan', done: hasPlan, action: "navigate('plans')" },
+      { label: 'Add your people', done: hasPeople, action: "navigate('employees')" },
+      { label: 'Send your first cake', done: hasSent, action: 'openSendCake()' }
+    ];
+    document.getElementById('setupStepsRow').innerHTML = steps.map(s =>
+      `<div class="setup-step-pill ${s.done ? 'done' : ''}" onclick="${s.done ? '' : s.action}">
+        <span class="setup-step-check">${s.done ? '✓' : '○'}</span>${s.label}
+      </div>`
+    ).join('');
   }
 
   // ── Overview ──
@@ -1126,7 +1199,11 @@
   }
 
   function renderOverview() {
-    renderOnboarding();
+    const s = DB.getObj('settings') || {};
+    document.getElementById('helloGreeting').textContent = getGreeting(s.contactName);
+    document.getElementById('helloQuote').textContent = getDailyQuote();
+    document.getElementById('helloDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    renderSetupStrip();
     const emps = DB.get('employees'), prospects = DB.get('prospects'), deliveries = DB.get('deliveries'), upcoming = getUpcoming(30);
     document.getElementById('stat-employees').textContent = emps.length;
     document.getElementById('stat-deliveries').textContent = deliveries.length;
@@ -1638,6 +1715,7 @@
   initAllergyLabels('addEmpAllergies');
   initAllergyLabels('editEmpAllergies');
   updateSidebarProfile();
+  renderCompanyLogo();
   renderOverview();
 </script>
 </body>

@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturer — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #f64d25;
+      --bg: #f7f6f2;
+      --sidebar-w: 220px;
+      --border: rgba(246,77,37,0.14);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      color: var(--accent);
+      padding: 0 24px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-nav { flex: 1; padding: 20px 0; }
+
+    .nav-section { padding: 0 14px; margin-bottom: 4px; }
+
+    .nav-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      margin-bottom: 6px;
+      margin-top: 18px;
+      padding: 0 10px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      opacity: 0.55;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover { opacity: 0.9; background: rgba(246,77,37,0.06); }
+    .nav-item.active { opacity: 1; background: rgba(246,77,37,0.1); font-weight: 500; }
+
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+
+    .sidebar-foot {
+      padding: 20px 24px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar-org { font-size: 12px; opacity: 0.4; margin-bottom: 10px; }
+
+    .sidebar-user { display: flex; align-items: center; gap: 10px; }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .user-name { font-size: 13px; font-weight: 500; }
+    .user-role { font-size: 11px; opacity: 0.45; }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 0 36px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .topbar-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid rgba(246,77,37,0.3); }
+    .btn:hover { opacity: 0.8; }
+
+    /* ── Content ── */
+    .content {
+      flex: 1;
+      padding: 36px;
+      overflow-y: auto;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border);
+      padding: 20px 22px;
+      border-radius: 4px;
+    }
+
+    .stat-num {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .stat-label { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
+
+    /* ── Two-column ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Cards ── */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-body { padding: 20px; }
+
+    /* ── Tables ── */
+    .tbl { width: 100%; border-collapse: collapse; }
+
+    .tbl th {
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tbl td {
+      padding: 13px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:hover td { background: rgba(246,77,37,0.03); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-orange { background: rgba(246,77,37,0.12); color: var(--accent); }
+    .badge-green { background: rgba(34,197,94,0.12); color: #16a34a; }
+    .badge-grey { background: rgba(0,0,0,0.06); color: rgba(246,77,37,0.6); }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 56px 24px;
+      opacity: 0.38;
+    }
+
+    .empty-icon { font-size: 32px; margin-bottom: 12px; }
+    .empty-text { font-size: 13px; line-height: 1.6; }
+
+    /* ── Delivery rows ── */
+    .delivery-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .delivery-row:last-child { border-bottom: none; }
+
+    .delivery-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(246,77,37,0.1);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .delivery-info { flex: 1; min-width: 0; }
+    .delivery-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .delivery-meta { font-size: 11px; opacity: 0.45; margin-top: 2px; }
+    .delivery-date { font-size: 12px; opacity: 0.5; flex-shrink: 0; }
+
+    /* ── Plan bar ── */
+    .plan-bar-wrap { margin-bottom: 14px; }
+    .plan-bar-label { display: flex; justify-content: space-between; font-size: 12px; opacity: 0.5; margin-bottom: 6px; }
+    .plan-bar-track { height: 5px; background: rgba(246,77,37,0.1); border-radius: 3px; }
+    .plan-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.6s ease; }
+
+    /* ── Forms ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid.full { grid-template-columns: 1fr; }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group.span2 { grid-column: span 2; }
+
+    .field-group label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      padding: 11px 14px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      outline: none;
+      border-radius: 3px;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus { border-color: var(--accent); }
+
+    .field-group input::placeholder,
+    .field-group textarea::placeholder { opacity: 0.3; }
+
+    .field-group select { appearance: none; cursor: pointer; }
+    .field-group textarea { resize: vertical; min-height: 80px; }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── CSV Upload ── */
+    .upload-zone {
+      border: 2px dashed rgba(246,77,37,0.25);
+      border-radius: 4px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(246,77,37,0.04);
+    }
+
+    .upload-icon { font-size: 24px; margin-bottom: 8px; opacity: 0.5; }
+    .upload-text { font-size: 13px; opacity: 0.5; line-height: 1.6; }
+    .upload-text strong { opacity: 1; color: var(--accent); }
+
+    /* ── Modal ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(247,246,242,0.85);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(246,77,37,0.12);
+    }
+
+    .modal-head {
+      padding: 22px 26px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .modal-sub { font-size: 12px; opacity: 0.45; margin-top: 4px; }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: opacity 0.15s;
+      color: var(--accent);
+      line-height: 1;
+      padding: 2px;
+    }
+
+    .modal-close:hover { opacity: 0.9; }
+    .modal-body { padding: 24px 26px; }
+
+    /* ── Steps ── */
+    .steps { display: flex; gap: 0; margin-bottom: 28px; }
+
+    .step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .step + .step::before {
+      content: '';
+      position: absolute;
+      left: -50%;
+      top: 13px;
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .step.done + .step::before { background: var(--accent); }
+
+    .step-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .step.active .step-dot { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+    .step.done .step-dot { border-color: var(--accent); color: var(--accent); background: rgba(246,77,37,0.1); }
+
+    .step-label {
+      font-size: 10px;
+      opacity: 0.45;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .step.active .step-label { opacity: 1; font-weight: 500; }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    /* ── Cake grid ── */
+    .cake-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .cake-opt {
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .cake-opt:hover { border-color: rgba(246,77,37,0.4); }
+    .cake-opt.selected { border-color: var(--accent); }
+
+    .cake-img {
+      height: 80px;
+      background: rgba(246,77,37,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .cake-label {
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Flow options ── */
+    .flow-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .flow-opt {
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .flow-opt:hover { border-color: rgba(246,77,37,0.4); }
+    .flow-opt.selected { border-color: var(--accent); background: rgba(246,77,37,0.04); }
+
+    .flow-opt-icon { font-size: 22px; margin-bottom: 10px; }
+    .flow-opt-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .flow-opt-desc { font-size: 12px; opacity: 0.5; line-height: 1.5; }
+
+    /* ── Plans ── */
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .plan-card {
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .plan-card:hover { border-color: rgba(246,77,37,0.4); }
+    .plan-card.featured { border-color: var(--accent); }
+
+    .plan-card-head { background: var(--accent); color: var(--bg); padding: 20px 22px 16px; }
+    .plan-card-head.light { background: rgba(246,77,37,0.06); color: var(--accent); }
+
+    .plan-name { font-family: 'Kaisei Decol', serif; font-size: 20px; margin-bottom: 4px; }
+    .plan-price { font-size: 28px; font-weight: 300; letter-spacing: -0.03em; }
+    .plan-price span { font-size: 13px; font-weight: 400; opacity: 0.7; }
+    .plan-body { padding: 20px 22px; }
+    .plan-feature { font-size: 13px; opacity: 0.7; margin-bottom: 10px; display: flex; gap: 8px; }
+    .plan-feature::before { content: '✓'; color: var(--accent); font-weight: 600; flex-shrink: 0; }
+    .plan-cta { padding: 0 22px 22px; }
+
+    /* ── Prospect board ── */
+    .prospect-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    .funnel-col { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+
+    .funnel-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .funnel-count {
+      background: rgba(246,77,37,0.1);
+      color: var(--accent);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .funnel-items { padding: 10px; min-height: 100px; }
+
+    .prospect-card {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .prospect-card:hover { border-color: rgba(246,77,37,0.4); }
+    .prospect-card-name { font-weight: 500; margin-bottom: 2px; }
+    .prospect-card-meta { opacity: 0.45; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 200;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .prospect-board { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .sidebar { display: none; }
+      .content { padding: 20px; }
+      .topbar { padding: 0 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field-group.span2 { grid-column: span 1; }
+      .cake-grid { grid-template-columns: repeat(2, 1fr); }
+      .flow-opts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">culturer</div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <div class="nav-item active" data-view="overview"><span class="nav-icon">◎</span>Overview</div>
+        <div class="nav-item" data-view="deliveries"><span class="nav-icon">📦</span>Deliveries</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">People</div>
+        <div class="nav-item" data-view="employees"><span class="nav-icon">👥</span>Employees</div>
+        <div class="nav-item" data-view="teams"><span class="nav-icon">🏢</span>Teams</div>
+        <div class="nav-item" data-view="prospects"><span class="nav-icon">🎯</span>Prospects</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Account</div>
+        <div class="nav-item" data-view="plans"><span class="nav-icon">✦</span>Plans</div>
+      </div>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-org">Your company</div>
+      <div class="sidebar-user">
+        <div class="avatar">AC</div>
+        <div>
+          <div class="user-name">Admin</div>
+          <div class="user-role">Head of People</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Overview</div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW -->
+      <div class="view active" id="view-overview">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num" id="stat-employees">0</div><div class="stat-label">Active employees</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-deliveries">0</div><div class="stat-label">Total deliveries</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Upcoming this month</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Upcoming deliveries</span>
+              <span style="font-size:12px;opacity:0.4;">Next 30 days</span>
+            </div>
+            <div class="card-body" id="upcomingList">
+              <div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries.<br>Add employees or prospects to get started.</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title">Plan usage</span></div>
+            <div class="card-body" id="planUsage">
+              <div style="opacity:0.4;font-size:13px;text-align:center;padding:20px 0;">No active plan. <a href="#" onclick="navigate('plans');return false;" style="font-weight:500;border-bottom:1px solid currentColor;">Browse plans →</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div class="view" id="view-employees">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Employee roster</span>
+              <span id="empCount" style="font-size:12px;opacity:0.4;">0 people</span>
+            </div>
+            <div id="empTable">
+              <div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="card-head"><span class="card-title">Add employee</span></div>
+              <div class="card-body">
+                <form id="addEmpForm">
+                  <div class="form-grid">
+                    <div class="field-group"><label>First name</label><input type="text" name="first" placeholder="Anna" required></div>
+                    <div class="field-group"><label>Last name</label><input type="text" name="last" placeholder="Smith" required></div>
+                    <div class="field-group span2"><label>Email</label><input type="email" name="email" placeholder="anna@company.com"></div>
+                    <div class="field-group"><label>Birthday</label><input type="date" name="birthday"></div>
+                    <div class="field-group"><label>Plan tier</label>
+                      <select name="tier">
+                        <option value="birthday">Birthday (€8/mo)</option>
+                        <option value="christmas">+ Christmas (€14/mo)</option>
+                        <option value="premium">Premium (€20/mo)</option>
+                      </select>
+                    </div>
+                    <div class="field-group span2"><label>Delivery address</label><input type="text" name="address" placeholder="Keizersgracht 123, Amsterdam"></div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add employee →</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><span class="card-title">CSV import</span></div>
+              <div class="card-body">
+                <div class="upload-zone" id="uploadZone">
+                  <div class="upload-icon">⬆</div>
+                  <div class="upload-text"><strong>Drop CSV here</strong> or click to browse<br><span style="font-size:11px;">Columns: first, last, email, birthday (YYYY-MM-DD), address, tier</span></div>
+                  <input type="file" id="csvInput" accept=".csv" style="display:none">
+                </div>
+                <div id="csvPreview" style="display:none;">
+                  <div style="font-size:12px;opacity:0.5;margin-bottom:12px;" id="csvPreviewLabel"></div>
+                  <div style="display:flex;gap:10px;justify-content:flex-end;">
+                    <button class="btn btn-outline" onclick="cancelCSV()">Cancel</button>
+                    <button class="btn btn-primary" onclick="importCSV()">Import →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAMS -->
+      <div class="view" id="view-teams">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title">Teams</span>
+              <span id="teamCount" style="font-size:12px;opacity:0.4;">0 teams</span>
+            </div>
+            <div id="teamTable">
+              <div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.<br>Create a team to send group gifts.</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><span class="card-title">Add team</span></div>
+            <div class="card-body">
+              <form id="addTeamForm">
+                <div class="form-grid full">
+                  <div class="field-group"><label>Team name</label><input type="text" name="name" placeholder="Engineering" required></div>
+                  <div class="field-group"><label>Team size</label>
+                    <select name="size">
+                      <option value="12-16">12–16 people (€30/mo)</option>
+                      <option value="16-20">16–20 people (€40/mo)</option>
+                      <option value="20-24">20–24 people (€50/mo)</option>
+                    </select>
+                  </div>
+                  <div class="field-group"><label>Frequency</label>
+                    <select name="frequency">
+                      <option value="quarterly">Quarterly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="bi-annual">Bi-annual</option>
+                    </select>
+                  </div>
+                  <div class="field-group"><label>Next celebration</label><input type="date" name="nextDate" required></div>
+                  <div class="field-group"><label>Contact email</label><input type="email" name="contact" placeholder="manager@company.com"></div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Add team →</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROSPECTS -->
+      <div class="view" id="view-prospects">
+        <div style="margin-bottom:20px;font-size:13px;opacity:0.45;">Manage your prospect gift flow. €140/prospect — 3-touch gifting sequence.</div>
+        <div class="prospect-board" id="prospectBoard">
+          <div class="funnel-col">
+            <div class="funnel-head">Cold outreach <span class="funnel-count" id="cnt-cold">0</span></div>
+            <div class="funnel-items" id="col-cold"></div>
+          </div>
+          <div class="funnel-col">
+            <div class="funnel-head">Follow-up <span class="funnel-count" id="cnt-followup">0</span></div>
+            <div class="funnel-items" id="col-followup"></div>
+          </div>
+          <div class="funnel-col">
+            <div class="funnel-head">Deal won <span class="funnel-count" id="cnt-won">0</span></div>
+            <div class="funnel-items" id="col-won"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DELIVERIES -->
+      <div class="view" id="view-deliveries">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">All deliveries</span>
+            <span id="deliveryCount" style="font-size:12px;opacity:0.4;"></span>
+          </div>
+          <div id="deliveriesTable">
+            <div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLANS -->
+      <div class="view" id="view-plans">
+        <div style="margin-bottom:28px;">
+          <div style="font-family:'Kaisei Decol',serif;font-size:24px;letter-spacing:-0.02em;margin-bottom:8px;">Choose your plan</div>
+          <div style="font-size:13px;opacity:0.45;">Celebrate employees, teams, and prospects. Cancel any time.</div>
+        </div>
+
+        <div style="margin-bottom:32px;">
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">For employees</div>
+          <div class="plans-grid">
+            <div class="plan-card">
+              <div class="plan-card-head light"><div class="plan-name">Birthday</div><div class="plan-price">€8<span>/employee/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">Handmade birthday cake delivery</div>
+                <div class="plan-feature">Personalised message card</div>
+                <div class="plan-feature">Same-city delivery</div>
+                <div class="plan-feature">Dashboard management</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-birthday','Birthday','€8/employee/mo',100)">Select plan →</button></div>
+            </div>
+            <div class="plan-card featured">
+              <div class="plan-card-head"><div class="plan-name">Birthday + Christmas</div><div class="plan-price">€14<span>/employee/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">Everything in Birthday</div>
+                <div class="plan-feature">Christmas gift delivery</div>
+                <div class="plan-feature">Premium packaging</div>
+                <div class="plan-feature">Priority scheduling</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('employee-christmas','Birthday + Christmas','€14/employee/mo',100)">Select plan →</button></div>
+            </div>
+            <div class="plan-card">
+              <div class="plan-card-head light"><div class="plan-name">Premium</div><div class="plan-price">€20<span>/employee/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">Everything in Birthday + Christmas</div>
+                <div class="plan-feature">Premium anniversary gift</div>
+                <div class="plan-feature">Work anniversary celebration</div>
+                <div class="plan-feature">Dedicated account manager</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('employee-premium','Premium','€20/employee/mo',100)">Select plan →</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:32px;">
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">For teams</div>
+          <div class="plans-grid">
+            <div class="plan-card">
+              <div class="plan-card-head light"><div class="plan-name">Team S</div><div class="plan-price">€30<span>/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">12–16 people</div>
+                <div class="plan-feature">Quarterly group celebration</div>
+                <div class="plan-feature">Artisan cake + drinks</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-s','Team S','€30/mo',16)">Select plan →</button></div>
+            </div>
+            <div class="plan-card">
+              <div class="plan-card-head light"><div class="plan-name">Team M</div><div class="plan-price">€40<span>/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">16–20 people</div>
+                <div class="plan-feature">Quarterly group celebration</div>
+                <div class="plan-feature">Artisan cake + premium drinks</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-m','Team M','€40/mo',20)">Select plan →</button></div>
+            </div>
+            <div class="plan-card">
+              <div class="plan-card-head light"><div class="plan-name">Team L</div><div class="plan-price">€50<span>/mo</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">20–24 people</div>
+                <div class="plan-feature">Quarterly group celebration</div>
+                <div class="plan-feature">Full artisan spread</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-outline" style="width:100%;" onclick="selectPlan('team-l','Team L','€50/mo',24)">Select plan →</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">For prospects</div>
+          <div style="max-width:340px;">
+            <div class="plan-card featured">
+              <div class="plan-card-head"><div class="plan-name">Prospect flow</div><div class="plan-price">€140<span>/prospect</span></div></div>
+              <div class="plan-body">
+                <div class="plan-feature">Cold outreach cake delivery</div>
+                <div class="plan-feature">Follow-up reminder cake</div>
+                <div class="plan-feature">Deal won — cake + champagne</div>
+                <div class="plan-feature">Tracked 3-step flow</div>
+                <div class="plan-feature">Personalised message per touch</div>
+              </div>
+              <div class="plan-cta"><button class="btn btn-primary" style="width:100%;" onclick="selectPlan('prospect','Prospect flow','€140/prospect',999);navigate('prospects')">Get started →</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Send Cake Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Send a cake</div>
+        <div class="modal-sub">New prospect gift flow</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="steps" id="stepsBar">
+        <div class="step active" data-step="0"><div class="step-dot">1</div><div class="step-label">Info</div></div>
+        <div class="step" data-step="1"><div class="step-dot">2</div><div class="step-label">Flow</div></div>
+        <div class="step" data-step="2"><div class="step-dot">3</div><div class="step-label">Cake</div></div>
+        <div class="step" data-step="3"><div class="step-dot">4</div><div class="step-label">Message</div></div>
+        <div class="step" data-step="4"><div class="step-dot">5</div><div class="step-label">Confirm</div></div>
+      </div>
+
+      <!-- Step 1: Info -->
+      <div class="step-panel active" id="sp-0">
+        <div class="form-grid">
+          <div class="field-group"><label>First name</label><input type="text" id="p-first" placeholder="James"></div>
+          <div class="field-group"><label>Last name</label><input type="text" id="p-last" placeholder="Chen"></div>
+          <div class="field-group span2"><label>Company</label><input type="text" id="p-company" placeholder="Acme Ventures"></div>
+          <div class="field-group span2"><label>Email</label><input type="email" id="p-email" placeholder="james@acme.com"></div>
+          <div class="field-group span2"><label>Delivery address</label><input type="text" id="p-address" placeholder="Herengracht 124, Amsterdam"></div>
+          <div class="field-group"><label>Deal value (€)</label><input type="number" id="p-deal" placeholder="25000"></div>
+          <div class="field-group"><label>First send date</label><input type="date" id="p-date"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Flow -->
+      <div class="step-panel" id="sp-1">
+        <div style="font-size:13px;opacity:0.55;margin-bottom:18px;">Select the outreach sequence for this prospect.</div>
+        <div class="flow-opts">
+          <div class="flow-opt selected" data-flow="full" onclick="selectFlow(this)">
+            <div class="flow-opt-icon">🎂🎂🎂</div>
+            <div class="flow-opt-name">Full flow (3 touches)</div>
+            <div class="flow-opt-desc">Cold outreach → follow-up → deal won. €140 total.</div>
+          </div>
+          <div class="flow-opt" data-flow="intro" onclick="selectFlow(this)">
+            <div class="flow-opt-icon">🎂</div>
+            <div class="flow-opt-name">Intro only</div>
+            <div class="flow-opt-desc">Single cold outreach cake. €50.</div>
+          </div>
+          <div class="flow-opt" data-flow="two" onclick="selectFlow(this)">
+            <div class="flow-opt-icon">🎂🎂</div>
+            <div class="flow-opt-name">Two-touch</div>
+            <div class="flow-opt-desc">Cold outreach + follow-up. €95.</div>
+          </div>
+          <div class="flow-opt" data-flow="won" onclick="selectFlow(this)">
+            <div class="flow-opt-icon">🥂</div>
+            <div class="flow-opt-name">Deal won</div>
+            <div class="flow-opt-desc">Celebrate a closed deal. Cake + champagne. €60.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Cake -->
+      <div class="step-panel" id="sp-2">
+        <div style="font-size:13px;opacity:0.55;margin-bottom:18px;">Choose the cake style for this prospect.</div>
+        <div class="cake-grid">
+          <div class="cake-opt selected" data-cake="classic" onclick="selectCake(this)"><div class="cake-img">🎂</div><div class="cake-label">Classic layer</div></div>
+          <div class="cake-opt" data-cake="lemon" onclick="selectCake(this)"><div class="cake-img">🍋</div><div class="cake-label">Lemon drizzle</div></div>
+          <div class="cake-opt" data-cake="choco" onclick="selectCake(this)"><div class="cake-img">🍫</div><div class="cake-label">Chocolate fudge</div></div>
+          <div class="cake-opt" data-cake="carrot" onclick="selectCake(this)"><div class="cake-img">🥕</div><div class="cake-label">Carrot walnut</div></div>
+          <div class="cake-opt" data-cake="floral" onclick="selectCake(this)"><div class="cake-img">🌸</div><div class="cake-label">Floral vanilla</div></div>
+          <div class="cake-opt" data-cake="seasonal" onclick="selectCake(this)"><div class="cake-img">✨</div><div class="cake-label">Seasonal special</div></div>
+        </div>
+      </div>
+
+      <!-- Step 4: Message -->
+      <div class="step-panel" id="sp-3">
+        <div style="font-size:13px;opacity:0.55;margin-bottom:18px;">Personalise the card message.</div>
+        <div class="form-grid full">
+          <div class="field-group"><label>Card message</label><textarea id="p-message" placeholder="Hi James, we thought you'd appreciate something sweet while we explore working together." rows="5"></textarea></div>
+          <div class="field-group"><label>Sender name (printed on card)</label><input type="text" id="p-sender" placeholder="Sarah from culturer"></div>
+        </div>
+      </div>
+
+      <!-- Step 5: Confirm -->
+      <div class="step-panel" id="sp-4">
+        <div style="border:1px solid var(--border);border-radius:4px;padding:20px;margin-bottom:20px;">
+          <div style="font-size:11px;opacity:0.4;margin-bottom:14px;letter-spacing:0.06em;text-transform:uppercase;">Order summary</div>
+          <div id="confirmDetails" style="font-size:13px;line-height:2.2;"></div>
+        </div>
+        <div style="font-size:12px;opacity:0.45;line-height:1.7;">By confirming, you authorise culturer to schedule this delivery and charge the agreed amount. A confirmation email will be sent once the order is placed with our artisan partners.</div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
+        <button class="btn btn-outline" id="btnBack" onclick="stepBack()" style="display:none;">← Back</button>
+        <button class="btn btn-primary" id="btnNext" onclick="stepNext()" style="margin-left:auto;">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Data layer ──
+  const DB = {
+    get: k => JSON.parse(localStorage.getItem('cult_' + k) || '[]'),
+    set: (k, v) => localStorage.setItem('cult_' + k, JSON.stringify(v)),
+    getObj: k => JSON.parse(localStorage.getItem('cult_' + k) || 'null'),
+    setObj: (k, v) => localStorage.setItem('cult_' + k, JSON.stringify(v)),
+    add: (k, item) => {
+      const arr = DB.get(k);
+      item.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      arr.push(item);
+      DB.set(k, arr);
+      return item;
+    },
+    remove: (k, id) => DB.set(k, DB.get(k).filter(x => x.id !== id))
+  };
+
+  // ── Router ──
+  const topbarTitle = document.getElementById('topbarTitle');
+  const topbarActions = document.getElementById('topbarActions');
+
+  const VIEW_META = {
+    overview:   { title: 'Overview',   actions: '' },
+    employees:  { title: 'Employees',  actions: '' },
+    teams:      { title: 'Teams',      actions: '' },
+    prospects:  { title: 'Prospects',  actions: '<button class="btn btn-primary" onclick="openSendCake()">+ New prospect</button>' },
+    deliveries: { title: 'Deliveries', actions: '' },
+    plans:      { title: 'Plans',      actions: '' }
+  };
+
+  function navigate(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    document.querySelector(`[data-view="${name}"]`).classList.add('active');
+    const meta = VIEW_META[name];
+    topbarTitle.textContent = meta.title;
+    topbarActions.innerHTML = meta.actions;
+    const renders = { overview: renderOverview, employees: renderEmployees, teams: renderTeams, prospects: renderProspects, deliveries: renderDeliveries };
+    if (renders[name]) renders[name]();
+  }
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => navigate(item.dataset.view));
+  });
+
+  // ── Toast ──
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2800);
+  }
+
+  // ── Helpers ──
+  function formatDate(d) {
+    return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(new Date(d));
+  }
+
+  function tierLabel(t) {
+    return { birthday: 'Birthday', christmas: '+ Christmas', premium: 'Premium' }[t] || (t || 'Birthday');
+  }
+
+  // ── Overview ──
+  function getUpcoming(days) {
+    const now = new Date();
+    const limit = new Date(now.getTime() + days * 86400000);
+    const results = [];
+    DB.get('employees').forEach(emp => {
+      if (!emp.birthday) return;
+      const bday = new Date(emp.birthday);
+      const thisYear = new Date(now.getFullYear(), bday.getMonth(), bday.getDate());
+      if (thisYear >= now && thisYear <= limit) {
+        results.push({ name: `${emp.first} ${emp.last}`, type: 'Birthday cake', date: thisYear, icon: '🎂' });
+      }
+    });
+    DB.get('prospects').forEach(p => {
+      if (!p.sendDate) return;
+      const d = new Date(p.sendDate);
+      if (d >= now && d <= limit) {
+        results.push({ name: `${p.first} ${p.last}${p.company ? ' · ' + p.company : ''}`, type: 'Prospect — ' + p.flow, date: d, icon: '🎁' });
+      }
+    });
+    return results.sort((a, b) => a.date - b.date);
+  }
+
+  function renderOverview() {
+    const emps = DB.get('employees');
+    const prospects = DB.get('prospects');
+    const deliveries = DB.get('deliveries');
+    const upcoming = getUpcoming(30);
+
+    document.getElementById('stat-employees').textContent = emps.length;
+    document.getElementById('stat-deliveries').textContent = deliveries.length;
+    document.getElementById('stat-prospects').textContent = prospects.length;
+    document.getElementById('stat-upcoming').textContent = upcoming.length;
+
+    const list = document.getElementById('upcomingList');
+    if (upcoming.length === 0) {
+      list.innerHTML = '<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries.<br>Add employees or prospects to get started.</div></div>';
+    } else {
+      list.innerHTML = upcoming.slice(0, 6).map(d => `
+        <div class="delivery-row">
+          <div class="delivery-icon">${d.icon}</div>
+          <div class="delivery-info">
+            <div class="delivery-name">${d.name}</div>
+            <div class="delivery-meta">${d.type}</div>
+          </div>
+          <div class="delivery-date">${formatDate(d.date)}</div>
+        </div>
+      `).join('');
+    }
+
+    const plan = DB.getObj('activePlan');
+    const planEl = document.getElementById('planUsage');
+    if (plan) {
+      const used = emps.length;
+      const max = plan.max || 50;
+      const pct = Math.min(100, Math.round((used / max) * 100));
+      planEl.innerHTML = `
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px;opacity:0.4;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${plan.name}</div>
+          <div style="font-size:22px;font-family:'Kaisei Decol',serif;letter-spacing:-0.01em;">${plan.price}</div>
+        </div>
+        <div class="plan-bar-wrap">
+          <div class="plan-bar-label"><span>Employees enrolled</span><span>${used} / ${max}</span></div>
+          <div class="plan-bar-track"><div class="plan-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+      `;
+    } else {
+      planEl.innerHTML = '<div style="opacity:0.4;font-size:13px;text-align:center;padding:20px 0;">No active plan. <a href="#" onclick="navigate(\'plans\');return false;" style="font-weight:500;border-bottom:1px solid currentColor;">Browse plans →</a></div>';
+    }
+  }
+
+  // ── Employees ──
+  let csvPending = null;
+
+  function renderEmployees() {
+    const emps = DB.get('employees');
+    document.getElementById('empCount').textContent = emps.length + ' people';
+    const container = document.getElementById('empTable');
+    if (emps.length === 0) {
+      container.innerHTML = '<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No employees yet.<br>Add one manually or upload a CSV.</div></div>';
+      return;
+    }
+    container.innerHTML = `<table class="tbl">
+      <thead><tr><th>Name</th><th>Email</th><th>Birthday</th><th>Plan</th><th></th></tr></thead>
+      <tbody>${emps.map(e => `<tr>
+        <td><strong>${e.first} ${e.last}</strong></td>
+        <td style="opacity:0.55">${e.email || '—'}</td>
+        <td>${e.birthday || '—'}</td>
+        <td><span class="badge badge-orange">${tierLabel(e.tier)}</span></td>
+        <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeEmployee('${e.id}')">Remove</button></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  document.getElementById('addEmpForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    DB.add('employees', Object.fromEntries(new FormData(this).entries()));
+    this.reset();
+    renderEmployees();
+    renderOverview();
+    toast('Employee added ✓');
+  });
+
+  function removeEmployee(id) {
+    DB.remove('employees', id);
+    renderEmployees();
+    renderOverview();
+    toast('Employee removed');
+  }
+
+  // CSV
+  const uploadZone = document.getElementById('uploadZone');
+  const csvInput = document.getElementById('csvInput');
+
+  uploadZone.addEventListener('click', () => csvInput.click());
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+  uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) parseCSVFile(e.dataTransfer.files[0]); });
+  csvInput.addEventListener('change', e => { if (e.target.files[0]) parseCSVFile(e.target.files[0]); });
+
+  function parseCSVFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const lines = e.target.result.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, ''));
+      csvPending = lines.slice(1).map(line => {
+        const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = vals[i] || '');
+        return {
+          first: obj.first || obj.firstname || obj['first name'] || '',
+          last: obj.last || obj.lastname || obj['last name'] || '',
+          email: obj.email || '',
+          birthday: obj.birthday || obj.birthdate || '',
+          address: obj.address || '',
+          tier: obj.tier || 'birthday'
+        };
+      }).filter(r => r.first || r.last);
+
+      document.getElementById('csvPreviewLabel').textContent = `${csvPending.length} employees found in "${file.name}"`;
+      document.getElementById('csvPreview').style.display = 'block';
+      uploadZone.style.display = 'none';
+    };
+    reader.readAsText(file);
+  }
+
+  function cancelCSV() {
+    csvPending = null;
+    document.getElementById('csvPreview').style.display = 'none';
+    uploadZone.style.display = 'block';
+    csvInput.value = '';
+  }
+
+  function importCSV() {
+    if (!csvPending) return;
+    csvPending.forEach(emp => DB.add('employees', emp));
+    const count = csvPending.length;
+    cancelCSV();
+    renderEmployees();
+    renderOverview();
+    toast(`${count} employees imported ✓`);
+  }
+
+  // ── Teams ──
+  function renderTeams() {
+    const teams = DB.get('teams');
+    document.getElementById('teamCount').textContent = teams.length + ' teams';
+    const container = document.getElementById('teamTable');
+    if (teams.length === 0) {
+      container.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.</div></div>';
+      return;
+    }
+    container.innerHTML = `<table class="tbl">
+      <thead><tr><th>Name</th><th>Size</th><th>Frequency</th><th>Next event</th><th></th></tr></thead>
+      <tbody>${teams.map(t => `<tr>
+        <td><strong>${t.name}</strong></td>
+        <td>${t.size}</td>
+        <td style="opacity:0.55;text-transform:capitalize">${t.frequency}</td>
+        <td>${t.nextDate || '—'}</td>
+        <td style="text-align:right"><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="removeTeam('${t.id}')">Remove</button></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  document.getElementById('addTeamForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    DB.add('teams', Object.fromEntries(new FormData(this).entries()));
+    this.reset();
+    renderTeams();
+    toast('Team added ✓');
+  });
+
+  function removeTeam(id) {
+    DB.remove('teams', id);
+    renderTeams();
+    toast('Team removed');
+  }
+
+  // ── Prospects ──
+  function renderProspects() {
+    const prospects = DB.get('prospects');
+    const cols = { cold: [], followup: [], won: [] };
+    prospects.forEach(p => { const c = p.stage || 'cold'; if (cols[c]) cols[c].push(p); });
+
+    Object.keys(cols).forEach(key => {
+      document.getElementById('cnt-' + key).textContent = cols[key].length;
+      const el = document.getElementById('col-' + key);
+      el.innerHTML = cols[key].length === 0
+        ? '<div style="text-align:center;padding:20px 0;font-size:12px;opacity:0.3;">Empty</div>'
+        : cols[key].map(p => `<div class="prospect-card">
+            <div class="prospect-card-name">${p.first} ${p.last}</div>
+            <div class="prospect-card-meta">${[p.company, p.flow].filter(Boolean).join(' · ')}</div>
+          </div>`).join('');
+    });
+  }
+
+  // ── Deliveries ──
+  function renderDeliveries() {
+    const deliveries = DB.get('deliveries');
+    document.getElementById('deliveryCount').textContent = deliveries.length + ' deliveries';
+    const container = document.getElementById('deliveriesTable');
+    if (deliveries.length === 0) {
+      container.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div>';
+      return;
+    }
+    container.innerHTML = `<table class="tbl">
+      <thead><tr><th>Recipient</th><th>Type</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>${deliveries.map(d => `<tr>
+        <td><strong>${d.name}</strong></td>
+        <td style="opacity:0.55">${d.type}</td>
+        <td>${d.date || '—'}</td>
+        <td><span class="badge ${d.status === 'delivered' ? 'badge-green' : 'badge-grey'}">${d.status || 'scheduled'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  // ── Plans ──
+  function selectPlan(id, name, price, max) {
+    DB.setObj('activePlan', { id, name, price, max });
+    toast('Plan activated: ' + name + ' ✓');
+    renderOverview();
+  }
+
+  // ── Send cake modal ──
+  let currentStep = 0;
+  const TOTAL_STEPS = 5;
+  let selectedFlow = 'full';
+  let selectedCake = 'classic';
+
+  function openSendCake() {
+    currentStep = 0;
+    selectedFlow = 'full';
+    selectedCake = 'classic';
+    ['p-first','p-last','p-company','p-email','p-address','p-deal','p-date','p-message','p-sender']
+      .forEach(id => document.getElementById(id).value = '');
+    document.querySelectorAll('.flow-opt').forEach(el => el.classList.toggle('selected', el.dataset.flow === 'full'));
+    document.querySelectorAll('.cake-opt').forEach(el => el.classList.toggle('selected', el.dataset.cake === 'classic'));
+    renderStep();
+    document.getElementById('modalBackdrop').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('open');
+  }
+
+  document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function renderStep() {
+    document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i === currentStep));
+    document.querySelectorAll('.steps .step').forEach((s, i) => {
+      s.classList.toggle('active', i === currentStep);
+      s.classList.toggle('done', i < currentStep);
+    });
+    document.getElementById('btnBack').style.display = currentStep > 0 ? 'inline-flex' : 'none';
+    document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS - 1 ? 'Confirm & send →' : 'Next →';
+    if (currentStep === TOTAL_STEPS - 1) buildConfirmSummary();
+  }
+
+  function selectFlow(el) {
+    document.querySelectorAll('.flow-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedFlow = el.dataset.flow;
+  }
+
+  function selectCake(el) {
+    document.querySelectorAll('.cake-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCake = el.dataset.cake;
+  }
+
+  function buildConfirmSummary() {
+    const flowPrices = { full: '€140', intro: '€50', two: '€95', won: '€60' };
+    const flowNames = { full: 'Full 3-touch', intro: 'Intro only', two: 'Two-touch', won: 'Deal won' };
+    const cakeNames = { classic: 'Classic layer', lemon: 'Lemon drizzle', choco: 'Chocolate fudge', carrot: 'Carrot walnut', floral: 'Floral vanilla', seasonal: 'Seasonal special' };
+    const row = (label, val) => `<div><span style="opacity:0.4;display:inline-block;width:110px;">${label}</span>${val}</div>`;
+    document.getElementById('confirmDetails').innerHTML = [
+      row('Recipient', `${document.getElementById('p-first').value} ${document.getElementById('p-last').value}`),
+      row('Company', document.getElementById('p-company').value || '—'),
+      row('Address', document.getElementById('p-address').value || '—'),
+      row('Flow', flowNames[selectedFlow]),
+      row('Cake', cakeNames[selectedCake]),
+      row('First send', document.getElementById('p-date').value || '—'),
+      `<div style="margin-top:12px;font-weight:500;font-size:16px;font-family:'Kaisei Decol',serif;">${flowPrices[selectedFlow]}</div>`
+    ].join('');
+  }
+
+  function stepNext() {
+    if (currentStep === TOTAL_STEPS - 1) { confirmProspect(); return; }
+    currentStep = Math.min(TOTAL_STEPS - 1, currentStep + 1);
+    renderStep();
+  }
+
+  function stepBack() {
+    currentStep = Math.max(0, currentStep - 1);
+    renderStep();
+  }
+
+  function confirmProspect() {
+    const first = document.getElementById('p-first').value.trim();
+    if (!first) { toast('Please enter a first name'); return; }
+
+    const prospect = {
+      first,
+      last: document.getElementById('p-last').value,
+      company: document.getElementById('p-company').value,
+      email: document.getElementById('p-email').value,
+      address: document.getElementById('p-address').value,
+      deal: document.getElementById('p-deal').value,
+      sendDate: document.getElementById('p-date').value,
+      flow: selectedFlow,
+      cake: selectedCake,
+      message: document.getElementById('p-message').value,
+      sender: document.getElementById('p-sender').value,
+      stage: 'cold',
+      createdAt: new Date().toISOString()
+    };
+
+    DB.add('prospects', prospect);
+    DB.add('deliveries', {
+      name: `${prospect.first} ${prospect.last}`,
+      type: 'Prospect — ' + prospect.flow,
+      date: prospect.sendDate || 'TBD',
+      status: 'scheduled'
+    });
+
+    closeModal();
+    renderProspects();
+    renderOverview();
+    toast('Prospect added & delivery scheduled ✓');
+  }
+
+  // ── Init ──
+  renderOverview();
+</script>
+</body>
+</html>

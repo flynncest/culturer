@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturer — Sign in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #f64d25;
+      --bg: #f7f6f2;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Layout ── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Left panel: cream with form */
+    .panel-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 6vw;
+    }
+
+    .panel-form-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .back-link {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover { opacity: 1; }
+
+    /* Form area */
+    .form-wrap {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(32px, 3.5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 10px;
+    }
+
+    .form-sub {
+      font-size: 14px;
+      line-height: 1.65;
+      opacity: 0.52;
+      margin-bottom: 40px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px 16px;
+      background: transparent;
+      border: 1.5px solid rgba(246,77,37,0.25);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      border-radius: 2px;
+    }
+
+    .field input::placeholder { opacity: 0.3; }
+
+    .field input:focus {
+      border-color: var(--accent);
+    }
+
+    .forgot {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      opacity: 0.42;
+      margin-top: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .forgot:hover { opacity: 0.8; }
+
+    .btn-login {
+      width: 100%;
+      margin-top: 28px;
+      padding: 15px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      border-radius: 2px;
+    }
+
+    .btn-login:hover { opacity: 0.82; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(246,77,37,0.15);
+    }
+
+    .divider span { font-size: 11px; opacity: 0.35; letter-spacing: 0.08em; }
+
+    .signup-cta {
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.5;
+    }
+
+    .signup-cta a {
+      opacity: 1;
+      font-weight: 500;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+
+    .panel-form-foot {
+      font-size: 11px;
+      opacity: 0.3;
+      letter-spacing: 0.04em;
+    }
+
+    /* Right panel: orange decorative */
+    .panel-art {
+      background: var(--accent);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px 5vw;
+    }
+
+    /* Stripe pattern overlay */
+    .panel-art::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -52deg,
+        rgba(247,246,242,0.07) 0px, rgba(247,246,242,0.07) 30px,
+        transparent 30px, transparent 60px
+      );
+    }
+
+    .art-quote {
+      position: relative;
+      z-index: 1;
+    }
+
+    .art-quote blockquote {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(22px, 2.4vw, 36px);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--bg);
+      margin-bottom: 20px;
+    }
+
+    .art-quote cite {
+      font-size: 12px;
+      color: var(--bg);
+      opacity: 0.55;
+      font-style: normal;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .art-stat {
+      position: absolute;
+      top: 48px;
+      left: 5vw;
+      color: var(--bg);
+      z-index: 1;
+    }
+
+    .art-stat-num {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(56px, 6vw, 96px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      opacity: 0.9;
+    }
+
+    .art-stat-label {
+      font-size: 12px;
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .page { grid-template-columns: 1fr; }
+      .panel-art { display: none; }
+      .panel-form { padding: 36px 5vw; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Art panel (LEFT) -->
+  <div class="panel-art">
+    <div class="art-stat">
+      <div class="art-stat-num">97%</div>
+      <div class="art-stat-label">of recipients remember the gesture</div>
+    </div>
+    <div class="art-quote">
+      <blockquote>
+        "culturer completely changed<br>how our team feels about<br>coming to work."
+      </blockquote>
+      <cite>Head of People, Series B startup · Amsterdam</cite>
+    </div>
+  </div>
+
+  <!-- Form panel (RIGHT) -->
+  <div class="panel-form">
+    <div class="panel-form-top">
+      <a class="logo" href="index.html">culturer</a>
+      <a class="back-link" href="index.html">← Back to home</a>
+    </div>
+
+    <div class="form-wrap">
+      <h1 class="form-title">Welcome<br>back.</h1>
+      <p class="form-sub">Sign in to manage your celebrations.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+          <a class="forgot" href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-login">Sign in →</button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <p class="signup-cta">
+        New to culturer? <a href="login.html">Request access ↗</a>
+      </p>
+    </div>
+
+    <p class="panel-form-foot">© 2026 culturer. All rights reserved.</p>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Placeholder: any input goes to dashboard
+    window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

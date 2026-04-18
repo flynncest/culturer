@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturer — feel truly valued</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #f64d25;
+      --bg: #f7f6f2;
+      --ph: #e2dfd9;
+      --ph2: #d5d2cb;
+      --ph-d: rgba(0,0,0,0.16);
+      --nav-h: 60px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2 { font-family: 'Kaisei Decol', serif; font-weight: 400; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
+
+    /* ════════ NAV ════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      height: var(--nav-h);
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      padding: 0 5vw;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1),
+                  background 0.28s ease,
+                  border-color 0.28s ease;
+    }
+
+    nav.nav-scrolled {
+      background: var(--bg);
+      border-bottom: 1px solid rgba(246,77,37,0.1);
+    }
+
+    nav.nav-hidden { transform: translateY(-100%); }
+
+    .nav-logo { font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--accent); flex-shrink: 0; }
+
+    .nav-links {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 36px; list-style: none;
+    }
+
+    .nav-links a { font-size: 13px; color: var(--accent); opacity: 0.52; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+
+    .nav-cta {
+      font-size: 13px; font-weight: 500; color: var(--accent);
+      letter-spacing: 0.03em; opacity: 0.85; transition: opacity 0.2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .nav-cta:hover { opacity: 1; }
+
+    .hamburger { display: none; flex-direction: column; gap: 6px; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--accent); transition: transform 0.25s ease; transform-origin: center; }
+    .hamburger.open span:first-child { transform: translateY(3.75px) rotate(45deg); }
+    .hamburger.open span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+    .nav-drawer {
+      position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: var(--bg); border-bottom: 1px solid rgba(246,77,37,0.1);
+      z-index: 299; padding: 8px 5vw 20px;
+      display: flex; flex-direction: column;
+      transform: translateY(-8px); opacity: 0; pointer-events: none;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .nav-drawer.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .nav-drawer a { font-size: 16px; color: var(--accent); opacity: 0.68; padding: 14px 0; border-bottom: 1px solid rgba(246,77,37,0.08); transition: opacity 0.2s; }
+    .nav-drawer a:last-child { border-bottom: none; }
+    .nav-drawer a:hover { opacity: 1; }
+
+    /* ════════ HERO ════════ */
+    .hero {
+      height: 100vh; height: 100dvh;
+      display: flex; flex-direction: column; overflow: hidden;
+      position: relative;
+    }
+
+    .hero-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      /* right padding clears the photo column */
+      padding: calc(var(--nav-h) + 28px) calc(42vw + 4vw) 32px 5vw;
+      min-height: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text { flex: 1; min-width: 0; }
+
+    /* H1 */
+    .hero-text h1 {
+      font-size: clamp(42px, 6.27vw, 95px);
+      line-height: 0.94;
+      letter-spacing: -0.03em;
+    }
+
+    .cycle-word { display: inline-block; transition: opacity 0.38s ease, transform 0.38s ease; }
+
+    .hero-actions { margin-top: 28px; display: flex; gap: 10px; }
+
+    /* Photo wrap — absolute, bleeds from very top flush to marquee */
+    .hero-photo-wrap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 148px; /* marquee 64px + stripe 84px */
+      width: 42vw;
+      z-index: 0;
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      background: var(--ph);
+    }
+
+    /* ── Floating pills ── */
+    .hero-pill {
+      position: absolute;
+      background: var(--bg);
+      border: 1.5px solid rgba(246,77,37,0.22);
+      border-radius: 100px;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 24px rgba(246,77,37,0.1);
+      cursor: default;
+      transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+      letter-spacing: 0.01em;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero-pill-1 { top: 18%; left: -30px; }
+    .hero-pill-1:hover { transform: translateY(-7px); }
+
+    .hero-pill-2 { top: 50%; left: -44px; transform: translateY(-50%); }
+    .hero-pill-2:hover { transform: translateY(calc(-50% - 7px)); }
+
+    .hero-pill-3 { bottom: 20%; left: -20px; }
+    .hero-pill-3:hover { transform: translateY(-7px); }
+
+    /* ════════ BUTTONS ════════ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 13px 26px; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; border: none; transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.72; }
+    .btn-fill   { background: var(--accent); color: var(--bg); }
+    .btn-stroke { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-fill-i { background: var(--bg); color: var(--accent); }
+    .btn-strk-i { background: transparent; color: var(--bg); border: 1.5px solid rgba(247,246,242,0.4); }
+
+    /* ════════ MARQUEE ════════ */
+    .marquee-wrap {
+      flex-shrink: 0; background: var(--accent); color: var(--bg);
+      height: 64px; overflow: hidden; display: flex; align-items: center;
+    }
+
+    .marquee-track { display: flex; width: max-content; animation: ticker 36s linear infinite; }
+
+    .marquee-track span {
+      font-family: 'Kaisei Decol', serif; font-size: clamp(14px, 1.92vw, 27px);
+      padding: 0 24px; flex-shrink: 0; line-height: 1;
+    }
+
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ════════ STRIPE — 84px ════════ */
+    .stripe-band {
+      flex-shrink: 0; height: 84px;
+      background: repeating-linear-gradient(-52deg, var(--accent) 0px, var(--accent) 34px, var(--bg) 34px, var(--bg) 68px);
+      overflow: hidden;
+    }
+
+    /* ════════ SECTIONS ════════ */
+    .section { padding: 100px 5vw; }
+    .section-dark { background: var(--accent); color: var(--bg); }
+
+    .section-tag { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.42; margin-bottom: 36px; }
+
+    /* ════════ SECTION 2: MISSION — data-driven ════════ */
+    .mission-inner { display: flex; flex-direction: column; gap: 56px; }
+
+    .mission-top {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mission-h {
+      font-family: 'Kaisei Decol', serif; font-weight: 400;
+      font-size: clamp(26px, 3.2vw, 48px);
+      line-height: 1.22; letter-spacing: -0.02em;
+      max-width: 52ch;
+    }
+
+    .mission-h em { font-style: italic; opacity: 0.65; }
+
+    /* Stats row — 4 columns */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(246,77,37,0.15);
+    }
+
+    .data-card {
+      padding: 28px 0 8px;
+      border-right: 1px solid rgba(246,77,37,0.12);
+      padding-right: 24px;
+      padding-left: 24px;
+    }
+
+    .data-card:first-child { padding-left: 0; }
+    .data-card:last-child { border-right: none; }
+
+    .data-num {
+      font-family: 'Kaisei Decol', serif;
+      font-size: clamp(34px, 3.8vw, 58px);
+      line-height: 1; letter-spacing: -0.025em; margin-bottom: 8px;
+    }
+
+    .data-title { font-size: 13px; font-weight: 500; margin-bottom: 5px; opacity: 0.82; }
+    .data-desc { font-size: 12px; line-height: 1.6; opacity: 0.48; }
+
+    /* ════════ SECTION 3: VALUES ════════ */
+    .values-head {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 56px; padding-bottom: 32px;
+      border-bottom: 1px solid rgba(247,246,242,0.18);
+    }
+
+    .values-head h2 { font-size: clamp(38px, 5.2vw, 76px); line-height: 0.96; letter-spacing: -0.03em; }
+    .values-head-note { font-size: 14px; line-height: 1.65; max-width: 34ch; opacity: 0.58; text-align: right; }
+
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(247,246,242,0.18); }
+
+    .val-card { border-right: 1px solid rgba(247,246,242,0.18); overflow: hidden; display: flex; flex-direction: column; }
+    .val-card:last-child { border-right: none; }
+    .val-img { width: 100%; height: 200px; background: var(--ph-d); flex-shrink: 0; }
+    .val-body { padding: 24px 26px 36px; }
+    .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
+    .val-body p { font-size: 14px; line-height: 1.65; opacity: 0.6; }
+
+    /* ════════ PHOTO STRIP ════════ */
+    .photo-strip { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .photo-strip-item { aspect-ratio: 4/3; background: var(--ph); }
+    .photo-strip-item:nth-child(2) { background: var(--ph2); }
+    .photo-strip-item:nth-child(4) { background: #c8c5bf; }
+
+    /* ════════ PLANS ════════ */
+    .plans-header { margin-bottom: 20px; }
+
+    .plans-header h2 { font-size: clamp(38px, 5vw, 74px); line-height: 0.96; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .plans-header p { font-size: 15px; line-height: 1.65; opacity: 0.55; max-width: 48ch; }
+
+    .plans-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 44px; margin-bottom: 48px;
+      padding-bottom: 24px; border-bottom: 1px solid currentColor;
+    }
+
+    .plans-nav-left { display: flex; align-items: center; gap: 18px; }
+    .plans-count { font-size: 11px; letter-spacing: 0.12em; opacity: 0.35; }
+    .plans-tabs { display: flex; gap: 8px; }
+
+    .tab-btn {
+      padding: 11px 26px; border-radius: 100px; border: 1.5px solid var(--accent);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+      background: transparent; color: var(--accent); transition: background 0.22s, color 0.22s;
+    }
+
+    .tab-btn.active { background: var(--accent); color: var(--bg); }
+    .plans-arrows { display: flex; gap: 7px; }
+
+    .arr-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent);
+      background: transparent; color: var(--accent); font-size: 16px;
+      display: flex; align-items: center; justify-content: center; transition: background 0.22s, color 0.22s;
+    }
+
+    .arr-btn:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+    .arr-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+    /* ════════ TAB PANELS ════════ */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp 0.36s ease forwards; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ════════ PRICING CARDS — 2 images ════════ */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid currentColor; }
+
+    .p-card { border-right: 1px solid currentColor; display: flex; flex-direction: column; overflow: hidden; }
+    .p-card:last-child { border-right: none; }
+
+    /* 2-image row */
+    .p-imgs { display: grid; grid-template-columns: 1fr 1fr; flex-shrink: 0; }
+    .p-img  { height: 145px; background: var(--ph); }
+    .p-img-b { background: var(--ph2); }
+
+    .p-body { padding: 22px 26px 26px; display: flex; flex-direction: column; flex: 1; }
+    .p-tier { font-size: 10px; letter-spacing: 0.17em; text-transform: uppercase; opacity: 0.42; margin-bottom: 10px; }
+    .p-price { font-family: 'Kaisei Decol', serif; font-size: clamp(36px, 3.4vw, 56px); line-height: 1; letter-spacing: -0.02em; }
+    .p-unit { font-size: 11px; opacity: 0.42; margin-top: 3px; margin-bottom: 18px; }
+    .p-rule { height: 1px; background: currentColor; opacity: 0.1; margin-bottom: 16px; }
+
+    .p-features { list-style: none; flex: 1; }
+    .p-features li { font-size: 13px; line-height: 1.6; padding: 7px 0; border-bottom: 1px solid currentColor; opacity: 0.58; display: flex; gap: 9px; align-items: flex-start; }
+    .p-features li:last-child { border-bottom: none; }
+    .p-features li::before { content: '—'; opacity: 0.28; flex-shrink: 0; }
+
+    .p-cta { margin-top: 18px; }
+
+    /* ════════ PROSPECT PANEL ════════ */
+    .prospect-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .prospect-left { display: flex; flex-direction: column; }
+    .prospect-left h2 { font-size: clamp(40px, 5.5vw, 86px); line-height: 0.96; letter-spacing: -0.03em; margin-bottom: 28px; }
+
+    .big-price { font-family: 'Kaisei Decol', serif; font-size: clamp(56px, 6vw, 96px); line-height: 1; letter-spacing: -0.02em; }
+    .price-unit { font-size: 11px; opacity: 0.42; margin-top: 4px; margin-bottom: 28px; }
+    .prospect-left p { font-size: clamp(13px, 1.2vw, 16px); line-height: 1.72; opacity: 0.62; margin-bottom: 14px; }
+    .prospect-right { display: flex; flex-direction: column; gap: 20px; }
+    .prospect-img { width: 100%; height: 240px; background: var(--ph); }
+
+    .flow-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.1); }
+    .flow-list li { display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.1); align-items: flex-start; }
+    .flow-n { font-size: 10px; letter-spacing: 0.14em; opacity: 0.32; flex-shrink: 0; padding-top: 2px; }
+    .flow-t { font-size: 13px; line-height: 1.65; opacity: 0.68; }
+
+    /* ════════ ARTISAN ════════ */
+    .artisan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .artisan-grid h2 { font-size: clamp(40px, 5.8vw, 86px); line-height: 0.96; letter-spacing: -0.03em; }
+    .artisan-right p { font-size: clamp(14px, 1.2vw, 17px); line-height: 1.72; opacity: 0.62; margin-bottom: 18px; }
+    .artisan-right p:last-of-type { margin-bottom: 0; }
+    .artisan-photo { width: 100%; height: 220px; background: var(--ph-d); margin-top: 28px; }
+
+    /* ════════ PHOTO ROW ════════ */
+    .photo-row { display: grid; grid-template-columns: 2fr 1fr 1fr; height: 280px; }
+    .photo-row-item { background: var(--ph); }
+    .photo-row-item:nth-child(2) { background: #d8d5cf; }
+    .photo-row-item:nth-child(3) { background: #cbc8c2; }
+
+    /* ════════ VIDEO ════════ */
+    .video-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; padding-bottom: 28px; border-bottom: 1px solid rgba(247,246,242,0.18); }
+    .video-head h2 { font-size: clamp(38px, 5.2vw, 76px); line-height: 0.96; letter-spacing: -0.03em; }
+    .video-head p { font-size: 14px; line-height: 1.65; max-width: 32ch; opacity: 0.58; text-align: right; }
+    .video-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .video-block { display: flex; flex-direction: column; gap: 14px; }
+    .video-thumb { width: 100%; aspect-ratio: 3/4; background: var(--ph-d); display: flex; align-items: center; justify-content: center; }
+    .play-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(247,246,242,0.5); display: flex; align-items: center; justify-content: center; }
+    .play-btn::after { content: ''; border-style: solid; border-width: 8px 0 8px 15px; border-color: transparent transparent transparent rgba(247,246,242,0.7); margin-left: 4px; }
+    .video-cap { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
+
+    /* ════════ CTA ════════ */
+    .final-cta { text-align: center; padding: 160px 5vw; }
+    .final-cta h2 { font-size: clamp(44px, 7vw, 110px); line-height: 0.96; letter-spacing: -0.03em; margin-bottom: 44px; }
+    .final-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ════════ FOOTER ════════ */
+    footer { padding: 44px 5vw; border-top: 1px solid var(--accent); display: flex; justify-content: space-between; align-items: center; gap: 28px; }
+    .footer-logo { font-family: 'Kaisei Decol', serif; font-size: 19px; color: var(--accent); }
+    .footer-links { display: flex; gap: 22px; list-style: none; }
+    .footer-links a { font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.38; transition: opacity 0.2s; }
+    .footer-links a:hover { opacity: 1; }
+    .footer-copy { font-size: 12px; opacity: 0.3; }
+
+    /* ════════ RESPONSIVE ════════ */
+    @media (max-width: 960px) {
+      /* Hero — hide photo, restore padding */
+      .hero-photo-wrap { display: none; }
+      .hero-body { padding: calc(var(--nav-h) + 32px) 5vw 40px; }
+      /* Section 2 stats → 2×2 */
+      .data-grid { grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(246,77,37,0.15); }
+      .data-card { border-bottom: 1px solid rgba(246,77,37,0.12); }
+      .data-card:nth-child(3), .data-card:nth-child(4) { border-bottom: none; }
+      .data-card:first-child { padding-left: 24px; }
+      /* Section layout */
+      .values-grid { grid-template-columns: 1fr; }
+      .val-card { border-right: none; border-bottom: 1px solid rgba(247,246,242,0.18); }
+      .val-card:last-child { border-bottom: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .p-card { border-right: none; border-bottom: 1px solid currentColor; }
+      .p-card:last-child { border-bottom: none; }
+      .prospect-panel { grid-template-columns: 1fr; gap: 40px; }
+      .artisan-grid { grid-template-columns: 1fr; gap: 44px; }
+      .video-row { grid-template-columns: 1fr; }
+      .photo-row { grid-template-columns: 1fr; height: auto; }
+      .photo-row-item { height: 200px; }
+      .photo-strip { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .values-head, .video-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .values-head-note, .video-head p { text-align: left; }
+      .plans-nav { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .mission-top { flex-direction: column; align-items: flex-start; gap: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .section { padding: 72px 5vw; }
+      /* Hero mobile — full-height vertically centred text block */
+      .hero-body {
+        padding: calc(var(--nav-h) + 20px) 5vw 36px;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-text { display: flex; flex-direction: column; justify-content: center; }
+      .hero-text h1 { font-size: clamp(46px, 13vw, 72px); }
+      .hero-actions .btn { font-size: 13px; padding: 14px 28px; }
+      /* Section 2 stats → single column */
+      .data-grid { grid-template-columns: 1fr; }
+      .data-card { border-right: none; border-bottom: 1px solid rgba(246,77,37,0.12); padding-left: 0; padding-right: 0; }
+      .data-card:last-child { border-bottom: none; }
+      .mission-h { font-size: clamp(22px, 6vw, 36px); }
+      .data-num { font-size: clamp(32px, 9vw, 50px); }
+      .data-desc { font-size: 13px; }
+      .val-body p, .artisan-right p { font-size: 15px; }
+      .p-features li { font-size: 14px; }
+      .plans-tabs { flex-wrap: wrap; gap: 6px; }
+      .tab-btn { padding: 10px 18px; font-size: 11px; }
+      .nav-cta { display: none; }
+      .nav-drawer a { font-size: 17px; }
+      footer { padding: 32px 5vw; }
+      .footer-links { gap: 16px; }
+      .final-cta { padding: 100px 5vw; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav id="mainNav">
+  <a class="nav-logo" href="/">culturer</a>
+  <ul class="nav-links">
+    <li><a href="#plans" data-tab="0">Employees</a></li>
+    <li><a href="#plans" data-tab="1">Teams</a></li>
+    <li><a href="#plans" data-tab="2">Prospects</a></li>
+    <li><a href="#artisan">Artisan</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="login.html" class="nav-cta">Get started ↗</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="navDrawer">
+  <a href="#plans" data-tab="0" data-close>Employees</a>
+  <a href="#plans" data-tab="1" data-close>Teams</a>
+  <a href="#plans" data-tab="2" data-close>Prospects</a>
+  <a href="#artisan" data-close>Artisan</a>
+  <a href="login.html" data-close>Get started ↗</a>
+</div>
+
+
+<!-- ════════ HERO ════════ -->
+<div class="hero">
+  <div class="hero-body">
+    <div class="hero-text">
+      <h1>Make your<br>people feel<br><span class="cycle-word">valued</span>.</h1>
+      <div class="hero-actions">
+        <a href="login.html" class="btn btn-fill">Start now →</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo"></div>
+      <div class="hero-pill hero-pill-1">
+        <span class="pill-dot"></span>Prospects reply 3× more often
+      </div>
+      <div class="hero-pill hero-pill-2">
+        <span class="pill-dot"></span>94% feel genuinely valued
+      </div>
+      <div class="hero-pill hero-pill-3">
+        <span class="pill-dot"></span>Employees stay twice as long
+      </div>
+    </div>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Birthdays</span><span>·</span><span>Deal Wins</span><span>·</span><span>Team Milestones</span><span>·</span><span>New Clients</span><span>·</span><span>Christmas</span><span>·</span><span>Prospect Outreach</span><span>·</span><span>Employee Recognition</span><span>·</span>
+      <span>Birthdays</span><span>·</span><span>Deal Wins</span><span>·</span><span>Team Milestones</span><span>·</span><span>New Clients</span><span>·</span><span>Christmas</span><span>·</span><span>Prospect Outreach</span><span>·</span><span>Employee Recognition</span><span>·</span>
+    </div>
+  </div>
+  <div class="stripe-band"></div>
+</div>
+
+
+<!-- ════════ SECTION 2: MISSION + DATA STATS ════════ -->
+<section class="section" id="mission">
+  <div class="mission-inner">
+    <div class="mission-top">
+      <span class="section-tag">Why it works</span>
+      <h2 class="mission-h">
+        culturer helps companies retain their best people and win more clients
+        — by making every employee, prospect, and partner feel <em>truly valued</em>.
+      </h2>
+      <a href="login.html" class="btn btn-fill" style="margin-top: 36px; align-self: flex-start;">See how it works →</a>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <div class="data-num">3×</div>
+        <div class="data-title">Higher retention rate</div>
+        <div class="data-desc">Companies that celebrate their people retain staff 3× longer than the industry average.</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">94%</div>
+        <div class="data-title">Feel more valued</div>
+        <div class="data-desc">Across 2,400+ deliveries, nearly all recipients reported a meaningful boost in belonging.</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">8:1</div>
+        <div class="data-title">Average ROI</div>
+        <div class="data-desc">Every €1 spent on culturer recovers €8 in reduced hiring and onboarding costs.</div>
+      </div>
+      <div class="data-card">
+        <div class="data-num">2 min</div>
+        <div class="data-title">Setup. Then forget.</div>
+        <div class="data-desc">Import your team via CSV, choose a plan, and culturer runs itself. No reminders ever.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════ SECTION 3: VALUES ════════ -->
+<section class="section section-dark" id="values">
+  <div class="values-head">
+    <div>
+      <span class="section-tag">Why it works</span>
+      <h2>The outcomes<br>that matter.</h2>
+    </div>
+    <p class="values-head-note">
+      Three results every growing<br>
+      company needs. One platform<br>
+      that delivers all of them.
+    </p>
+  </div>
+
+  <div class="values-grid">
+    <div class="val-card">
+      <div class="val-img"></div>
+      <div class="val-body">
+        <h3>Retain your<br>best people</h3>
+        <p>Your top performers have options. Make them feel seen — automatically, on their birthday, at Christmas, every year. The ones who feel valued stay.</p>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-img"></div>
+      <div class="val-body">
+        <h3>Convert prospects<br>into clients</h3>
+        <p>Every competitor sends emails. You send a handmade cake. culturer turns cold outreach into an experience that gets meetings booked and deals closed.</p>
+      </div>
+    </div>
+    <div class="val-card">
+      <div class="val-img"></div>
+      <div class="val-body">
+        <h3>Keep clients<br>for life</h3>
+        <p>Renewal decisions are made before the contract lands. Stay front of mind with quarterly team celebrations and seasonal gestures that build genuine loyalty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════ PHOTO STRIP ════════ -->
+<div class="photo-strip">
+  <div class="photo-strip-item"></div>
+  <div class="photo-strip-item"></div>
+  <div class="photo-strip-item"></div>
+  <div class="photo-strip-item"></div>
+</div>
+
+
+<!-- ════════ PLANS ════════ -->
+<section class="section" id="plans">
+  <div class="plans-header">
+    <span class="section-tag">Our plans</span>
+    <h2>Recognition that<br>drives results.</h2>
+    <p>Pick the plan for your people, your pipeline, or your team. Every plan is fully automated and every delivery is handmade.</p>
+  </div>
+
+  <div class="plans-nav">
+    <div class="plans-nav-left">
+      <span class="plans-count" id="plansCount">01 / 03</span>
+      <div class="plans-tabs">
+        <button class="tab-btn active" data-idx="0">Employees</button>
+        <button class="tab-btn" data-idx="1">Teams</button>
+        <button class="tab-btn" data-idx="2">Prospects</button>
+      </div>
+    </div>
+    <div class="plans-arrows">
+      <button class="arr-btn" id="plansPrev" disabled>←</button>
+      <button class="arr-btn" id="plansNext">→</button>
+    </div>
+  </div>
+
+  <!-- TAB 0: EMPLOYEES -->
+  <div class="tab-panel active" id="tab-0">
+    <p style="font-size:14px;opacity:0.5;max-width:52ch;line-height:1.65;margin-bottom:28px;">Your people are your biggest competitive advantage. Make them feel it — on their birthday, at Christmas, every year.</p>
+    <div class="pricing-grid">
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Essentials</div>
+          <div class="p-price">€8</div>
+          <div class="p-unit">per employee / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>Handmade birthday cake, delivered</li>
+            <li>Personalised message card</li>
+            <li>Dates tracked automatically</li>
+            <li>Local artisan bakers</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Standard</div>
+          <div class="p-price">€14</div>
+          <div class="p-unit">per employee / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>Everything in Essentials</li>
+            <li>Curated Christmas gift, gift-wrapped</li>
+            <li>Delivered before the holidays</li>
+            <li>Zero effort on your part</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Premium</div>
+          <div class="p-price">€20</div>
+          <div class="p-unit">per employee / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>Everything in Standard</li>
+            <li>Premium Christmas gift</li>
+            <li>Higher-end artisan cake</li>
+            <li>Priority delivery &amp; packaging</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: TEAMS -->
+  <div class="tab-panel" id="tab-1">
+    <p style="font-size:14px;opacity:0.5;max-width:52ch;line-height:1.65;margin-bottom:28px;">Culture isn't built in all-hands. It's built in the moments people share — like a quarterly cake big enough for everyone.</p>
+    <div class="pricing-grid">
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Small Team</div>
+          <div class="p-price">€30</div>
+          <div class="p-unit">per team / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>1 artisan cake per quarter</li>
+            <li>Feeds 12–16 people</li>
+            <li>Delivered on time, automated</li>
+            <li>No logistics to manage</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Medium Team</div>
+          <div class="p-price">€40</div>
+          <div class="p-unit">per team / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>1 artisan cake per quarter</li>
+            <li>Feeds 16–20 people</li>
+            <li>Custom team message</li>
+            <li>Quarterly reminder, automated</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Large Team</div>
+          <div class="p-price">€50</div>
+          <div class="p-unit">per team / month</div>
+          <div class="p-rule"></div>
+          <ul class="p-features">
+            <li>1 artisan cake per quarter</li>
+            <li>Feeds 20–24 people</li>
+            <li>Premium artisan selection</li>
+            <li>Priority logistics &amp; packaging</li>
+          </ul>
+          <div class="p-cta"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: PROSPECTS -->
+  <div class="tab-panel" id="tab-2">
+    <div class="prospect-panel">
+      <div class="prospect-left">
+        <span class="section-tag">For your pipeline</span>
+        <h2>Win clients<br>with cake.</h2>
+        <div class="big-price">€140</div>
+        <div class="price-unit">one-time per prospect</div>
+        <p>Your competitors send emails. You send a handmade cake. Stand out from the first touch and stay present until the deal is done — automatically.</p>
+        <p>No reply? A follow-up cake goes out. Deal closed? Champagne and a thank-you. One flow, zero effort.</p>
+        <div style="margin-top:24px;"><a href="login.html" class="btn btn-fill">Get started →</a></div>
+      </div>
+      <div class="prospect-right">
+        <div class="prospect-img"></div>
+        <ul class="flow-list">
+          <li><span class="flow-n">01</span><span class="flow-t">First touch — a handmade cake arrives the same day your email lands. Impossible to ignore.</span></li>
+          <li><span class="flow-n">02</span><span class="flow-t">No reply? A second cake ships automatically — a gentle, tangible reminder.</span></li>
+          <li><span class="flow-n">03</span><span class="flow-t">Deal closed — champagne and a thank-you cake to celebrate the win together.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════ ARTISAN ════════ -->
+<section class="section section-dark" id="artisan">
+  <div class="artisan-grid">
+    <div>
+      <span class="section-tag">Our commitment</span>
+      <h2>Every cake,<br>a deliberate<br>act of care.</h2>
+    </div>
+    <div class="artisan-right">
+      <p>We refused to automate the part that matters. Every cake that arrives at someone's door was made by hand, from scratch, by a person who genuinely cares about their craft — not a factory optimised for volume.</p>
+      <p>culturer sits in the gap between convenience and meaning. Technology handles the timing. Artisans handle the making. The result doesn't feel like a corporate program. It feels like someone thought of you.</p>
+      <div class="artisan-photo"></div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-row">
+  <div class="photo-row-item"></div>
+  <div class="photo-row-item"></div>
+  <div class="photo-row-item"></div>
+</div>
+
+<!-- ════════ VIDEO ════════ -->
+<section class="section section-dark" id="reactions">
+  <div class="video-head">
+    <div>
+      <span class="section-tag">Real reactions</span>
+      <h2>The moment<br>they open it.</h2>
+    </div>
+    <p>Watch how people react when<br>culturer shows up at their door.</p>
+  </div>
+  <div class="video-row">
+    <div class="video-block"><div class="video-thumb"><div class="play-btn"></div></div><p class="video-cap">Birthday surprise, Amsterdam</p></div>
+    <div class="video-block"><div class="video-thumb"><div class="play-btn"></div></div><p class="video-cap">Deal closed, London</p></div>
+    <div class="video-block"><div class="video-thumb"><div class="play-btn"></div></div><p class="video-cap">Team celebration, Berlin</p></div>
+  </div>
+</section>
+
+<!-- ════════ CTA ════════ -->
+<section class="section" id="contact">
+  <div class="final-cta">
+    <h2>Stop forgetting.<br>Start retaining.</h2>
+    <div class="final-cta-btns">
+      <a href="login.html" class="btn btn-fill">Start now →</a>
+      <a href="#plans" class="btn btn-stroke">See all plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <span class="footer-logo">culturer</span>
+  <ul class="footer-links">
+    <li><a href="#plans">Employees</a></li>
+    <li><a href="#plans">Teams</a></li>
+    <li><a href="#plans">Prospects</a></li>
+    <li><a href="login.html">Get started</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 culturer. All rights reserved.</span>
+</footer>
+
+<script>
+  /* Word cycling */
+  const words = ['valued', 'recognised', 'celebrated', 'special', 'seen', 'remembered', 'empowered'];
+  let wIdx = 0;
+  const wEl = document.querySelector('.cycle-word');
+
+  function cycleWord() {
+    wEl.style.opacity = '0';
+    wEl.style.transform = 'translateY(-10px)';
+    setTimeout(() => {
+      wIdx = (wIdx + 1) % words.length;
+      wEl.textContent = words[wIdx];
+      wEl.style.transition = 'none'; wEl.style.opacity = '0'; wEl.style.transform = 'translateY(10px)';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        wEl.style.transition = 'opacity 0.42s ease, transform 0.42s ease';
+        wEl.style.opacity = '1'; wEl.style.transform = 'translateY(0)';
+      }));
+    }, 440);
+  }
+  setInterval(cycleWord, 2800);
+
+  /* Nav scroll — transparent on hero, solid + hide/show on scroll */
+  const nav = document.getElementById('mainNav');
+  let lastY = 0, ticking = false;
+  const heroEl = document.querySelector('.hero');
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const cur = window.scrollY;
+        const heroH = heroEl ? heroEl.offsetHeight : window.innerHeight;
+        /* transparent only while fully in hero */
+        nav.classList.toggle('nav-scrolled', cur > 40);
+        /* hide/show on scroll direction */
+        if (cur <= 20) nav.classList.remove('nav-hidden');
+        else if (cur > lastY + 4) { nav.classList.add('nav-hidden'); hamburger.classList.remove('open'); drawer.classList.remove('open'); }
+        else if (cur < lastY - 4) nav.classList.remove('nav-hidden');
+        lastY = cur; ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  /* Hamburger */
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('navDrawer');
+  hamburger.addEventListener('click', () => { const o = hamburger.classList.toggle('open'); drawer.classList.toggle('open', o); });
+  drawer.querySelectorAll('[data-close]').forEach(l => l.addEventListener('click', () => { hamburger.classList.remove('open'); drawer.classList.remove('open'); }));
+
+  /* Plan tabs */
+  const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+  const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+  const prevBtn = document.getElementById('plansPrev');
+  const nextBtn = document.getElementById('plansNext');
+  const countEl = document.getElementById('plansCount');
+  let cur = 0;
+
+  function setTab(idx) {
+    if (idx === cur) return;
+    tabPanels[cur].classList.remove('active'); tabBtns[cur].classList.remove('active');
+    cur = idx;
+    tabPanels[cur].classList.add('active'); tabBtns[cur].classList.add('active');
+    prevBtn.disabled = cur === 0; nextBtn.disabled = cur === tabPanels.length - 1;
+    countEl.textContent = `0${cur + 1} / 0${tabPanels.length}`;
+  }
+
+  tabBtns.forEach((b, i) => b.addEventListener('click', () => setTab(i)));
+  prevBtn.addEventListener('click', () => { if (cur > 0) setTab(cur - 1); });
+  nextBtn.addEventListener('click', () => { if (cur < tabPanels.length - 1) setTab(cur + 1); });
+  document.querySelectorAll('[data-tab]').forEach(l => l.addEventListener('click', () => setTimeout(() => setTab(parseInt(l.dataset.tab)), 150)));
+</script>
+</body>
+</html>

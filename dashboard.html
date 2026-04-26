@@ -267,6 +267,12 @@
     .grp-btn { padding: 4px 12px; border-radius: 100px; border: 1.5px solid var(--border); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; background: transparent; color: var(--accent); cursor: pointer; transition: all 0.15s; }
     .grp-btn:hover { border-color: rgba(246,77,37,0.4); }
     .grp-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .team-card-row { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.12s; }
+    .team-card-row:hover { background: rgba(246,77,37,0.03); }
+    /* ── Sort header ── */
+    .sort-th { cursor: pointer; user-select: none; white-space: nowrap; }
+    .sort-th:hover { opacity: 0.75; }
+    .sort-arrow { font-size: 9px; opacity: 0.6; margin-left: 3px; }
     .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); }
     .catalog-card { background: var(--bg); cursor: pointer; transition: background 0.15s; }
     .catalog-card.selected { outline: 2.5px solid var(--accent); outline-offset: -1px; }
@@ -1020,6 +1026,26 @@
   </div>
 </div>
 
+<!-- ══ PLAN CHANGE REVIEW MODAL ══ -->
+<div class="modal-backdrop" id="modalPlanChangeReview">
+  <div class="modal modal-sm">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Review plan change</div>
+        <div class="modal-sub">Submitted changes are reviewed within 24h</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalPlanChangeReview')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="planChangeDesc"></div>
+      <div class="form-actions" style="margin-top:0;">
+        <button class="btn btn-outline" onclick="closeModal('modalPlanChangeReview')">Cancel</button>
+        <button class="btn btn-primary" id="confirmPlanChangeBtn">Submit change request →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1196,6 +1222,34 @@
   let currentFilter='employee';
   let currentGroupFilter='all';
   let selectedIds=new Set();
+  let peopleSortField='name';
+  let peopleSortDir='asc';
+
+  function sortPeople(arr) {
+    return [...arr].sort((a,b)=>{
+      let va,vb;
+      const fullName=p=>`${p.first||p.name||''} ${p.last||''}`.trim().toLowerCase();
+      if (peopleSortField==='name') { va=fullName(a); vb=fullName(b); }
+      else if (peopleSortField==='team') { va=(a.group||'zzz').toLowerCase(); vb=(b.group||'zzz').toLowerCase(); }
+      else if (peopleSortField==='plan') { const o={birthday:0,christmas:1,premium:2}; va=o[a.tier||'birthday']??0; vb=o[b.tier||'birthday']??0; }
+      else if (peopleSortField==='birthday') {
+        const n=new Date(); const toNext=p=>{ if(!p.birthday)return Infinity; const d=new Date(p.birthday); let nx=new Date(n.getFullYear(),d.getMonth(),d.getDate()); if(nx<n)nx.setFullYear(n.getFullYear()+1); return nx.getTime(); };
+        va=toNext(a); vb=toNext(b);
+      }
+      const c=va<vb?-1:va>vb?1:0; return peopleSortDir==='asc'?c:-c;
+    });
+  }
+
+  function setSortField(field) {
+    if (peopleSortField===field) peopleSortDir=peopleSortDir==='asc'?'desc':'asc';
+    else { peopleSortField=field; peopleSortDir='asc'; }
+    renderPeople();
+  }
+
+  function sortArrow(field) {
+    if (peopleSortField!==field) return '<span class="sort-arrow" style="opacity:0.2;">↕</span>';
+    return `<span class="sort-arrow">${peopleSortDir==='asc'?'↑':'↓'}</span>`;
+  }
 
   function renderGroupFilter() {
     const el=document.getElementById('groupFilterRow');
@@ -1260,16 +1314,18 @@
       return;
     }
 
-    // Flat roster with always-visible Edit + Delete
+    // Sortable flat roster
+    const sorted=sortPeople(people);
+    const thStyle='font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.5;';
     el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
       <input type="checkbox" class="row-check" id="checkAll" onchange="toggleAll(this)" style="flex-shrink:0;">
-      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;flex:1;">Name</span>
-      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:80px;">Team</span>
-      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:90px;">Plan</span>
-      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:72px;">Birthday</span>
+      <span class="sort-th" style="${thStyle}flex:1;" onclick="setSortField('name')">Name ${sortArrow('name')}</span>
+      <span class="sort-th" style="${thStyle}width:80px;" onclick="setSortField('team')">Team ${sortArrow('team')}</span>
+      <span class="sort-th" style="${thStyle}width:90px;" onclick="setSortField('plan')">Plan ${sortArrow('plan')}</span>
+      <span class="sort-th" style="${thStyle}width:72px;" onclick="setSortField('birthday')">Birthday ${sortArrow('birthday')}</span>
       <span style="width:120px;"></span>
     </div>
-    <div class="roster-list">${people.map(p=>{
+    <div class="roster-list">${sorted.map(p=>{
       const initials=((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
       const keyDate=p.type==='prospect'?fmtDateShort(p.sendDate):fmtDateShort(p.birthday);
       const planLabel=p.type==='prospect'?(p.deal?`€${p.deal}`:'—'):(TIER_LABEL[p.tier||'birthday']||'Birthday');
@@ -1318,45 +1374,46 @@
       return;
     }
 
-    // Level 2: inside a specific team — checkboxes + bulk bar + inline Edit/Delete
+    const enc=name=>encodeURIComponent(name); // safe for onclick attrs
+
+    // Level 2: inside a specific team
     if (currentTeamGroup!==null) {
-      const members=(teamMap[currentTeamGroup]||[]);
+      const members=(teamMap[currentTeamGroup]||[]).slice().sort((a,b)=>`${a.first||''} ${a.last||''}`.localeCompare(`${b.first||''} ${b.last||''}`));
       const tiers=[...new Set(members.map(m=>m.tier||'birthday'))];
       const tierLabel=tiers.length>1?'Mixed':TIER_LABEL[tiers[0]]||tiers[0];
       const monthly=members.reduce((s,p)=>s+(RATE[p.tier||'birthday']||8),0);
       document.getElementById('rosterCount').textContent=`${members.length} member${members.length!==1?'s':''}`;
-      // Show bulk bar for team members
-      selectedIds.clear();
       updateBulkBar();
 
       el.innerHTML=`
-        <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);flex-wrap:wrap;gap:10px;">
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="currentTeamGroup=null;selectedIds.clear();renderPeople()">← All teams</button>
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);flex-wrap:wrap;">
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="drillIntoTeam(null)">← All teams</button>
           <div style="font-family:'Kaisei Decol',serif;font-size:15px;letter-spacing:-0.01em;flex:1;">${currentTeamGroup}</div>
           <span class="badge badge-blue">${tierLabel}</span>
           <span style="font-size:12px;font-weight:500;">€${monthly}/mo</span>
-          <button class="btn btn-danger" style="font-size:11px;padding:5px 12px;" onclick="deleteWholeTeam(${JSON.stringify(currentTeamGroup)})">Delete team</button>
+          <button class="btn btn-danger" style="font-size:11px;padding:5px 12px;" onclick="deleteWholeTeam('${enc(currentTeamGroup)}')">Delete team</button>
         </div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);">
-          <input type="checkbox" class="row-check" id="teamCheckAll" onchange="teamToggleAll(this,${JSON.stringify(currentTeamGroup)})" style="flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);flex-wrap:wrap;">
+          <input type="checkbox" class="row-check" id="teamCheckAll" onchange="teamToggleAll(this,'${enc(currentTeamGroup)}')" style="flex-shrink:0;">
           <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;flex:1;">Select all</span>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'birthday')">🎂 Birthday</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'christmas')">🎄 +Christmas</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'premium')">✦ Premium</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'office')">🏢</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'home')">🏠</button>
+          <span style="font-size:11px;opacity:0.4;margin-right:2px;">Change tier:</span>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','birthday')">🎂 Birthday</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','christmas')">🎄 +Christmas</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','premium')">✦ Premium</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 8px;" onclick="teamBulkDelivery('${enc(currentTeamGroup)}','office')" title="Switch to office delivery">🏢</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 8px;" onclick="teamBulkDelivery('${enc(currentTeamGroup)}','home')" title="Switch to home delivery">🏠</button>
         </div>
         <div>${members.map(p=>{
           const initials=((p.first||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
           return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);${selectedIds.has(p.id)?'background:rgba(246,77,37,0.04);':''}" data-id="${p.id}">
-            <input type="checkbox" class="row-check team-row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
+            <input type="checkbox" class="row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
             <div class="roster-av" style="flex-shrink:0;">${initials}</div>
             <div style="flex:1;min-width:0;">
               <div style="font-size:13px;font-weight:500;">${p.first||''} ${p.last||''}</div>
               <div style="font-size:11px;opacity:0.38;">${p.email||'—'}${p.birthday?' · '+fmtDateShort(p.birthday):''}</div>
             </div>
             <span class="badge badge-orange" style="font-size:10px;flex-shrink:0;">${TIER_LABEL[p.tier||'birthday']}</span>
-            <span style="font-size:12px;opacity:0.5;flex-shrink:0;">${p.delivery==='home'?'🏠 Home':'🏢 Office'}</span>
+            <span style="font-size:12px;opacity:0.5;flex-shrink:0;">${p.delivery==='home'?'🏠':'🏢'}</span>
             <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;flex-shrink:0;" onclick="openEditPerson('${p.id}')">Edit</button>
             <button class="btn btn-danger" style="padding:5px 10px;font-size:11px;flex-shrink:0;" onclick="deletePerson('${p.id}')">✕</button>
           </div>`;
@@ -1364,14 +1421,14 @@
       return;
     }
 
-    // Level 1: team cards
+    // Level 1: team cards — sorted A-Z
     document.getElementById('rosterCount').textContent=`${teamNames.length} team${teamNames.length!==1?'s':''}`;
     el.innerHTML=`<div class="roster-list">${teamNames.map(name=>{
       const members=teamMap[name];
       const tiers=[...new Set(members.map(m=>m.tier||'birthday'))];
       const tierLabel=tiers.length>1?'Mixed':TIER_LABEL[tiers[0]]||tiers[0];
       const monthly=members.reduce((s,p)=>s+(RATE[p.tier||'birthday']||8),0);
-      return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;" onclick="currentTeamGroup=${JSON.stringify(name)};selectedIds.clear();renderPeople()" onmouseover="this.style.background='rgba(246,77,37,0.03)'" onmouseout="this.style.background=''">
+      return `<div class="team-card-row" onclick="drillIntoTeam('${enc(name)}')">
         <div class="roster-av" style="background:rgba(37,99,235,0.1);color:#2563eb;font-size:16px;width:38px;height:38px;flex-shrink:0;">🏢</div>
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:500;margin-bottom:2px;">${name}</div>
@@ -1379,39 +1436,48 @@
         </div>
         <span class="badge badge-blue" style="flex-shrink:0;">Team</span>
         <span style="font-size:13px;font-weight:500;flex-shrink:0;">€${monthly}/mo</span>
-        <span style="font-size:20px;opacity:0.25;">›</span>
+        <span style="font-size:22px;opacity:0.2;flex-shrink:0;">›</span>
       </div>`;
     }).join('')}</div>`;
   }
 
-  function teamToggleAll(cb, teamName) {
-    const members=buildTeamMap()[teamName]||[];
+  function drillIntoTeam(encoded) {
+    currentTeamGroup = encoded ? decodeURIComponent(encoded) : null;
+    selectedIds.clear();
+    renderPeople();
+  }
+
+  function teamToggleAll(cb, encodedName) {
+    const members=buildTeamMap()[decodeURIComponent(encodedName)]||[];
     if (cb.checked) members.forEach(p=>selectedIds.add(p.id));
     else selectedIds.clear();
     renderTeamsGroupView();
   }
 
-  function teamBulkTier(teamName, tier) {
+  function teamBulkTier(encodedName, tier) {
+    const teamName=decodeURIComponent(encodedName);
     const members=buildTeamMap()[teamName]||[];
     if (!members.length) return;
     members.forEach(p=>DB.update('people',p.id,{tier}));
     renderTeamsGroupView(); renderOverview();
-    toast(`All ${members.length} members → ${TIER_LABEL[tier]} ✓`);
+    toast(`${teamName} → ${TIER_LABEL[tier]} ✓`);
   }
 
-  function teamBulkDelivery(teamName, delivery) {
+  function teamBulkDelivery(encodedName, delivery) {
+    const teamName=decodeURIComponent(encodedName);
     const members=buildTeamMap()[teamName]||[];
     members.forEach(p=>DB.update('people',p.id,{delivery}));
     renderTeamsGroupView();
     toast(`${teamName} → ${delivery==='home'?'home':'office'} delivery ✓`);
   }
 
-  function deleteWholeTeam(teamName) {
+  function deleteWholeTeam(encodedName) {
+    const teamName=decodeURIComponent(encodedName);
     const members=buildTeamMap()[teamName]||[];
-    if (!confirm(`Delete "${teamName}" and all ${members.length} member${members.length!==1?'s':''}?`)) return;
+    if (!confirm(`Delete "${teamName}" and all ${members.length} member${members.length!==1?'s':''}? This cannot be undone.`)) return;
     members.forEach(p=>DB.remove('people',p.id));
-    currentTeamGroup=null; selectedIds.clear();
-    renderPeople(); renderOverview();
+    drillIntoTeam(null);
+    renderOverview();
     toast(`"${teamName}" deleted`);
   }
 
@@ -1855,7 +1921,7 @@
 
   function confirmStartPlan() {
     const s=DB.getObj('settings')||{};
-    s.planActive=true; s.planTier=_kickoffPlan; s.planDelivery=_kickoffDelivery;
+    s.planActive=true; s.planTier=_kickoffPlan; s.planDelivery=_kickoffDelivery; s.planActiveDate=new Date().toISOString();
     DB.setObj('settings',s);
     // Update all employees to the chosen plan & delivery
     allPeople().filter(p=>p.type==='employee').forEach(p=>{
@@ -1911,25 +1977,27 @@
       const rate=RATE[primaryTier]||8;
       const monthly=(rate+homeAddon)*billable;
       const delivIcon=g.deliveries.has('home')&&g.deliveries.has('office')?'🏢🏠 Mixed':g.deliveries.has('home')?'🏠 Home':'🏢 Office';
-      // Determine dominant type for label
-      const dominantType=g.employees.length>=g.teamMembers.length&&g.employees.length>=g.prospects.length?'employee':g.teamMembers.length>=g.prospects.length?'team':'prospect';
-      const typeLabel={employee:'Employees',team:'Team members',prospect:'Prospects'}[dominantType];
-      const typeCount={employee:g.employees.length,team:g.teamMembers.length,prospect:g.prospects.length}[dominantType];
+      const dominantType=g.teamMembers.length>g.employees.length?'team':'employee';
+      const memberLabel=dominantType==='team'?'Team members':'Employees';
+      const memberCount=dominantType==='team'?g.teamMembers.length:g.employees.length;
+      // Cakes expected this year (prorated by current month)
+      const monthFrac=(new Date().getMonth()+1)/12;
+      const cakesYear=Math.round(billable*(rate===8?1:rate===14?2:3)*monthFrac);
       return `<div class="plan-ov-card" onclick="showPlanDetail('${encodeURIComponent(g.key)}')">
         <div class="plan-ov-top">
-          <div class="plan-ov-label">${dominantType==='team'?'Team group':dominantType==='prospect'?'Prospect group':'Employee group'}</div>
+          <div class="plan-ov-label">${dominantType==='team'?'Team group':'Employee group'}</div>
           <div class="plan-ov-name" id="plan-name-${encodeURIComponent(g.key)}">${g.name}</div>
           <span class="plan-ov-tier">${tierLabel}</span>
           <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${encodeURIComponent(g.key)}','${g.name.replace(/'/g,"\\'")}')">✎</button>
         </div>
         <div class="plan-ov-bottom">
-          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${typeCount}</div><div class="plan-ov-stat-label">${typeLabel}</div></div>
-          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${g.prospects.length||'—'}</div><div class="plan-ov-stat-label">Prospects</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${memberCount}</div><div class="plan-ov-stat-label">${memberLabel}</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${cakesYear||'—'}</div><div class="plan-ov-stat-label">Cakes YTD</div></div>
           <div class="plan-ov-stat"><div class="plan-ov-stat-num">${monthly?`€${monthly}`:'—'}</div><div class="plan-ov-stat-label">Monthly</div></div>
         </div>
         <div class="plan-ov-footer">
           <div class="plan-ov-delivery">${delivIcon}</div>
-          <div>${g.employees.length?`€${monthly}/mo`:''}</div>
+          <div style="font-size:11px;opacity:0.45;">${monthly?`€${monthly}/mo`:''}</div>
         </div>
       </div>`;
     }).join('');
@@ -1957,40 +2025,63 @@
     const all=[...g.employees,...g.teamMembers,...g.prospects];
     const el=document.getElementById('planDetailTable');
     const billableCount=billable;
-
-    // Plan-level bulk actions
+    const s2=DB.getObj('settings')||{};
+    const planStart=s2.planActiveDate?new Date(s2.planActiveDate):null;
+    const monthsRunning=planStart?Math.max(1,Math.round((new Date()-planStart)/(30*24*60*60*1000))):null;
+    const monthFrac=(new Date().getMonth()+1)/12;
+    const cakesYear=Math.round(billable*(RATE[primaryTier]===8?1:RATE[primaryTier]===14?2:3)*monthFrac);
+    const cakesQ=Math.round(billable*(RATE[primaryTier]===8?1:RATE[primaryTier]===14?2:3)/4);
     const primaryDelivery=g.deliveries.has('office')?'office':'home';
-    const bulkActions=billableCount>0?`
-      <div style="padding:18px 20px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
-        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.38;margin-bottom:14px;">Bulk actions — ${billableCount} people</div>
-        <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;">
+
+    // Analytics strip at top
+    const analyticsStrip=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);">
+      ${[
+        ['Members',billableCount],
+        ['Cakes this year',cakesYear||'—'],
+        ['Cakes this quarter',cakesQ||'—'],
+        ['Running',monthsRunning?`${monthsRunning}mo`:'—']
+      ].map(([label,val])=>`<div style="padding:14px 18px;border-right:1px solid var(--border);">
+        <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.02em;line-height:1;margin-bottom:3px;">${val}</div>
+        <div style="font-size:11px;opacity:0.38;letter-spacing:0.03em;">${label}</div>
+      </div>`).join('')}
+    </div>`;
+
+    // Change request panel — changes require review before applying
+    const changePanel=billableCount>0?`
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;flex:1;">Request plan change</span>
+          <span style="font-size:11px;opacity:0.45;background:rgba(201,95,0,0.08);color:#c95f00;border-radius:3px;padding:3px 8px;">⚑ Reviewed within 24h</span>
+        </div>
+        <div style="font-size:12px;opacity:0.5;margin-bottom:12px;line-height:1.5;">Changes are reviewed before taking effect — we check for upcoming deliveries to make sure no one misses their cake.</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
           <div>
-            <div style="font-size:11px;opacity:0.55;margin-bottom:7px;">Change tier for all</div>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">Change tier for all ${billableCount} people</div>
+            <div style="display:flex;gap:6px;align-items:center;">
               <select id="planBulkTier" style="padding:7px 28px 7px 11px;border:1.5px solid var(--border);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--accent);background:var(--bg);outline:none;cursor:pointer;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f64d25' fill-opacity='.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 10px center;">
                 <option value="birthday"${primaryTier==='birthday'?' selected':''}>🎂 Birthday — €8/mo</option>
                 <option value="christmas"${primaryTier==='christmas'?' selected':''}>🎄 + Christmas — €14/mo</option>
                 <option value="premium"${primaryTier==='premium'?' selected':''}>✦ Premium — €20/mo</option>
               </select>
-              <button class="btn btn-primary" style="font-size:12px;" onclick="applyPlanBulkTier('${encodedKey}')">Apply to all</button>
+              <button class="btn btn-outline" style="font-size:12px;" onclick="requestPlanChange('tier','${encodedKey}')">Request change →</button>
             </div>
           </div>
           <div style="width:1px;background:var(--border);align-self:stretch;min-height:36px;"></div>
           <div>
-            <div style="font-size:11px;opacity:0.55;margin-bottom:7px;">Delivery for everyone</div>
+            <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">Delivery for this group</div>
             <div style="display:flex;gap:6px;">
-              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='office'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="applyPlanBulkDelivery('${encodedKey}','office')">🏢 Office</button>
-              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='home'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="applyPlanBulkDelivery('${encodedKey}','home')">🏠 Home (+€2)</button>
+              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='office'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="requestPlanChange('delivery_office','${encodedKey}')">🏢 Office</button>
+              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='home'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="requestPlanChange('delivery_home','${encodedKey}')">🏠 Home (+€2)</button>
             </div>
           </div>
         </div>
-      </div>`:
-      `<div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;opacity:0.45;">Add people to this group to unlock bulk actions.</div>`;
+      </div>` :
+      `<div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;opacity:0.45;">Add people to this group to request plan changes.</div>`;
 
-    if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No one in this plan yet.</div></div>'; return; }
+    if (!all.length) { el.innerHTML=analyticsStrip+'<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No one in this plan yet.</div></div>'; return; }
 
     // Read-only member list — editing happens in People tab
-    el.innerHTML=bulkActions+`<table class="tbl">
+    el.innerHTML=analyticsStrip+changePanel+`<table class="tbl">
       <thead><tr><th>Name</th><th>Type</th><th>Plan / tier</th><th>Delivery</th><th>Key date</th><th>Allergies</th></tr></thead>
       <tbody>${all.map(p=>{
         const keyDate=p.type==='employee'||p.type==='team'?fmtDateShort(p.birthday):fmtDateShort(p.sendDate);
@@ -2011,6 +2102,68 @@
           <button class="btn btn-danger" style="font-size:12px;" onclick="deleteGroup(${JSON.stringify(key)})">Delete group</button>
         </div>
       </div>`;
+  }
+
+  function requestPlanChange(changeType, encodedKey) {
+    const key=decodeURIComponent(encodedKey);
+    const groups=getPlanGroups();
+    const g=groups.find(x=>x.key===key);
+    if (!g) return;
+    const billable=g.employees.length+g.teamMembers.length;
+    const primaryTier=[...g.tiers][0]||'birthday';
+
+    // Check upcoming birthdays in next 30 days
+    const allPpl=allPeople().filter(p=>g.key==='__ungrouped__'?!p.group:p.group===g.key);
+    const now=new Date(); const in30=new Date(now.getTime()+30*24*60*60*1000);
+    const upcoming=allPpl.filter(p=>{
+      if (!p.birthday) return false;
+      const b=new Date(p.birthday);
+      let next=new Date(now.getFullYear(),b.getMonth(),b.getDate());
+      if (next<now) next.setFullYear(now.getFullYear()+1);
+      return next<=in30;
+    });
+
+    let changeDesc='';
+    let impact='';
+    if (changeType==='tier') {
+      const newTier=document.getElementById('planBulkTier')?.value||primaryTier;
+      if (newTier===primaryTier) { toast('Already on this plan'); return; }
+      const oldMonthly=(RATE[primaryTier]||8)*billable;
+      const newMonthly=(RATE[newTier]||8)*billable;
+      const diff=newMonthly-oldMonthly;
+      changeDesc=`Change tier from <strong>${TIER_LABEL[primaryTier]}</strong> → <strong>${TIER_LABEL[newTier]}</strong>`;
+      impact=`Monthly: €${oldMonthly} → €${newMonthly} (${diff>=0?'+':''}€${diff}/mo)`;
+    } else if (changeType==='delivery_office') {
+      changeDesc='Switch delivery to <strong>Office</strong> for all members';
+      impact='Standard rate — batch every Monday';
+    } else if (changeType==='delivery_home') {
+      changeDesc='Switch delivery to <strong>Home</strong> for all members';
+      impact=`+€${billable*2}/mo for home delivery`;
+    }
+
+    const warningHtml=upcoming.length
+      ? `<div style="background:rgba(201,95,0,0.08);border:1px solid rgba(201,95,0,0.2);border-radius:4px;padding:11px 14px;margin:14px 0;font-size:12px;color:#c95f00;">
+           ⚑ <strong>${upcoming.length} upcoming birthday${upcoming.length!==1?'s':''}</strong> in the next 30 days — our team will confirm these are not affected before applying.
+         </div>`
+      : `<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:11px 14px;margin:14px 0;font-size:12px;color:#16a34a;">✓ No upcoming deliveries in the next 30 days.</div>`;
+
+    document.getElementById('planChangeDesc').innerHTML=`
+      <div style="margin-bottom:12px;font-size:14px;">${changeDesc}</div>
+      <div style="font-size:12px;opacity:0.6;">${impact}</div>
+      <div style="font-size:12px;opacity:0.5;margin-top:4px;">Group: <strong>${g.name}</strong> · ${billable} people affected</div>
+      ${warningHtml}
+      <div style="font-size:12px;opacity:0.5;line-height:1.6;">Once submitted, our team reviews within 24h and applies the change only after confirming all upcoming deliveries are safe.</div>`;
+
+    const btn=document.getElementById('confirmPlanChangeBtn');
+    btn.replaceWith(btn.cloneNode(true)); // clear old listeners
+    document.getElementById('confirmPlanChangeBtn').onclick=()=>{
+      if (changeType==='tier') applyPlanBulkTier(encodedKey);
+      else if (changeType==='delivery_office') applyPlanBulkDelivery(encodedKey,'office');
+      else if (changeType==='delivery_home') applyPlanBulkDelivery(encodedKey,'home');
+      closeModal('modalPlanChangeReview');
+      toast('Change request submitted — reviewing within 24h ✓');
+    };
+    openModal('modalPlanChangeReview');
   }
 
   function navigateToPeopleGroup(groupKey) {

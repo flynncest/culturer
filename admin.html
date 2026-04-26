@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturers — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #f64d25; --bg: #f7f6f2; --border: rgba(246,77,37,0.14); }
+    html, body { min-height: 100%; background: var(--bg); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+    a { text-decoration: none; color: inherit; }
+
+    .topbar { border-bottom: 1px solid var(--border); padding: 0 36px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-logo { font-family: 'Kaisei Decol', serif; font-size: 18px; }
+    .topbar-badge { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(246,77,37,0.1); color: var(--accent); padding: 4px 10px; border-radius: 100px; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; transition: opacity 0.15s; border: none; }
+    .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid rgba(246,77,37,0.3); }
+    .btn:hover { opacity: 0.75; }
+
+    .page { max-width: 1280px; margin: 0 auto; padding: 36px; }
+
+    /* ── Stats strip ── */
+    .stats-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 32px; }
+    .stat-box { border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; }
+    .stat-num { font-family: 'Kaisei Decol', serif; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; opacity: 0.4; letter-spacing: 0.04em; }
+
+    /* ── Location filter ── */
+    .filter-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+    .filter-tabs { display: flex; gap: 2px; background: rgba(246,77,37,0.06); border-radius: 5px; padding: 3px; }
+    .filter-tab { padding: 7px 16px; border-radius: 3px; font-size: 12px; font-weight: 500; cursor: pointer; border: none; background: transparent; color: var(--accent); opacity: 0.5; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+    .filter-tab.active { background: var(--bg); opacity: 1; box-shadow: 0 1px 3px rgba(246,77,37,0.12); }
+    .admin-search { padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 3px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--accent); background: transparent; outline: none; width: 240px; }
+    .admin-search:focus { border-color: rgba(246,77,37,0.4); }
+    .admin-search::placeholder { opacity: 0.3; }
+
+    /* ── Table ── */
+    .card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .tbl { width: 100%; border-collapse: collapse; }
+    .tbl th { text-align: left; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.38; padding: 0 16px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .tbl td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:hover td { background: rgba(246,77,37,0.025); }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge-green { background: rgba(34,197,94,0.12); color: #16a34a; }
+    .badge-amber { background: rgba(201,95,0,0.1); color: #c95f00; }
+    .badge-grey { background: rgba(0,0,0,0.07); color: rgba(246,77,37,0.55); }
+    .badge-orange { background: rgba(246,77,37,0.1); color: var(--accent); }
+
+    /* ── City header rows ── */
+    .city-header { background: rgba(246,77,37,0.04); }
+    .city-header td { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.45; font-weight: 600; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+
+    /* ── Expandable row ── */
+    .company-name { font-weight: 500; }
+    .company-domain { font-size: 11px; opacity: 0.38; margin-top: 1px; }
+    .prog-bar { height: 4px; background: rgba(246,77,37,0.1); border-radius: 2px; margin-top: 5px; }
+    .prog-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+
+    /* ── Map legend ── */
+    .loc-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+    .loc-card { border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; }
+    .loc-city { font-family: 'Kaisei Decol', serif; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .loc-count { font-size: 26px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; margin-bottom: 2px; }
+    .loc-sub { font-size: 11px; opacity: 0.4; }
+    .loc-bar { height: 3px; background: var(--accent); border-radius: 2px; margin-top: 10px; }
+
+    @media (max-width: 900px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .loc-summary { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .page { padding: 20px; }
+      .topbar { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">culturers</span>
+    <span class="topbar-badge">Admin</span>
+  </div>
+  <div class="topbar-right">
+    <a href="login.html" class="btn btn-outline">← Exit admin</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <div style="margin-bottom:28px;">
+    <div style="font-family:'Kaisei Decol',serif;font-size:26px;letter-spacing:-0.02em;margin-bottom:6px;">Operations overview</div>
+    <div style="font-size:13px;opacity:0.45;">All active accounts and delivery status by location.</div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="stat-box"><div class="stat-num" id="s-accounts">0</div><div class="stat-label">Active accounts</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-employees">0</div><div class="stat-label">Employees managed</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-deliveries">0</div><div class="stat-label">Deliveries this month</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-cities">0</div><div class="stat-label">Cities active</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-mrr">€0</div><div class="stat-label">Monthly revenue</div></div>
+  </div>
+
+  <!-- Location summary -->
+  <div class="loc-summary" id="locSummary"></div>
+
+  <!-- Filter row -->
+  <div class="filter-row">
+    <div class="filter-tabs" id="cityFilterTabs">
+      <button class="filter-tab active" data-city="All" onclick="setAdminCity('All',this)">All cities</button>
+    </div>
+    <input type="text" class="admin-search" id="adminSearch" placeholder="Search company…" oninput="renderTable()">
+  </div>
+
+  <!-- Table -->
+  <div class="card">
+    <table class="tbl" id="adminTable">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>City</th>
+          <th>Plan</th>
+          <th>Employees</th>
+          <th>Teams</th>
+          <th>Prospects</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>MRR</th>
+          <th>Next delivery</th>
+        </tr>
+      </thead>
+      <tbody id="adminTableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Mock company data
+  const COMPANIES = [
+    { id:1, name:'Specto Consulting', domain:'specto.nl', city:'Amsterdam', plan:'Premium', employees:45, teams:3, prospects:12, status:'active', joined:'Nov 2025', mrr:900, nextDelivery:'2026-05-03', notes:'' },
+    { id:2, name:'Nordic Labs', domain:'nordiclabs.io', city:'Amsterdam', plan:'Premium', employees:67, teams:4, prospects:23, status:'active', joined:'Jun 2025', mrr:1340, nextDelivery:'2026-04-29', notes:'' },
+    { id:3, name:'Bloem Digital', domain:'bloemdigital.nl', city:'Amsterdam', plan:'Standard', employees:18, teams:1, prospects:5, status:'active', joined:'Jan 2026', mrr:252, nextDelivery:'2026-05-11', notes:'' },
+    { id:4, name:'Acme Ventures', domain:'acmeventures.de', city:'Berlin', plan:'Standard', employees:120, teams:7, prospects:8, status:'active', joined:'Sep 2025', mrr:1680, nextDelivery:'2026-05-01', notes:'' },
+    { id:5, name:'Pistachio Studio', domain:'pistachio.io', city:'Berlin', plan:'Birthday', employees:14, teams:1, prospects:0, status:'active', joined:'Mar 2026', mrr:112, nextDelivery:'2026-05-22', notes:'' },
+    { id:6, name:'Grüne Welle GmbH', domain:'gruenewelle.de', city:'Berlin', plan:'Premium', employees:38, teams:2, prospects:6, status:'trial', joined:'Apr 2026', mrr:760, nextDelivery:'—', notes:'Trial ends May 10' },
+    { id:7, name:'Bloom & Co', domain:'bloomco.uk', city:'London', plan:'Birthday', employees:28, teams:2, prospects:5, status:'active', joined:'Feb 2026', mrr:224, nextDelivery:'2026-05-07', notes:'' },
+    { id:8, name:'Meridian Capital', domain:'meridiancap.com', city:'London', plan:'Premium', employees:95, teams:5, prospects:30, status:'active', joined:'Jul 2025', mrr:1900, nextDelivery:'2026-04-30', notes:'' },
+    { id:9, name:'Pixel Craft Ltd', domain:'pixelcraft.co.uk', city:'London', plan:'Standard', employees:22, teams:2, prospects:4, status:'active', joined:'Dec 2025', mrr:308, nextDelivery:'2026-05-15', notes:'' },
+    { id:10, name:'Zest Digital', domain:'zestdigital.fr', city:'Paris', plan:'Standard', employees:14, teams:1, prospects:6, status:'active', joined:'Jan 2026', mrr:196, nextDelivery:'2026-05-19', notes:'' },
+    { id:11, name:'Maison Créative', domain:'maisoncreative.fr', city:'Paris', plan:'Premium', employees:31, teams:2, prospects:9, status:'active', joined:'Oct 2025', mrr:620, nextDelivery:'2026-05-04', notes:'' },
+    { id:12, name:'Lumi SAS', domain:'lumi.fr', city:'Paris', plan:'Birthday', employees:9, teams:0, prospects:2, status:'trial', joined:'Apr 2026', mrr:72, nextDelivery:'—', notes:'Trial' },
+    { id:13, name:'Wafels & Code', domain:'wafels.be', city:'Brussels', plan:'Standard', employees:26, teams:2, prospects:7, status:'active', joined:'Feb 2026', mrr:364, nextDelivery:'2026-05-08', notes:'' },
+    { id:14, name:'Atheneum Partners', domain:'atheneum.eu', city:'Brussels', plan:'Premium', employees:53, teams:3, prospects:14, status:'active', joined:'Aug 2025', mrr:1060, nextDelivery:'2026-05-02', notes:'' },
+  ];
+
+  let adminCityFilter='All';
+
+  function filteredCompanies() {
+    const q=(document.getElementById('adminSearch')?.value||'').toLowerCase();
+    return COMPANIES.filter(c=>{
+      if (adminCityFilter!=='All' && c.city!==adminCityFilter) return false;
+      if (q && !`${c.name} ${c.city} ${c.domain}`.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  function setAdminCity(city,btn) {
+    adminCityFilter=city;
+    document.querySelectorAll('#cityFilterTabs .filter-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  }
+
+  function fmtDelivery(d) {
+    if (!d||d==='—') return '<span style="opacity:0.3;">—</span>';
+    const dt=new Date(d);
+    return new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(dt);
+  }
+
+  function statusBadge(s) {
+    if (s==='active') return '<span class="badge badge-green">Active</span>';
+    if (s==='trial') return '<span class="badge badge-amber">Trial</span>';
+    return '<span class="badge badge-grey">Inactive</span>';
+  }
+
+  function planBadge(p) {
+    const cls={Premium:'badge-orange',Standard:'badge-orange',Birthday:'badge-grey'}[p]||'badge-grey';
+    return `<span class="badge ${cls}" style="font-size:10px;">${p}</span>`;
+  }
+
+  function renderTable() {
+    const companies=filteredCompanies();
+    const body=document.getElementById('adminTableBody');
+    // Group by city if showing all
+    if (adminCityFilter==='All') {
+      const bycity={};
+      companies.forEach(c=>{ if(!bycity[c.city])bycity[c.city]=[]; bycity[c.city].push(c); });
+      const cities=Object.keys(bycity).sort();
+      body.innerHTML=cities.map(city=>{
+        const rows=bycity[city].map(c=>companyRow(c)).join('');
+        return `<tr class="city-header"><td colspan="10">${city}</td></tr>${rows}`;
+      }).join('');
+    } else {
+      body.innerHTML=companies.map(c=>companyRow(c)).join('');
+    }
+  }
+
+  function companyRow(c) {
+    const progress=Math.min(100,Math.round((c.employees/100)*100));
+    return `<tr>
+      <td>
+        <div class="company-name">${c.name}</div>
+        <div class="company-domain">${c.domain}</div>
+        ${c.notes?`<div style="font-size:10px;color:#c95f00;margin-top:2px;">⚠ ${c.notes}</div>`:''}
+      </td>
+      <td style="font-size:12px;opacity:0.65;">${c.city}</td>
+      <td>${planBadge(c.plan)}</td>
+      <td>
+        <span style="font-weight:500;">${c.employees}</span>
+        <div class="prog-bar"><div class="prog-fill" style="width:${progress}%"></div></div>
+      </td>
+      <td style="font-size:13px;opacity:0.65;">${c.teams}</td>
+      <td style="font-size:13px;opacity:0.65;">${c.prospects}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td style="font-size:12px;opacity:0.5;">${c.joined}</td>
+      <td style="font-size:13px;font-weight:500;">€${c.mrr}</td>
+      <td style="font-size:12px;">${fmtDelivery(c.nextDelivery)}</td>
+    </tr>`;
+  }
+
+  function buildCityFilter() {
+    const cities=[...new Set(COMPANIES.map(c=>c.city))].sort();
+    const tabs=document.getElementById('cityFilterTabs');
+    cities.forEach(city=>{
+      const btn=document.createElement('button');
+      btn.className='filter-tab';
+      btn.dataset.city=city;
+      btn.textContent=city;
+      btn.onclick=()=>setAdminCity(city,btn);
+      tabs.appendChild(btn);
+    });
+  }
+
+  function buildLocSummary() {
+    const cities=[...new Set(COMPANIES.map(c=>c.city))].sort();
+    const maxEmps=Math.max(...cities.map(city=>COMPANIES.filter(c=>c.city===city).reduce((s,c)=>s+c.employees,0)));
+    document.getElementById('locSummary').innerHTML=cities.map(city=>{
+      const cos=COMPANIES.filter(c=>c.city===city);
+      const total=cos.reduce((s,c)=>s+c.employees,0);
+      const pct=Math.round((total/maxEmps)*100);
+      return `<div class="loc-card">
+        <div class="loc-city">${city}</div>
+        <div class="loc-count">${cos.length}</div>
+        <div class="loc-sub">${total} employees · ${cos.length} account${cos.length!==1?'s':''}</div>
+        <div class="loc-bar" style="width:${pct}%"></div>
+      </div>`;
+    }).join('');
+  }
+
+  function computeStats() {
+    const active=COMPANIES.filter(c=>c.status==='active');
+    const totalEmps=COMPANIES.reduce((s,c)=>s+c.employees,0);
+    const totalMrr=COMPANIES.reduce((s,c)=>s+c.mrr,0);
+    const cities=new Set(COMPANIES.map(c=>c.city)).size;
+    const deliveriesThisMonth=COMPANIES.filter(c=>c.nextDelivery&&c.nextDelivery!=='—').length;
+    document.getElementById('s-accounts').textContent=active.length;
+    document.getElementById('s-employees').textContent=totalEmps;
+    document.getElementById('s-deliveries').textContent=deliveriesThisMonth;
+    document.getElementById('s-cities').textContent=cities;
+    document.getElementById('s-mrr').textContent=`€${totalMrr.toLocaleString()}`;
+  }
+
+  buildCityFilter();
+  buildLocSummary();
+  computeStats();
+  renderTable();
+</script>
+</body>
+</html>

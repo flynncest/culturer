@@ -254,7 +254,19 @@
     /* ════════ PHOTO ROW ════════ */
     .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 38px; }
     .photo-item { display: flex; flex-direction: column; gap: 10px; }
-    .photo-item-img { background: var(--ph); border-radius: 0; aspect-ratio: 3/3.4; }
+    /* Greyscale filter applied to all real photo containers */
+    .photo-item-img,
+    .hero-photo,
+    .mobile-hero-img,
+    .val-img,
+    .p-img,
+    .prospect-img,
+    .artisan-photo,
+    .video-thumb {
+      filter: grayscale(30%) sepia(8%) brightness(0.96) contrast(1.04);
+    }
+
+    .photo-item-img { background: var(--ph); border-radius: 0; aspect-ratio: 3/4.08; background-size: cover; background-position: center; }
     .photo-item-img.pi-b { background: var(--ph2); }
     .photo-item-img.pi-c { background: #d0ccc6; }
     .photo-item-img.pi-d { background: #cbc8c1; }
@@ -571,7 +583,7 @@
       .photo-row { display: flex; overflow-x: auto; gap: 10px; padding-top: 28px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .photo-row::-webkit-scrollbar { display: none; }
       .photo-item { flex: 0 0 72vw; scroll-snap-align: start; }
-      .photo-item-img { aspect-ratio: 3/3.74; }
+      .photo-item-img { aspect-ratio: 3/4.49; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; padding: 24px 5vw 20px; }
       .footer-col a { margin-bottom: 7px; }
       /* wordmark js handles mobile size */
@@ -646,7 +658,7 @@
       <a href="login.html" class="btn btn-fill" style="margin-top: 36px; align-self: flex-start;">See how it works →</a>
     </div>
     <div class="photo-row">
-      <div class="photo-item"><div class="photo-item-img"></div><span class="photo-item-cap">Birthday delivery</span></div>
+      <div class="photo-item"><div class="photo-item-img" style="background-image:url('images/IMG_7119.webp')"></div><span class="photo-item-cap">Birthday delivery<br><span style="opacity:0.7;font-weight:500;">Specto Consulting</span>, Geert Christiaansen</span></div>
       <div class="photo-item"><div class="photo-item-img pi-b"></div><span class="photo-item-cap">Deal closed</span></div>
       <div class="photo-item"><div class="photo-item-img pi-c"></div><span class="photo-item-cap">New client</span></div>
       <div class="photo-item"><div class="photo-item-img pi-d"></div><span class="photo-item-cap">Team celebration</span></div>

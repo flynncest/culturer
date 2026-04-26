@@ -507,7 +507,7 @@
         <div class="people-analytics" id="peopleAnalytics">
           <div class="pa-card"><div class="pa-num" id="pa-total">0</div><div class="pa-label">Total people</div></div>
           <div class="pa-card"><div class="pa-num" id="pa-emp">0</div><div class="pa-label">Employees</div></div>
-          <div class="pa-card"><div class="pa-num" id="pa-teams">0</div><div class="pa-label">Teams &amp; groups</div></div>
+          <div class="pa-card"><div class="pa-num" id="pa-teams">0</div><div class="pa-label">Teams</div></div>
           <div class="pa-card"><div class="pa-num" id="pa-prospects">0</div><div class="pa-label">Prospects</div></div>
           <div class="pa-card"><div class="pa-num" id="pa-bdays">0</div><div class="pa-label">Birthdays this month</div></div>
         </div>
@@ -1202,7 +1202,9 @@
     if (!el) return;
     // Teams tab has its own grouped view — no filter pills needed
     if (currentFilter==='team') { el.style.display='none'; return; }
-    const inType=allPeople().filter(p=>p.type===currentFilter);
+    const inType = currentFilter==='employee'
+      ? allPeople().filter(p=>p.type==='employee'||p.type==='team')
+      : allPeople().filter(p=>p.type===currentFilter);
     const groups=[...new Set(inType.map(p=>p.group||'').filter(Boolean))].sort();
     if (!groups.length) { el.style.display='none'; return; }
     el.style.display='flex';
@@ -1222,18 +1224,19 @@
     // Analytics strip — always uses unfiltered data
     const everyone=allPeople();
     const now=new Date();
-    const bdays=everyone.filter(p=>p.type==='employee'&&p.birthday&&new Date(p.birthday).getMonth()===now.getMonth()).length;
+    // Employees = type='employee' + type='team' (team members are still employees)
+    const allEmployees=everyone.filter(p=>p.type==='employee'||p.type==='team');
+    const bdays=allEmployees.filter(p=>p.birthday&&new Date(p.birthday).getMonth()===now.getMonth()).length;
     document.getElementById('pa-total').textContent=everyone.length;
-    document.getElementById('pa-emp').textContent=everyone.filter(p=>p.type==='employee').length;
-    // Teams = unique named groups of type='team' members
-    const teamGroups=new Set(everyone.filter(p=>p.type==='team'&&p.group).map(p=>p.group));
+    document.getElementById('pa-emp').textContent=allEmployees.length;
+    const teamGroups=new Set(allEmployees.filter(p=>p.group).map(p=>p.group));
     document.getElementById('pa-teams').textContent=teamGroups.size;
     document.getElementById('pa-prospects').textContent=everyone.filter(p=>p.type==='prospect').length;
     document.getElementById('pa-bdays').textContent=bdays;
 
-    // Teams tab: special grouped view
+    // Teams tab: grouped two-level view
     if (currentFilter==='team') {
-      renderGroupFilter(); // hide it (no groups in teams view)
+      renderGroupFilter();
       renderTeamsGroupView();
       return;
     }
@@ -1241,7 +1244,10 @@
     renderGroupFilter();
 
     const q=(document.getElementById('peopleSearch')?.value||'').toLowerCase();
-    let people=everyone.filter(p=>p.type===currentFilter);
+    // Employees tab shows both type='employee' and type='team'
+    let people = currentFilter==='employee'
+      ? everyone.filter(p=>p.type==='employee'||p.type==='team')
+      : everyone.filter(p=>p.type===currentFilter);
     if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
 
@@ -1250,151 +1256,161 @@
 
     const el=document.getElementById('rosterTable');
     if (!people.length) {
-      el.innerHTML='<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No people match your filter.<br>Try a different search or add people in Plans.</div></div>';
+      el.innerHTML='<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No people match your filter.<br>Go to Plans to add people.</div></div>';
       return;
     }
-    el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
+
+    // Flat roster with always-visible Edit + Delete
+    el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
       <input type="checkbox" class="row-check" id="checkAll" onchange="toggleAll(this)" style="flex-shrink:0;">
       <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;flex:1;">Name</span>
-      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:90px;text-align:right;">Key date</span>
-      <span style="width:20px;"></span>
+      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:80px;">Team</span>
+      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:90px;">Plan</span>
+      <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;width:72px;">Birthday</span>
+      <span style="width:120px;"></span>
     </div>
     <div class="roster-list">${people.map(p=>{
       const initials=((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
       const keyDate=p.type==='prospect'?fmtDateShort(p.sendDate):fmtDateShort(p.birthday);
-      const sub=p.type==='prospect'?(p.company||p.email||''):(p.group?p.group:p.email||'');
-      return `<div class="roster-row${selectedIds.has(p.id)?' selected':''}" data-id="${p.id}">
-        <div class="roster-row-main" onclick="toggleRosterRow(this.parentElement)">
-          <input type="checkbox" class="row-check" ${selectedIds.has(p.id)?'checked':''} onclick="event.stopPropagation()" onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
-          <div class="roster-av">${initials}</div>
-          <div class="roster-row-info">
-            <div class="roster-row-name">${p.first||p.name||''} ${p.last||''}</div>
-            <div class="roster-row-sub">${sub}</div>
-          </div>
-          <div class="roster-row-meta">
-            ${typeBadge(p.type)}
-            ${p.group?`<span style="font-size:10px;opacity:0.38;border:1px solid var(--border);border-radius:3px;padding:1px 6px;">${p.group}</span>`:''}
-          </div>
-          <div class="roster-keydate">${keyDate||'—'}</div>
-          <div class="roster-chevron">▾</div>
+      const planLabel=p.type==='prospect'?(p.deal?`€${p.deal}`:'—'):(TIER_LABEL[p.tier||'birthday']||'Birthday');
+      const teamLabel=p.group||'—';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);${selectedIds.has(p.id)?'background:rgba(246,77,37,0.04);':''}" data-id="${p.id}">
+        <input type="checkbox" class="row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
+        <div class="roster-av" style="flex-shrink:0;">${initials}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.first||p.name||''} ${p.last||''}</div>
+          <div style="font-size:11px;opacity:0.38;">${p.email||p.company||'—'}</div>
         </div>
-        <div class="roster-detail">${rosterDetail(p)}</div>
+        <div style="width:80px;font-size:12px;opacity:0.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${teamLabel}</div>
+        <div style="width:90px;"><span class="badge badge-orange" style="font-size:10px;">${planLabel}</span></div>
+        <div style="width:72px;font-size:12px;opacity:0.45;">${keyDate||'—'}</div>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="openEditPerson('${p.id}')">Edit</button>
+          <button class="btn btn-danger" style="font-size:11px;padding:5px 10px;" onclick="deletePerson('${p.id}')">✕</button>
+        </div>
       </div>`;
     }).join('')}</div>`;
   }
 
   // ── Teams two-level view ──
-  let currentTeamGroup=null; // null=team list, 'name'=drill into that team
+  // Teams = any employee (type='employee' or 'team') who has a group
+  let currentTeamGroup=null;
+
+  function buildTeamMap() {
+    const map={};
+    allPeople().filter(p=>(p.type==='employee'||p.type==='team')&&p.group).forEach(p=>{
+      if (!map[p.group]) map[p.group]=[];
+      map[p.group].push(p);
+    });
+    return map;
+  }
 
   function renderTeamsGroupView() {
     document.getElementById('bulkBar').classList.remove('visible');
     const el=document.getElementById('rosterTable');
-
-    // Build team map: groups of type='team' people
-    const everyone=allPeople();
-    const teamMembers=everyone.filter(p=>p.type==='team');
-    const teamMap={};
-    teamMembers.forEach(p=>{
-      const key=p.group||'(no team)';
-      if (!teamMap[key]) teamMap[key]=[];
-      teamMap[key].push(p);
-    });
+    const teamMap=buildTeamMap();
     const teamNames=Object.keys(teamMap).sort();
 
     if (!teamNames.length) {
       currentTeamGroup=null;
       document.getElementById('rosterCount').textContent='0 teams';
-      el.innerHTML='<div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.<br>Import a CSV as "Teams" or add team members via Plans.</div></div>';
+      el.innerHTML='<div class="empty"><div class="empty-icon">🏢</div><div class="empty-text">No teams yet.<br>Add employees with a team name to create a team.</div></div>';
       return;
     }
 
-    // Level 2: drill into a specific team
+    // Level 2: inside a specific team — checkboxes + bulk bar + inline Edit/Delete
     if (currentTeamGroup!==null) {
-      const members=teamMap[currentTeamGroup]||[];
+      const members=(teamMap[currentTeamGroup]||[]);
       const tiers=[...new Set(members.map(m=>m.tier||'birthday'))];
-      const tierLabel=tiers.length>1?'Mixed plans':TIER_LABEL[tiers[0]]||tiers[0];
+      const tierLabel=tiers.length>1?'Mixed':TIER_LABEL[tiers[0]]||tiers[0];
       const monthly=members.reduce((s,p)=>s+(RATE[p.tier||'birthday']||8),0);
       document.getElementById('rosterCount').textContent=`${members.length} member${members.length!==1?'s':''}`;
+      // Show bulk bar for team members
+      selectedIds.clear();
+      updateBulkBar();
 
       el.innerHTML=`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="currentTeamGroup=null;renderPeople()">← All teams</button>
-          <div style="flex:1;font-family:'Kaisei Decol',serif;font-size:15px;letter-spacing:-0.01em;">${currentTeamGroup}</div>
+        <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);flex-wrap:wrap;gap:10px;">
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="currentTeamGroup=null;selectedIds.clear();renderPeople()">← All teams</button>
+          <div style="font-family:'Kaisei Decol',serif;font-size:15px;letter-spacing:-0.01em;flex:1;">${currentTeamGroup}</div>
           <span class="badge badge-blue">${tierLabel}</span>
-          ${members.length?`<span style="font-size:12px;font-weight:500;">€${monthly}/mo</span>`:''}
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;">
-          <span style="font-size:11px;opacity:0.45;flex:1;">${members.length} member${members.length!==1?'s':''} in this team</span>
-          <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="teamBulkUpgrade(${JSON.stringify(currentTeamGroup)})">⬆ Upgrade all</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'office')">🏢 Office</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'home')">🏠 Home</button>
+          <span style="font-size:12px;font-weight:500;">€${monthly}/mo</span>
           <button class="btn btn-danger" style="font-size:11px;padding:5px 12px;" onclick="deleteWholeTeam(${JSON.stringify(currentTeamGroup)})">Delete team</button>
         </div>
-        <div class="roster-list">
-          ${members.map(p=>{
-            const initials=((p.first||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
-            return `<div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);">
-              <div class="roster-av" style="flex-shrink:0;">${initials}</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-size:13px;font-weight:500;">${p.first||''} ${p.last||''}</div>
-                <div style="font-size:11px;opacity:0.38;">${p.email||'—'}${p.birthday?' · '+fmtDateShort(p.birthday):''}</div>
-              </div>
-              <span class="badge badge-orange" style="font-size:10px;flex-shrink:0;">${TIER_LABEL[p.tier||'birthday']||'Birthday'}</span>
-              <span style="font-size:12px;opacity:0.5;flex-shrink:0;">${p.delivery==='home'?'🏠':'🏢'}</span>
-              <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;flex-shrink:0;" onclick="openEditPerson('${p.id}')">Edit</button>
-              <button class="btn btn-danger" style="padding:5px 10px;font-size:11px;flex-shrink:0;" onclick="deletePerson('${p.id}')">✕</button>
-            </div>`;
-          }).join('')}
-        </div>`;
+        <div style="display:flex;align-items:center;gap:9px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);">
+          <input type="checkbox" class="row-check" id="teamCheckAll" onchange="teamToggleAll(this,${JSON.stringify(currentTeamGroup)})" style="flex-shrink:0;">
+          <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;flex:1;">Select all</span>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'birthday')">🎂 Birthday</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'christmas')">🎄 +Christmas</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 12px;" onclick="teamBulkTier(${JSON.stringify(currentTeamGroup)},'premium')">✦ Premium</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'office')">🏢</button>
+          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkDelivery(${JSON.stringify(currentTeamGroup)},'home')">🏠</button>
+        </div>
+        <div>${members.map(p=>{
+          const initials=((p.first||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
+          return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);${selectedIds.has(p.id)?'background:rgba(246,77,37,0.04);':''}" data-id="${p.id}">
+            <input type="checkbox" class="row-check team-row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
+            <div class="roster-av" style="flex-shrink:0;">${initials}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:500;">${p.first||''} ${p.last||''}</div>
+              <div style="font-size:11px;opacity:0.38;">${p.email||'—'}${p.birthday?' · '+fmtDateShort(p.birthday):''}</div>
+            </div>
+            <span class="badge badge-orange" style="font-size:10px;flex-shrink:0;">${TIER_LABEL[p.tier||'birthday']}</span>
+            <span style="font-size:12px;opacity:0.5;flex-shrink:0;">${p.delivery==='home'?'🏠 Home':'🏢 Office'}</span>
+            <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;flex-shrink:0;" onclick="openEditPerson('${p.id}')">Edit</button>
+            <button class="btn btn-danger" style="padding:5px 10px;font-size:11px;flex-shrink:0;" onclick="deletePerson('${p.id}')">✕</button>
+          </div>`;
+        }).join('')}</div>`;
       return;
     }
 
-    // Level 1: team list
+    // Level 1: team cards
     document.getElementById('rosterCount').textContent=`${teamNames.length} team${teamNames.length!==1?'s':''}`;
     el.innerHTML=`<div class="roster-list">${teamNames.map(name=>{
       const members=teamMap[name];
       const tiers=[...new Set(members.map(m=>m.tier||'birthday'))];
       const tierLabel=tiers.length>1?'Mixed':TIER_LABEL[tiers[0]]||tiers[0];
       const monthly=members.reduce((s,p)=>s+(RATE[p.tier||'birthday']||8),0);
-      return `<div class="roster-row">
-        <div class="roster-row-main" onclick="currentTeamGroup=${JSON.stringify(name)};renderPeople()">
-          <div class="roster-av" style="background:rgba(37,99,235,0.1);color:#2563eb;font-size:15px;flex-shrink:0;">🏢</div>
-          <div class="roster-row-info">
-            <div class="roster-row-name">${name}</div>
-            <div class="roster-row-sub">${members.length} member${members.length!==1?'s':''} · ${tierLabel}</div>
-          </div>
-          <div class="roster-row-meta"><span class="badge badge-blue">Team</span></div>
-          <div class="roster-keydate" style="font-weight:500;">€${monthly}/mo</div>
-          <span style="font-size:18px;opacity:0.25;margin-left:4px;">›</span>
+      return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s;" onclick="currentTeamGroup=${JSON.stringify(name)};selectedIds.clear();renderPeople()" onmouseover="this.style.background='rgba(246,77,37,0.03)'" onmouseout="this.style.background=''">
+        <div class="roster-av" style="background:rgba(37,99,235,0.1);color:#2563eb;font-size:16px;width:38px;height:38px;flex-shrink:0;">🏢</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:2px;">${name}</div>
+          <div style="font-size:12px;opacity:0.45;">${members.length} member${members.length!==1?'s':''} · ${tierLabel}</div>
         </div>
+        <span class="badge badge-blue" style="flex-shrink:0;">Team</span>
+        <span style="font-size:13px;font-weight:500;flex-shrink:0;">€${monthly}/mo</span>
+        <span style="font-size:20px;opacity:0.25;">›</span>
       </div>`;
     }).join('')}</div>`;
   }
 
-  function teamBulkUpgrade(teamName) {
-    const tiers=['birthday','christmas','premium'];
-    const members=allPeople().filter(p=>p.type==='team'&&p.group===teamName);
-    const cur=members[0]?.tier||'birthday';
-    const next=tiers[Math.min(tiers.indexOf(cur)+1,2)];
-    if (cur===next) { toast('Already on Premium'); return; }
-    if (!confirm(`Upgrade all ${members.length} members in "${teamName}" from ${TIER_LABEL[cur]} to ${TIER_LABEL[next]}?`)) return;
-    members.forEach(p=>DB.update('people',p.id,{tier:next}));
-    renderPeople(); renderOverview();
-    toast(`${teamName} upgraded to ${TIER_LABEL[next]} ✓`);
+  function teamToggleAll(cb, teamName) {
+    const members=buildTeamMap()[teamName]||[];
+    if (cb.checked) members.forEach(p=>selectedIds.add(p.id));
+    else selectedIds.clear();
+    renderTeamsGroupView();
+  }
+
+  function teamBulkTier(teamName, tier) {
+    const members=buildTeamMap()[teamName]||[];
+    if (!members.length) return;
+    members.forEach(p=>DB.update('people',p.id,{tier}));
+    renderTeamsGroupView(); renderOverview();
+    toast(`All ${members.length} members → ${TIER_LABEL[tier]} ✓`);
   }
 
   function teamBulkDelivery(teamName, delivery) {
-    const members=allPeople().filter(p=>p.type==='team'&&p.group===teamName);
+    const members=buildTeamMap()[teamName]||[];
     members.forEach(p=>DB.update('people',p.id,{delivery}));
-    renderPeople();
+    renderTeamsGroupView();
     toast(`${teamName} → ${delivery==='home'?'home':'office'} delivery ✓`);
   }
 
   function deleteWholeTeam(teamName) {
-    const members=allPeople().filter(p=>p.type==='team'&&p.group===teamName);
-    if (!confirm(`Delete "${teamName}" and all ${members.length} member${members.length!==1?'s':''}? This cannot be undone.`)) return;
+    const members=buildTeamMap()[teamName]||[];
+    if (!confirm(`Delete "${teamName}" and all ${members.length} member${members.length!==1?'s':''}?`)) return;
     members.forEach(p=>DB.remove('people',p.id));
-    currentTeamGroup=null;
+    currentTeamGroup=null; selectedIds.clear();
     renderPeople(); renderOverview();
     toast(`"${teamName}" deleted`);
   }
@@ -1415,7 +1431,9 @@
 
   function toggleAll(cb) {
     const q=(document.getElementById('peopleSearch')?.value||'').toLowerCase();
-    let people=allPeople().filter(p=>p.type===currentFilter);
+    let people = currentFilter==='employee'
+      ? allPeople().filter(p=>p.type==='employee'||p.type==='team')
+      : allPeople().filter(p=>p.type===currentFilter);
     if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
     if (cb.checked) people.forEach(p=>selectedIds.add(p.id));
@@ -1970,8 +1988,10 @@
       `<div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;opacity:0.45;">Add people to this group to unlock bulk actions.</div>`;
 
     if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No one in this plan yet.</div></div>'; return; }
+
+    // Read-only member list — editing happens in People tab
     el.innerHTML=bulkActions+`<table class="tbl">
-      <thead><tr><th>Name</th><th>Type</th><th>Plan / tier</th><th>Delivery</th><th>Key date</th><th>Allergies</th><th></th></tr></thead>
+      <thead><tr><th>Name</th><th>Type</th><th>Plan / tier</th><th>Delivery</th><th>Key date</th><th>Allergies</th></tr></thead>
       <tbody>${all.map(p=>{
         const keyDate=p.type==='employee'||p.type==='team'?fmtDateShort(p.birthday):fmtDateShort(p.sendDate);
         const planDetail=p.type==='prospect'?`€${p.deal||'—'}`:(TIER_LABEL[p.tier]||p.tier||'Birthday');
@@ -1982,9 +2002,34 @@
           <td style="font-size:12px;opacity:0.65;">${p.delivery==='home'?'🏠 Home':'🏢 Office'}</td>
           <td style="font-size:12px;">${keyDate||'—'}</td>
           <td>${allergyBadges(p.allergies)}</td>
-          <td><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px;" onclick="openEditPerson('${p.id}')">Edit</button></td>
         </tr>`;
-      }).join('')}</tbody></table>`;
+      }).join('')}</tbody></table>
+      <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <span style="font-size:12px;opacity:0.45;">Edit individual people in the People tab</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline" style="font-size:12px;" onclick="navigateToPeopleGroup(${JSON.stringify(key)})">Edit in People →</button>
+          <button class="btn btn-danger" style="font-size:12px;" onclick="deleteGroup(${JSON.stringify(key)})">Delete group</button>
+        </div>
+      </div>`;
+  }
+
+  function navigateToPeopleGroup(groupKey) {
+    // Go to People → Employees tab, pre-filtered to this group
+    currentFilter='employee';
+    currentGroupFilter=groupKey==='__ungrouped__'?'all':groupKey;
+    currentTeamGroup=null;
+    selectedIds.clear();
+    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter==='employee'));
+    navigate('people');
+  }
+
+  function deleteGroup(groupKey) {
+    const members=allPeople().filter(p=>groupKey==='__ungrouped__'?!p.group:p.group===groupKey);
+    if (!confirm(`Delete this group and remove all ${members.length} people from it?`)) return;
+    members.forEach(p=>DB.remove('people',p.id));
+    showPlanList();
+    renderOverview();
+    toast('Group deleted');
   }
 
   function applyPlanBulkTier(encodedKey) {

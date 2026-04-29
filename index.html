@@ -139,6 +139,8 @@
       width: 100%;
       height: 100%;
       background: var(--ph);
+      object-fit: cover;
+      display: block;
     }
 
     /* mobile-only image shown below the stripe */
@@ -563,7 +565,7 @@
       .hero-text h1 { font-size: clamp(46px, 13vw, 72px); }
       .hero-actions .btn { font-size: 13px; padding: 14px 28px; }
       /* Show mobile image block after hero */
-      .mobile-hero-img { display: block; height: 364px; background: var(--ph); width: 100%; }
+      .mobile-hero-img { display: block; height: 364px; background: var(--ph); width: 100%; object-fit: cover; }
       .data-grid { grid-template-columns: 1fr; }
       .data-card { border-right: none; border-bottom: 1px solid rgba(246,77,37,0.12); padding-left: 0; padding-right: 0; }
       .data-card:last-child { border-bottom: none; }
@@ -628,7 +630,7 @@
       </div>
     </div>
     <div class="hero-photo-wrap">
-      <div class="hero-photo"></div>
+      <video class="hero-photo" src="images/hero.mov" autoplay loop muted playsinline></video>
     </div>
   </div>
   <div class="marquee-wrap">
@@ -641,7 +643,7 @@
 </div>
 
 <!-- Mobile-only image block, shows beneath stripe -->
-<div class="mobile-hero-img"></div>
+<video class="mobile-hero-img" src="images/hero.mov" autoplay loop muted playsinline></video>
 
 
 <!-- ════════ SECTION 2: MISSION ════════ -->

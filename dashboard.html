@@ -26,9 +26,9 @@
     .sidebar-brand { font-family: 'Kaisei Decol', serif; font-size: 17px; color: var(--accent); }
 
     .sidebar-nav { flex: 1; padding: 12px 10px; }
-    .nav-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.3; margin: 16px 10px 5px; }
+    .nav-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.42; margin: 16px 10px 5px; }
     .nav-label:first-child { margin-top: 4px; }
-    .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; opacity: 0.55; transition: all 0.15s; margin-bottom: 1px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; opacity: 0.62; transition: all 0.15s; margin-bottom: 1px; }
     .nav-item:hover { opacity: 0.9; background: rgba(246,77,37,0.06); }
     .nav-item.active { opacity: 1; background: rgba(246,77,37,0.1); font-weight: 500; }
     .nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
@@ -37,9 +37,9 @@
     .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 11px; font-weight: 600; flex-shrink: 0; overflow: hidden; }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .user-name { font-size: 13px; font-weight: 500; }
-    .user-role { font-size: 11px; opacity: 0.4; }
-    .btn-logout { background: none; border: none; padding: 7px 10px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--accent); opacity: 0.35; cursor: pointer; display: flex; align-items: center; gap: 7px; width: 100%; transition: opacity 0.15s; border-radius: 4px; }
+    .user-name { font-size: 14px; font-weight: 500; }
+    .user-role { font-size: 12px; opacity: 0.52; }
+    .btn-logout { background: none; border: none; padding: 7px 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--accent); opacity: 0.48; cursor: pointer; display: flex; align-items: center; gap: 7px; width: 100%; transition: opacity 0.15s; border-radius: 4px; }
     .btn-logout:hover { opacity: 0.85; background: rgba(246,77,37,0.06); }
 
     /* ── Main ── */
@@ -71,21 +71,23 @@
     .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     .stat-card { border: 1px solid var(--border); padding: 18px 20px; border-radius: 4px; }
     .stat-num { font-family: 'Kaisei Decol', serif; font-size: 32px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 5px; }
-    .stat-label { font-size: 11px; opacity: 0.42; letter-spacing: 0.04em; }
+    .stat-label { font-size: 13px; opacity: 0.55; letter-spacing: 0.04em; }
+    .stat-card[onclick] { transition: border-color 0.15s, box-shadow 0.15s; }
+    .stat-card[onclick]:hover { border-color: rgba(246,77,37,0.3); box-shadow: 0 2px 8px rgba(246,77,37,0.07); }
 
     /* ── Two-col ── */
     .two-col { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
 
     /* ── Tables ── */
     .tbl { width: 100%; border-collapse: collapse; }
-    .tbl th { text-align: left; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.38; padding: 0 14px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-    .tbl td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .tbl th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.48; padding: 0 14px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .tbl td { padding: 11px 14px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
     .tbl tr:hover td { background: rgba(246,77,37,0.025); }
     .tbl th:first-child, .tbl td:first-child { width: 36px; padding-left: 16px; padding-right: 4px; }
 
     /* ── Badges ── */
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 500; }
     .badge-orange { background: rgba(246,77,37,0.12); color: var(--accent); }
     .badge-green { background: rgba(34,197,94,0.12); color: #16a34a; }
     .badge-grey { background: rgba(0,0,0,0.06); color: rgba(246,77,37,0.6); }
@@ -130,7 +132,7 @@
     .form-grid.full { grid-template-columns: 1fr; }
     .field-group { display: flex; flex-direction: column; gap: 5px; }
     .field-group.span2 { grid-column: span 2; }
-    .field-group label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; }
+    .field-group label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.52; }
     .field-group input, .field-group select, .field-group textarea { padding: 10px 13px; background: transparent; border: 1.5px solid var(--border); color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; border-radius: 3px; transition: border-color 0.2s; width: 100%; }
     .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--accent); }
     .field-group input::placeholder, .field-group textarea::placeholder { opacity: 0.3; }
@@ -146,7 +148,7 @@
     .modal-lg { max-width: 740px; }
     .modal-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 1; }
     .modal-title { font-family: 'Kaisei Decol', serif; font-size: 19px; letter-spacing: -0.01em; }
-    .modal-sub { font-size: 12px; opacity: 0.42; margin-top: 3px; }
+    .modal-sub { font-size: 13px; opacity: 0.52; margin-top: 3px; }
     .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; opacity: 0.35; transition: opacity 0.15s; color: var(--accent); padding: 2px 4px; line-height: 1; }
     .modal-close:hover { opacity: 0.9; }
     .modal-body { padding: 22px 24px; }
@@ -159,7 +161,7 @@
     .step-dot { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; position: relative; z-index: 1; background: var(--bg); transition: all 0.2s; }
     .step.active .step-dot { border-color: var(--accent); background: var(--accent); color: var(--bg); }
     .step.done .step-dot { border-color: var(--accent); color: var(--accent); }
-    .step-label { font-size: 10px; opacity: 0.4; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; }
+    .step-label { font-size: 11px; opacity: 0.52; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; }
     .step.active .step-label { opacity: 1; font-weight: 500; }
     .step-panel { display: none; }
     .step-panel.active { display: block; }
@@ -171,13 +173,13 @@
     .type-opt.selected { border-color: var(--accent); background: rgba(246,77,37,0.05); }
     .type-opt-icon { font-size: 22px; margin-bottom: 8px; }
     .type-opt-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
-    .type-opt-desc { font-size: 11px; opacity: 0.45; line-height: 1.4; }
+    .type-opt-desc { font-size: 12px; opacity: 0.55; line-height: 1.4; }
 
     /* ── CSV Upload ── */
     .upload-zone { border: 2px dashed rgba(246,77,37,0.25); border-radius: 4px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; }
     .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(246,77,37,0.04); }
     .upload-icon { font-size: 24px; margin-bottom: 10px; opacity: 0.45; }
-    .upload-text { font-size: 13px; opacity: 0.5; line-height: 1.5; }
+    .upload-text { font-size: 14px; opacity: 0.6; line-height: 1.5; }
     .upload-text strong { color: var(--accent); opacity: 1; }
 
     /* ── Calendar ── */
@@ -187,13 +189,13 @@
     .cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; color: var(--accent); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .cal-nav-btn:hover { border-color: var(--accent); }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .cal-day-name { text-align: center; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.35; padding: 6px 0 10px; }
+    .cal-day-name { text-align: center; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.45; padding: 6px 0 10px; }
     .cal-cell { min-height: 80px; border: 1px solid var(--border); border-radius: 3px; padding: 8px; cursor: pointer; transition: background 0.12s; position: relative; }
     .cal-cell:hover { background: rgba(246,77,37,0.04); }
     .cal-cell.other-month { opacity: 0.28; }
     .cal-cell.today { border-color: var(--accent); }
     .cal-cell.selected { background: rgba(246,77,37,0.06); }
-    .cal-day-num { font-size: 12px; font-weight: 500; opacity: 0.65; margin-bottom: 5px; }
+    .cal-day-num { font-size: 13px; font-weight: 500; opacity: 0.72; margin-bottom: 5px; }
     .cal-cell.today .cal-day-num { color: var(--accent); opacity: 1; font-weight: 700; }
     .cal-dots { display: flex; flex-wrap: wrap; gap: 3px; }
     .cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
@@ -207,8 +209,8 @@
     .cal-event-row:last-child { border-bottom: none; }
     .cal-event-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .cal-event-name { font-size: 13px; font-weight: 500; flex: 1; }
-    .cal-event-meta { font-size: 11px; opacity: 0.45; }
-    .cal-event-date { font-size: 11px; opacity: 0.38; flex-shrink: 0; }
+    .cal-event-meta { font-size: 12px; opacity: 0.55; }
+    .cal-event-date { font-size: 12px; opacity: 0.5; flex-shrink: 0; }
 
     /* ── Wish cards ── */
     .wish-intro { font-size: 13px; opacity: 0.52; line-height: 1.5; max-width: 56ch; margin-bottom: 28px; padding: 16px 20px; border: 1px solid var(--border); border-radius: 4px; background: rgba(246,77,37,0.025); }
@@ -218,10 +220,10 @@
     .wish-card-top { background: rgba(246,77,37,0.06); padding: 20px; text-align: center; border-bottom: 1px solid var(--border); }
     .wish-card-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--accent); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font-family: 'Kaisei Decol', serif; font-size: 18px; margin-bottom: 10px; }
     .wish-card-name { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
-    .wish-card-occasion { font-size: 12px; opacity: 0.5; }
+    .wish-card-occasion { font-size: 13px; opacity: 0.6; }
     .wish-card-body { padding: 14px 16px; }
-    .wish-card-date { font-size: 11px; opacity: 0.42; margin-bottom: 10px; letter-spacing: 0.04em; }
-    .wish-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; margin-bottom: 12px; }
+    .wish-card-date { font-size: 12px; opacity: 0.52; margin-bottom: 10px; letter-spacing: 0.04em; }
+    .wish-status { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 20px; margin-bottom: 12px; }
     .wish-status.pending { background: rgba(201,95,0,0.1); color: #c95f00; }
     .wish-status.ready { background: rgba(34,197,94,0.12); color: #16a34a; }
     .wish-status.sent { background: rgba(0,0,0,0.06); color: rgba(246,77,37,0.5); }
@@ -233,17 +235,17 @@
     .delivery-icon { width: 34px; height: 34px; background: rgba(246,77,37,0.09); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
     .delivery-info { flex: 1; min-width: 0; }
     .delivery-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .delivery-meta { font-size: 11px; opacity: 0.42; margin-top: 2px; }
-    .delivery-date { font-size: 11px; opacity: 0.42; flex-shrink: 0; }
+    .delivery-meta { font-size: 12px; opacity: 0.52; margin-top: 2px; }
+    .delivery-date { font-size: 12px; opacity: 0.52; flex-shrink: 0; }
 
     /* ── Overview greeting ── */
     .overview-hello { margin-bottom: 28px; }
     .hello-greeting { font-family: 'Kaisei Decol', serif; font-size: clamp(26px, 3vw, 40px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 8px; }
-    .hello-date { font-size: 11px; opacity: 0.3; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
+    .hello-date { font-size: 13px; opacity: 0.45; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
 
     /* ── Setup strip ── */
     .setup-strip { display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); border-radius: 4px; padding: 12px 18px; margin-bottom: 24px; background: rgba(246,77,37,0.025); flex-wrap: wrap; }
-    .setup-strip-label { font-size: 12px; font-weight: 500; opacity: 0.55; flex-shrink: 0; }
+    .setup-strip-label { font-size: 13px; font-weight: 500; opacity: 0.65; flex-shrink: 0; }
     .setup-steps-row { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
     .setup-step-pill { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
     .setup-step-pill:hover { border-color: rgba(246,77,37,0.4); }
@@ -255,12 +257,13 @@
     .upcoming-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .upcoming-info { flex: 1; min-width: 0; }
     .upcoming-name { font-size: 13px; font-weight: 500; }
-    .upcoming-type { font-size: 11px; opacity: 0.42; margin-top: 1px; }
-    .upcoming-date { font-size: 11px; opacity: 0.38; flex-shrink: 0; }
+    .upcoming-type { font-size: 12px; opacity: 0.52; margin-top: 1px; }
+    .upcoming-date { font-size: 12px; opacity: 0.48; flex-shrink: 0; }
+    .upcoming-item[onclick]:hover { background: rgba(246,77,37,0.03); border-radius: 3px; margin: 0 -8px; padding: 9px 8px; }
 
     /* ── Catalog ── */
     .location-filter { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
-    .location-filter-label { font-size: 10px; opacity: 0.42; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 4px; }
+    .location-filter-label { font-size: 12px; opacity: 0.52; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 4px; }
     .loc-btn { padding: 5px 14px; border-radius: 100px; border: 1.5px solid var(--border); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; background: transparent; color: var(--accent); cursor: pointer; transition: all 0.15s; }
     .loc-btn:hover { border-color: rgba(246,77,37,0.4); }
     .loc-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
@@ -281,19 +284,19 @@
     .catalog-card-info { padding: 14px 16px 18px; border-top: 1px solid var(--border); }
     .catalog-card-name { font-family: 'Kaisei Decol', serif; font-size: 14px; letter-spacing: -0.01em; margin-bottom: 6px; }
     .catalog-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-    .catalog-tag { border: 1px solid rgba(246,77,37,0.2); border-radius: 100px; padding: 2px 9px; font-size: 11px; opacity: 0.6; }
-    .catalog-city-badge { font-size: 10px; opacity: 0.4; margin-top: 4px; }
+    .catalog-tag { border: 1px solid rgba(246,77,37,0.2); border-radius: 100px; padding: 2px 9px; font-size: 12px; opacity: 0.65; }
+    .catalog-city-badge { font-size: 11px; opacity: 0.52; margin-top: 4px; }
 
     /* ── Settings ── */
     .settings-section { margin-bottom: 32px; }
     .settings-section-title { font-family: 'Kaisei Decol', serif; font-size: 16px; letter-spacing: -0.01em; margin-bottom: 3px; }
-    .settings-section-desc { font-size: 12px; opacity: 0.42; margin-bottom: 18px; }
+    .settings-section-desc { font-size: 13px; opacity: 0.52; margin-bottom: 18px; }
     .settings-divider { height: 1px; background: var(--border); margin-bottom: 28px; }
     .logo-upload-area { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
     .logo-upload-box { width: 72px; height: 72px; border: 2px dashed rgba(246,77,37,0.25); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; transition: border-color 0.2s; background: rgba(246,77,37,0.03); flex-shrink: 0; }
     .logo-upload-box:hover { border-color: var(--accent); }
     .logo-upload-box img { width: 100%; height: 100%; object-fit: contain; }
-    .logo-upload-hint { font-size: 12px; opacity: 0.45; line-height: 1.5; }
+    .logo-upload-hint { font-size: 13px; opacity: 0.55; line-height: 1.5; }
     .logo-upload-hint strong { opacity: 0.85; }
     .avatar-upload-box { width: 68px; height: 68px; border-radius: 50%; border: 2px dashed rgba(246,77,37,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; transition: border-color 0.2s; background: rgba(246,77,37,0.03); flex-shrink: 0; font-size: 22px; }
     .avatar-upload-box:hover { border-color: var(--accent); }
@@ -307,8 +310,8 @@
     .plan-card-sel.active { border-color: var(--accent); background: rgba(246,77,37,0.05); }
     .plan-card-sel-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
     .plan-card-sel-price { font-family: 'Kaisei Decol', serif; font-size: 18px; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-card-sel-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; opacity: 0.5; font-weight: 400; }
-    .plan-card-sel-desc { font-size: 11px; opacity: 0.45; line-height: 1.4; }
+    .plan-card-sel-price span { font-family: 'DM Sans', sans-serif; font-size: 12px; opacity: 0.6; font-weight: 400; }
+    .plan-card-sel-desc { font-size: 12px; opacity: 0.55; line-height: 1.4; }
 
     /* ── Collapsible roster rows ── */
     .roster-list { }
@@ -319,25 +322,25 @@
     .roster-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(246,77,37,0.1); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
     .roster-row-info { flex: 1; min-width: 0; }
     .roster-row-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .roster-row-sub { font-size: 11px; opacity: 0.38; margin-top: 1px; }
+    .roster-row-sub { font-size: 12px; opacity: 0.48; margin-top: 1px; }
     .roster-row-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .roster-keydate { font-size: 11px; opacity: 0.4; }
-    .roster-chevron { font-size: 11px; opacity: 0.22; margin-left: 6px; transition: transform 0.18s; flex-shrink: 0; }
+    .roster-keydate { font-size: 12px; opacity: 0.52; }
+    .roster-chevron { font-size: 12px; opacity: 0.32; margin-left: 6px; transition: transform 0.18s; flex-shrink: 0; }
     .roster-row.open .roster-chevron { transform: rotate(180deg); opacity: 0.55; }
     .roster-detail { display: none; padding: 0 18px 16px 60px; animation: fadeIn 0.15s ease; }
     .roster-row.open .roster-detail { display: block; }
     .roster-detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 12px; }
-    .roster-dl-label { font-size: 10px; opacity: 0.35; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
-    .roster-dl-val { font-size: 12px; line-height: 1.35; }
+    .roster-dl-label { font-size: 11px; opacity: 0.45; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+    .roster-dl-val { font-size: 13px; line-height: 1.35; }
     .roster-detail-foot { display: flex; gap: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
     @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
 
     /* ── Sprint schedule preview ── */
     .sprint-preview { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 6px; }
-    .sprint-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .sprint-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
     .sprint-row:last-child { border-bottom: none; }
-    .sprint-q { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.4; width: 24px; flex-shrink: 0; }
-    .sprint-end { opacity: 0.45; flex: 1; }
+    .sprint-q { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.5; width: 24px; flex-shrink: 0; }
+    .sprint-end { opacity: 0.55; flex: 1; }
     .sprint-arrow { opacity: 0.2; flex-shrink: 0; font-size: 10px; }
     .sprint-delivery { font-weight: 500; color: var(--accent); }
 
@@ -353,7 +356,7 @@
     .kickoff-left { display: flex; align-items: center; gap: 14px; }
     .kickoff-icon { font-size: 22px; flex-shrink: 0; }
     .kickoff-title { font-family: 'Kaisei Decol', serif; font-size: 15px; letter-spacing: -0.01em; margin-bottom: 2px; }
-    .kickoff-sub { font-size: 12px; opacity: 0.52; line-height: 1.4; }
+    .kickoff-sub { font-size: 13px; opacity: 0.62; line-height: 1.4; }
     .kickoff-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
     /* ── Your Plans — multi-plan grid ── */
@@ -361,14 +364,14 @@
     .plan-ov-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
     .plan-ov-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(246,77,37,0.08); }
     .plan-ov-top { padding: 20px 20px 16px; background: rgba(246,77,37,0.03); border-bottom: 1px solid var(--border); }
-    .plan-ov-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.38; margin-bottom: 6px; }
+    .plan-ov-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.48; margin-bottom: 6px; }
     .plan-ov-name { font-family: 'Kaisei Decol', serif; font-size: 18px; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 8px; }
-    .plan-ov-tier { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 11px; font-weight: 500; background: rgba(246,77,37,0.1); color: var(--accent); }
+    .plan-ov-tier { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 12px; font-weight: 500; background: rgba(246,77,37,0.1); color: var(--accent); }
     .plan-ov-bottom { padding: 14px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .plan-ov-stat { }
     .plan-ov-stat-num { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.02em; line-height: 1; }
-    .plan-ov-stat-label { font-size: 10px; opacity: 0.38; margin-top: 2px; letter-spacing: 0.04em; }
-    .plan-ov-footer { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 11px; opacity: 0.5; }
+    .plan-ov-stat-label { font-size: 11px; opacity: 0.48; margin-top: 2px; letter-spacing: 0.04em; }
+    .plan-ov-footer { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 12px; opacity: 0.58; }
     .plan-ov-delivery { display: flex; align-items: center; gap: 5px; }
 
     /* ── Plan detail view ── */
@@ -376,24 +379,24 @@
     .plan-detail-back:hover { opacity: 1; }
     .plan-detail-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
     .plan-detail-title { font-family: 'Kaisei Decol', serif; font-size: 24px; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-detail-meta { font-size: 12px; opacity: 0.48; }
+    .plan-detail-meta { font-size: 13px; opacity: 0.58; }
     .plan-detail-kpis { display: flex; gap: 24px; flex-wrap: wrap; }
     .plan-kpi { text-align: right; }
     .plan-kpi-num { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1; }
-    .plan-kpi-label { font-size: 10px; opacity: 0.38; margin-top: 2px; }
+    .plan-kpi-label { font-size: 11px; opacity: 0.48; margin-top: 2px; }
 
     /* ── People analytics strip ── */
     .people-analytics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
     .pa-card { border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
     .pa-num { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 3px; }
-    .pa-label { font-size: 11px; opacity: 0.38; letter-spacing: 0.03em; }
+    .pa-label { font-size: 12px; opacity: 0.5; letter-spacing: 0.03em; }
     @media (max-width: 900px) { .people-analytics { grid-template-columns: repeat(3, 1fr); } .plans-overview-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .people-analytics { grid-template-columns: repeat(2, 1fr); } .plans-overview-grid { grid-template-columns: 1fr; } }
 
     /* ── Start plan confirm modal ── */
     .plan-confirm-row { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
     .plan-confirm-row:last-child { border-bottom: none; }
-    .plan-confirm-label { opacity: 0.45; font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; }
+    .plan-confirm-label { opacity: 0.55; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; }
 
     /* ── Toast ── */
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: var(--bg); padding: 11px 18px; border-radius: 4px; font-size: 13px; font-weight: 500; z-index: 500; transform: translateY(70px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; }
@@ -483,17 +486,17 @@
         </div>
 
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-num" id="stat-employees">0</div><div class="stat-label">Active employees</div></div>
-          <div class="stat-card"><div class="stat-num" id="stat-teams">0</div><div class="stat-label">Teams</div></div>
-          <div class="stat-card"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
-          <div class="stat-card"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Upcoming this month</div></div>
+          <div class="stat-card" onclick="navigate('people')" style="cursor:pointer;" title="View employees"><div class="stat-num" id="stat-employees">0</div><div class="stat-label">Active employees</div></div>
+          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=team]').click()" style="cursor:pointer;" title="View teams"><div class="stat-num" id="stat-teams">0</div><div class="stat-label">Teams</div></div>
+          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=prospect]').click()" style="cursor:pointer;" title="View prospects"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
+          <div class="stat-card" onclick="navigate('calendar')" style="cursor:pointer;" title="View calendar"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Occasions this month</div></div>
         </div>
 
         <div class="two-col">
           <div class="card">
             <div class="card-head">
               <span class="card-title">Upcoming deliveries</span>
-              <span style="font-size:11px;opacity:0.38;">Next 30 days</span>
+              <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;opacity:0.5;" onclick="navigate('deliveries')">See all →</button>
             </div>
             <div class="card-body" id="upcomingList">
               <div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries.<br>Add people to get started.</div></div>
@@ -524,6 +527,10 @@
             <button class="filter-tab" data-filter="prospect">Prospects</button>
           </div>
           <input class="people-search" type="text" id="peopleSearch" placeholder="Search people…">
+        </div>
+        <div id="peopleGroupBanner" style="display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(246,77,37,0.06);border:1px solid rgba(246,77,37,0.2);border-radius:4px;margin-bottom:12px;">
+          <span style="font-size:13px;">Viewing group: <strong id="peopleGroupBannerName"></strong></span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;margin-left:auto;" onclick="clearPeopleGroupContext()">✕ Show all</button>
         </div>
         <div id="groupFilterRow" style="display:none;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;"></div>
 
@@ -620,15 +627,8 @@
 
         <!-- Plan list (default) -->
         <div id="planListView">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;">
-            <div>
-              <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.02em;margin-bottom:3px;">Plans</div>
-              <div style="font-size:12px;opacity:0.42;">Each CSV import or person you add creates a plan group. Click a plan to see its members.</div>
-            </div>
-          </div>
-          <div class="plans-overview-grid" id="plansOverviewGrid">
-            <div class="empty" style="grid-column:1/-1;"><div class="empty-icon">✦</div><div class="empty-text">No plans yet.<br>Use Import CSV or Add one by one above to get started.</div></div>
-          </div>
+          <div id="planChangeNotif" style="display:none;align-items:center;gap:10px;padding:11px 16px;background:rgba(201,95,0,0.07);border:1px solid rgba(201,95,0,0.2);border-radius:4px;margin-bottom:16px;color:#c95f00;flex-wrap:wrap;"></div>
+          <div id="plansOverviewGrid" class="plans-overview-grid"></div>
         </div>
 
         <!-- Plan detail (shown when clicking a card) -->
@@ -636,8 +636,8 @@
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
             <div class="plan-detail-back" onclick="showPlanList()" style="margin-bottom:0;">← All plans</div>
             <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline" style="font-size:12px;" onclick="openCSVModal()">⬆ Import CSV</button>
-              <button class="btn btn-primary" style="font-size:12px;" onclick="openAddPerson()">+ Add person</button>
+              <button class="btn btn-outline" id="planDetailCSVBtn" style="font-size:12px;" onclick="openCSVModalInGroup()">⬆ Import CSV</button>
+              <button class="btn btn-primary" id="planDetailAddBtn" style="font-size:12px;" onclick="openAddPersonInGroup(_planDetailKey||'')">+ Add person</button>
             </div>
           </div>
           <div class="plan-detail-header">
@@ -669,6 +669,7 @@
           <button class="loc-btn" onclick="setCatalogCity('Paris',this)">Paris</button>
           <button class="loc-btn" onclick="setCatalogCity('Brussels',this)">Brussels</button>
         </div>
+        <div class="location-filter" id="catalogAllergenRow" style="margin-bottom:14px;"></div>
         <div class="catalog-grid" id="catalogGrid"></div>
       </div>
 
@@ -807,7 +808,7 @@
 
       <!-- Step 4: Confirm -->
       <div class="step-panel" id="ap-step-3">
-        <div style="margin-bottom:18px;">
+        <div id="apDeliverySection" style="margin-bottom:18px;">
           <div style="font-size:12px;font-weight:500;margin-bottom:10px;opacity:0.75;">Delivery preference</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="apDeliveryOpts">
             <div class="type-opt selected" data-delivery="office" onclick="selectDelivery('office',this)">
@@ -997,7 +998,8 @@
       <div class="wish-ai-msg" id="wishPreviewMsg"></div>
       <div class="form-actions" style="margin-top:16px;">
         <button class="btn btn-outline" onclick="closeModal('modalWishPreview')">Close</button>
-        <button class="btn btn-primary" onclick="markWishSent()">Mark as sent ✓</button>
+        <button class="btn btn-primary" id="wishSendBtn" onclick="markWishSent()">Mark as sent ✓</button>
+        <span id="wishSentNote" style="display:none;font-size:12px;opacity:0.45;align-self:center;">Already sent ✓</span>
       </div>
     </div>
   </div>
@@ -1048,6 +1050,20 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- ══ NEW PLAN MODAL (Create Team / Lead List) ══ -->
+<div class="modal-backdrop" id="modalNewPlan">
+  <div class="modal modal-sm">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="newPlanTitle">New plan</div>
+        <div class="modal-sub" id="newPlanSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalNewPlan')">✕</button>
+    </div>
+    <div class="modal-body" id="newPlanBody"></div>
+  </div>
+</div>
+
 <script>
   // ── Cake data ──
   const CAKES = [
@@ -1084,7 +1100,7 @@
   // ── Nav ──
   const VIEW_META = {
     overview:  { title: 'Overview',     actions: '' },
-    yourplan:  { title: 'Plans',        actions: '<button class="btn btn-outline" onclick="openCSVModal()">⬆ Import CSV</button><button class="btn btn-primary" onclick="openAddPerson()">Add one by one →</button>' },
+    yourplan:  { title: 'Plans',        actions: '' },
     people:    { title: 'People',       actions: '' },
     calendar:  { title: 'Calendar',     actions: '' },
     wishcards: { title: 'Wish cards',   actions: '' },
@@ -1096,6 +1112,8 @@
   const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, settings: renderSettings, yourplan: renderYourPlan };
 
   function navigate(name) {
+    // clear plan-detail context when leaving plans
+    if (name!=='yourplan') { _planDetailKey=null; _addPersonDefaultGroup=null; _removalMode=false; if(_pendingRemovals) _pendingRemovals.clear(); }
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     const view=document.getElementById('view-'+name);
@@ -1176,30 +1194,32 @@
     document.getElementById('stat-upcoming').textContent=monthOcc.length;
 
     const upEl=document.getElementById('upcomingList');
-    if (!upcoming.length) { upEl.innerHTML='<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries in the next 30 days.</div></div>'; }
-    else {
-      const dotColor={employee:'var(--accent)',team:'#2563eb',prospect:'#16a34a'};
-      upEl.innerHTML=upcoming.slice(0,8).map(p=>`
-        <div class="upcoming-item">
+    const dotColor={employee:'var(--accent)',team:'#2563eb',prospect:'#16a34a'};
+    if (!upcoming.length) {
+      upEl.innerHTML=`<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries in the next 30 days.</div>
+        <button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate('yourplan')">Add people →</button></div>`;
+    } else {
+      upEl.innerHTML=upcoming.slice(0,6).map(p=>`
+        <div class="upcoming-item" onclick="navigate('deliveries')" style="cursor:pointer;">
           <span class="upcoming-dot" style="background:${dotColor[p.type]||'var(--accent)'}"></span>
           <div class="upcoming-info">
             <div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div>
-            <div class="upcoming-type">${p.type==='employee'?'Birthday':p.type==='team'?'Team celebration':'Prospect outreach'}</div>
+            <div class="upcoming-type">${p.type==='employee'?'🎂 Birthday':p.type==='team'?'🏢 Team celebration':'🎯 Prospect outreach'}</div>
           </div>
           <span class="upcoming-date">${fmtDateShort(p.next)}</span>
-        </div>`).join('');
+        </div>`).join('')
+        +(upcoming.length>6?`<div style="padding:10px 0;font-size:12px;opacity:0.42;text-align:center;cursor:pointer;" onclick="navigate('deliveries')">+${upcoming.length-6} more →</div>`:'');
     }
 
     const moEl=document.getElementById('monthOccasions');
     if (!monthOcc.length) { moEl.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">No occasions this month.</div></div>'; }
     else {
-      const dotColor={employee:'var(--accent)',team:'#2563eb',prospect:'#16a34a'};
       moEl.innerHTML=monthOcc.map(p=>`
-        <div class="upcoming-item">
+        <div class="upcoming-item" onclick="navigate('calendar')" style="cursor:pointer;">
           <span class="upcoming-dot" style="background:${dotColor[p.type]||'var(--accent)'}"></span>
           <div class="upcoming-info">
             <div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div>
-            <div class="upcoming-type">${p.type==='employee'?'Birthday':p.type==='team'?'Team celebration':'Prospect outreach'}</div>
+            <div class="upcoming-type">${p.type==='employee'?'🎂 Birthday':p.type==='team'?'🏢 Team celebration':'🎯 Prospect outreach'}</div>
           </div>
           <span class="upcoming-date">${fmtDateShort(nextDate(p))}</span>
         </div>`).join('');
@@ -1264,10 +1284,11 @@
     el.style.display='flex';
     el.innerHTML=`<span style="font-size:10px;opacity:0.38;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;">Group</span>
       <button class="grp-btn${currentGroupFilter==='all'?' active':''}" onclick="setGroupFilter('all')">All groups</button>
-      ${groups.map(g=>`<button class="grp-btn${currentGroupFilter===g?' active':''}" onclick="setGroupFilter(${JSON.stringify(g)})">${g}</button>`).join('')}`;
+      ${groups.map(g=>`<button class="grp-btn${currentGroupFilter===g?' active':''}" onclick="setGroupFilter('${encodeURIComponent(g)}')">${g}</button>`).join('')}`;
   }
 
-  function setGroupFilter(group) {
+  function setGroupFilter(encodedGroup) {
+    const group=decodeURIComponent(encodedGroup);
     currentGroupFilter=group;
     selectedIds.clear();
     renderGroupFilter();
@@ -1302,7 +1323,8 @@
     let people = currentFilter==='employee'
       ? everyone.filter(p=>p.type==='employee'||p.type==='team')
       : everyone.filter(p=>p.type===currentFilter);
-    if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
+    if (currentGroupFilter==='__ungrouped__') people=people.filter(p=>!p.group);
+    else if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
 
     document.getElementById('rosterCount').textContent=`${people.length} ${people.length===1?'person':'people'}`;
@@ -1340,9 +1362,8 @@
         <div style="width:80px;font-size:12px;opacity:0.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${teamLabel}</div>
         <div style="width:90px;"><span class="badge badge-orange" style="font-size:10px;">${planLabel}</span></div>
         <div style="width:72px;font-size:12px;opacity:0.45;">${keyDate||'—'}</div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
+        <div style="flex-shrink:0;">
           <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="openEditPerson('${p.id}')">Edit</button>
-          <button class="btn btn-danger" style="font-size:11px;padding:5px 10px;" onclick="deletePerson('${p.id}')">✕</button>
         </div>
       </div>`;
     }).join('')}</div>`;
@@ -1390,23 +1411,15 @@
           <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="drillIntoTeam(null)">← All teams</button>
           <div style="font-family:'Kaisei Decol',serif;font-size:15px;letter-spacing:-0.01em;flex:1;">${currentTeamGroup}</div>
           <span class="badge badge-blue">${tierLabel}</span>
-          <span style="font-size:12px;font-weight:500;">€${monthly}/mo</span>
-          <button class="btn btn-danger" style="font-size:11px;padding:5px 12px;" onclick="deleteWholeTeam('${enc(currentTeamGroup)}')">Delete team</button>
+          <span style="font-size:12px;font-weight:500;opacity:0.7;">€${monthly}/mo</span>
+          <button class="btn btn-outline" style="font-size:12px;" onclick="goToTeamPlan('${enc(currentTeamGroup)}')">Manage in Plans →</button>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:9px 18px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);flex-wrap:wrap;">
-          <input type="checkbox" class="row-check" id="teamCheckAll" onchange="teamToggleAll(this,'${enc(currentTeamGroup)}')" style="flex-shrink:0;">
-          <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;flex:1;">Select all</span>
-          <span style="font-size:11px;opacity:0.4;margin-right:2px;">Change tier:</span>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','birthday')">🎂 Birthday</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','christmas')">🎄 +Christmas</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;" onclick="teamBulkTier('${enc(currentTeamGroup)}','premium')">✦ Premium</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 8px;" onclick="teamBulkDelivery('${enc(currentTeamGroup)}','office')" title="Switch to office delivery">🏢</button>
-          <button class="btn btn-outline" style="font-size:11px;padding:4px 8px;" onclick="teamBulkDelivery('${enc(currentTeamGroup)}','home')" title="Switch to home delivery">🏠</button>
+        <div style="padding:8px 18px 6px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);">
+          <span style="font-size:11px;opacity:0.38;">To add, remove, or change tier and delivery for this team — go to Plans → ${currentTeamGroup}</span>
         </div>
         <div>${members.map(p=>{
           const initials=((p.first||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
-          return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);${selectedIds.has(p.id)?'background:rgba(246,77,37,0.04);':''}" data-id="${p.id}">
-            <input type="checkbox" class="row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
+          return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);" data-id="${p.id}">
             <div class="roster-av" style="flex-shrink:0;">${initials}</div>
             <div style="flex:1;min-width:0;">
               <div style="font-size:13px;font-weight:500;">${p.first||''} ${p.last||''}</div>
@@ -1415,7 +1428,6 @@
             <span class="badge badge-orange" style="font-size:10px;flex-shrink:0;">${TIER_LABEL[p.tier||'birthday']}</span>
             <span style="font-size:12px;opacity:0.5;flex-shrink:0;">${p.delivery==='home'?'🏠':'🏢'}</span>
             <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;flex-shrink:0;" onclick="openEditPerson('${p.id}')">Edit</button>
-            <button class="btn btn-danger" style="padding:5px 10px;font-size:11px;flex-shrink:0;" onclick="deletePerson('${p.id}')">✕</button>
           </div>`;
         }).join('')}</div>`;
       return;
@@ -1489,6 +1501,8 @@
       currentGroupFilter='all';
       currentTeamGroup=null;
       selectedIds.clear();
+      const banner=document.getElementById('peopleGroupBanner');
+      if (banner) banner.style.display='none';
       renderPeople();
     });
   });
@@ -1500,7 +1514,8 @@
     let people = currentFilter==='employee'
       ? allPeople().filter(p=>p.type==='employee'||p.type==='team')
       : allPeople().filter(p=>p.type===currentFilter);
-    if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
+    if (currentGroupFilter==='__ungrouped__') people=people.filter(p=>!p.group);
+    else if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
     if (cb.checked) people.forEach(p=>selectedIds.add(p.id));
     else selectedIds.clear();
@@ -1565,19 +1580,77 @@
   let apCurrentStep=0;
   let apPersonType='employee';
   let apDeliveryType='office';
+  let _addingFromPlan=false;
 
-  function openAddPerson() {
-    apCurrentStep=0; apPersonType='employee'; apDeliveryType='office';
-    document.querySelectorAll('.type-opt').forEach(o=>o.classList.toggle('selected',o.dataset.type==='employee'));
+  function _apStepDisplay(step) {
+    // Returns {num, total} for step counter label
+    if (_addingFromPlan) return {num:step,total:3}; // steps 1-3
+    return {num:step+1,total:4};                     // steps 1-4
+  }
+
+  function _apSetStepUI(step) {
+    // step = real apCurrentStep value
+    const {num,total}=_apStepDisplay(step);
+    document.getElementById('addPersonSub').textContent=`Step ${num} of ${total}`;
+    document.getElementById('apBtnNext').textContent=step===3?'Add person →':'Next →';
+    // Back hidden on first visible step
+    const firstVisible=_addingFromPlan?1:0;
+    document.getElementById('apBtnBack').style.display=step>firstVisible?'':'none';
+  }
+
+  function openAddPerson(keepType=false, skipToDetails=false) {
+    apCurrentStep=0;
+    _addingFromPlan=skipToDetails;
+    if (!keepType) apPersonType='employee';
+    apDeliveryType='office';
     document.querySelectorAll('#apDeliveryOpts .type-opt').forEach(o=>o.classList.toggle('selected',o.dataset.delivery==='office'));
-    document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===0));
-    document.querySelectorAll('#addPersonSteps .step').forEach((s,i)=>{ s.classList.remove('active','done'); if(i===0) s.classList.add('active'); });
-    document.getElementById('apBtnBack').style.display='none';
-    document.getElementById('apBtnNext').textContent='Next →';
-    document.getElementById('addPersonSub').textContent='Step 1 of 4';
     document.querySelectorAll('#apAllergyGroup .allergy-label').forEach(l=>{ l.querySelector('input').checked=false; l.classList.remove('active'); });
     initAllergyToggle('apAllergyGroup');
+
+    const titleMap={employee:'Add employee',team:'Add team member',prospect:'Add prospect'};
+    document.getElementById('addPersonTitle').textContent=keepType?(titleMap[apPersonType]||'Add person'):'Add person';
+
+    // Configure step dots — hide Type step when from plan
+    const steps=document.querySelectorAll('#addPersonSteps .step');
+    steps.forEach((s,i)=>{
+      s.classList.remove('active','done');
+      s.style.display=(_addingFromPlan&&i===0)?'none':'';
+      // Renumber dots
+      const dot=s.querySelector('.step-dot');
+      if (dot) dot.textContent=_addingFromPlan?(i):( i+1); // from-plan: 1,2,3; normal: 1,2,3,4
+    });
+    // Fix the connector lines when step 0 hidden (step[1] becomes first)
+    // step dots for from-plan: step[1]→"1", step[2]→"2", step[3]→"3"
+    // step dots for normal:   step[0]→"1", step[1]→"2", step[2]→"3", step[3]→"4"
+
+    if (skipToDetails) {
+      // Jump straight to details (step index 1)
+      document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===1));
+      steps.forEach((s,i)=>{ s.classList.remove('active','done'); if(i===1)s.classList.add('active'); else if(i<1&&i>0)s.classList.add('done'); });
+      buildDetailsForm();
+      apCurrentStep=1;
+      _apSetStepUI(1);
+    } else {
+      // Normal start at type step
+      document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===0));
+      steps.forEach((s,i)=>{ s.classList.remove('active','done'); if(i===0)s.classList.add('active'); });
+      document.querySelectorAll('.type-opt').forEach(o=>o.classList.toggle('selected',o.dataset.type===apPersonType));
+      apCurrentStep=0;
+      _apSetStepUI(0);
+    }
     openModal('modalAddPerson');
+  }
+
+  function apDirectJump(targetStep) {
+    if (targetStep===1) buildDetailsForm();
+    document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===targetStep));
+    document.querySelectorAll('#addPersonSteps .step').forEach((s,i)=>{
+      s.classList.remove('active','done');
+      if (i===targetStep) s.classList.add('active');
+      else if (i<targetStep) s.classList.add('done');
+    });
+    apCurrentStep=targetStep;
+    _apSetStepUI(targetStep);
   }
 
   function selectPersonType(type,el) {
@@ -1587,6 +1660,34 @@
 
   function buildDetailsForm() {
     const wrap=document.getElementById('apDetailsForm');
+
+    // When adding from an existing plan, show a simplified, plan-type-specific form
+    if (_addingFromPlan && _planDetailKey) {
+      const key=decodeURIComponent(_planDetailKey);
+      const pg=DB.get('planGroups').find(g=>g.name===key);
+      const isLeadList=pg?.type==='leadlist';
+      if (isLeadList) {
+        wrap.innerHTML=`<div class="form-grid">
+          <div class="field-group"><label>First name</label><input type="text" id="ap-first" placeholder="James" required></div>
+          <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Chen"></div>
+          <div class="field-group span2"><label>Company</label><input type="text" id="ap-company" placeholder="Acme Ventures"></div>
+          <div class="field-group span2"><label>Email</label><input type="email" id="ap-email" placeholder="james@acme.com"></div>
+          <div class="field-group"><label>Deal value (€)</label><input type="number" id="ap-deal" placeholder="25000"></div>
+          <div class="field-group"><label>First send date</label><input type="date" id="ap-sendDate"></div>
+        </div>`;
+      } else {
+        // Team — no tier/delivery (inherited from team)
+        wrap.innerHTML=`<div class="form-grid">
+          <div class="field-group"><label>First name</label><input type="text" id="ap-first" placeholder="Anna" required></div>
+          <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Smith"></div>
+          <div class="field-group span2"><label>Email</label><input type="email" id="ap-email" placeholder="anna@company.com"></div>
+          <div class="field-group span2"><label>Birthday</label><input type="date" id="ap-birthday"></div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;opacity:0.45;padding:10px 12px;background:rgba(246,77,37,0.04);border-radius:3px;">Plan tier and delivery are inherited from the team — no need to set them per employee.</div>`;
+      }
+      return;
+    }
+
     if (apPersonType==='employee') {
       wrap.innerHTML=`<div class="form-grid">
         <div class="field-group"><label>First name</label><input type="text" id="ap-first" placeholder="Anna" required></div>
@@ -1600,7 +1701,7 @@
             <option value="premium">Premium (€20/mo)</option>
           </select>
         </div>
-        <div class="field-group span2"><label>Group <span style="opacity:0.4;font-size:10px;text-transform:none;letter-spacing:0;">(optional — e.g. "Marketing Team")</span></label><input type="text" id="ap-group" placeholder="Marketing Team, Amsterdam Office…"></div>
+        <div class="field-group span2"><label>Group <span style="opacity:0.4;font-size:10px;text-transform:none;letter-spacing:0;">(optional — e.g. "Marketing Team")</span></label><input type="text" id="ap-group" placeholder="Marketing Team, Amsterdam Office…" value="${_addPersonDefaultGroup||''}"></div>
       </div>`;
     } else if (apPersonType==='team') {
       wrap.innerHTML=`<div class="form-grid">
@@ -1608,7 +1709,7 @@
         <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Smith" required></div>
         <div class="field-group span2"><label>Email</label><input type="email" id="ap-email" placeholder="anna@company.com"></div>
         <div class="field-group span2"><label>Birthday <span style="opacity:0.4;font-size:10px;text-transform:none;letter-spacing:0;">(optional)</span></label><input type="date" id="ap-birthday"></div>
-        <div class="field-group span2"><label>Team name <span style="color:var(--accent);font-size:10px;text-transform:none;letter-spacing:0;">(required — groups this person with their team)</span></label><input type="text" id="ap-group" placeholder="e.g. Marketing, Engineering…" required></div>
+        <div class="field-group span2"><label>Team name <span style="color:var(--accent);font-size:10px;text-transform:none;letter-spacing:0;">(required — groups this person with their team)</span></label><input type="text" id="ap-group" placeholder="e.g. Marketing, Engineering…" value="${_addPersonDefaultGroup||''}" required></div>
         <div class="field-group span2"><label>Plan tier</label>
           <select id="ap-tier">
             <option value="birthday">Birthday (€8/mo)</option>
@@ -1662,11 +1763,10 @@
   function v(id) { const el=document.getElementById(id); return el?el.value:''; }
 
   function apStep(dir) {
-    // Final confirm step: button saves directly
     if (apCurrentStep===3 && dir>0) { savePerson(); return; }
-
     const nextStep=apCurrentStep+dir;
-    if (nextStep<0||nextStep>3) return;
+    const minStep=_addingFromPlan?1:0;
+    if (nextStep<minStep||nextStep>3) return;
 
     if (dir>0 && apCurrentStep===0) buildDetailsForm();
     if (dir>0 && apCurrentStep===1) {
@@ -1680,31 +1780,52 @@
     document.querySelectorAll('#addPersonSteps .step').forEach((s,i)=>{
       s.classList.remove('active','done');
       if (i===nextStep) s.classList.add('active');
-      else if (i<nextStep) s.classList.add('done');
+      else if (i<nextStep&&(!_addingFromPlan||i>0)) s.classList.add('done');
     });
-    document.getElementById('apBtnBack').style.display=nextStep>0?'':'none';
-    document.getElementById('apBtnNext').textContent=nextStep===3?'Add person →':'Next →';
-    document.getElementById('addPersonSub').textContent=`Step ${nextStep+1} of 4`;
     apCurrentStep=nextStep;
+    _apSetStepUI(nextStep);
   }
 
   function savePerson() {
     const allergies=Array.from(document.querySelectorAll('#apAllergyGroup input:checked')).map(cb=>cb.value);
-    let person={type:apPersonType,allergies,wishStatus:'pending',delivery:apDeliveryType};
-    if (apPersonType==='employee') {
-      person={...person,first:v('ap-first'),last:v('ap-last'),email:v('ap-email'),birthday:v('ap-birthday'),tier:v('ap-tier'),group:v('ap-group')};
+    let person={allergies,wishStatus:'pending'};
+
+    if (_addingFromPlan && _planDetailKey) {
+      const key=decodeURIComponent(_planDetailKey);
+      const pg=DB.get('planGroups').find(g=>g.name===key);
+      if (pg?.type==='leadlist') {
+        // Adding prospect to lead list
+        person={...person,type:'prospect',first:v('ap-first'),last:v('ap-last'),company:v('ap-company'),email:v('ap-email'),deal:v('ap-deal'),sendDate:v('ap-sendDate'),address:v('ap-address'),status:'cold',group:key};
+      } else {
+        // Adding employee to team — inherit tier & delivery from team
+        person={...person,type:'employee',first:v('ap-first'),last:v('ap-last'),email:v('ap-email'),birthday:v('ap-birthday'),tier:pg?.tier||'birthday',delivery:pg?.delivery||'office',group:key};
+      }
+    } else if (apPersonType==='employee') {
+      person={...person,type:'employee',first:v('ap-first'),last:v('ap-last'),email:v('ap-email'),birthday:v('ap-birthday'),tier:v('ap-tier'),delivery:apDeliveryType,group:v('ap-group')||_addPersonDefaultGroup||''};
     } else if (apPersonType==='team') {
-      const cadence=v('ap-cadence')||'quarterly';
-      let sprintDates=[];
-      person={...person,first:v('ap-first'),last:v('ap-last'),email:v('ap-email'),birthday:v('ap-birthday'),tier:v('ap-tier'),group:v('ap-group')};
+      person={...person,type:'employee',first:v('ap-first'),last:v('ap-last'),email:v('ap-email'),birthday:v('ap-birthday'),tier:v('ap-tier'),delivery:apDeliveryType,group:v('ap-group')||_addPersonDefaultGroup||''};
     } else {
-      person={...person,first:v('ap-first'),last:v('ap-last'),company:v('ap-company'),email:v('ap-email'),address:v('ap-address'),deal:v('ap-deal'),sendDate:v('ap-sendDate'),status:'cold'};
+      person={...person,type:'prospect',first:v('ap-first'),last:v('ap-last'),company:v('ap-company'),email:v('ap-email'),address:v('ap-address'),deal:v('ap-deal'),sendDate:v('ap-sendDate'),status:'cold'};
     }
+
     DB.add('people',person);
+    const savedPlanKey=_planDetailKey;
+    const wasFromPlan=_addingFromPlan;
+    _addPersonDefaultGroup=null; _planDetailKey=null; _addingFromPlan=false;
     closeModal('modalAddPerson');
-    navigate('people');
+    if (savedPlanKey) {
+      // Check if active plan — notify admin
+      const key=decodeURIComponent(savedPlanKey);
+      const pg=DB.get('planGroups').find(g=>g.name===key);
+      if (wasFromPlan && pg?.status==='active') {
+        DB.add('change_requests',{group:key,changes:[`Added: ${person.first||''} ${person.last||''}`],submittedAt:new Date().toISOString(),status:'pending'});
+        toast(`${person.first||'Person'} added — admin notified for billing review ✓`);
+      } else {
+        toast(`${person.first||'Person'} added ✓`);
+      }
+      showPlanDetail(savedPlanKey);
+    } else { navigate('people'); toast(`${person.first||'Person'} added ✓`); }
     renderOverview();
-    toast(`${person.first||person.name} added to roster ✓`);
   }
 
   function selectDelivery(type, el) {
@@ -1830,6 +1951,14 @@
 
   function openCSVModal() { resetCSV(); openModal('modalCSV'); }
 
+  function openCSVModalInGroup() {
+    resetCSV(); openModal('modalCSV');
+    if (_planDetailKey) {
+      const key=decodeURIComponent(_planDetailKey);
+      if (key!=='__ungrouped__') document.getElementById('csvGroupName').value=key;
+    }
+  }
+
   function normaliseType(raw) {
     const t=(raw||'').toLowerCase().trim();
     if (t==='team') return 'team';
@@ -1850,11 +1979,12 @@
       DB.add('people',person);
     });
     const count=csvRows.length;
+    const savedPlanKey=_planDetailKey;
     closeModal('modalCSV');
-    navigate('yourplan');
-    renderOverview();
     resetCSV();
-    showKickoffBanner(count, empCount, csvBulkPlan, csvBulkDelivery);
+    renderOverview();
+    if (savedPlanKey) { navigate('yourplan'); showPlanDetail(savedPlanKey); }
+    else { navigate('yourplan'); showKickoffBanner(count, empCount, csvBulkPlan, csvBulkDelivery); }
   }
 
   function resetCSV() {
@@ -1933,19 +2063,161 @@
     renderOverview();
   }
 
-  // ── Plan groups helper ──
-  function getPlanGroups() {
-    const people=allPeople();
-    const map={};
-    people.forEach(p=>{
-      const key=p.group||'__ungrouped__';
-      if (!map[key]) map[key]={key,name:p.group||'General',employees:[],teamMembers:[],prospects:[],tiers:new Set(),deliveries:new Set()};
-      if (p.type==='employee') { map[key].employees.push(p); if(p.tier) map[key].tiers.add(p.tier); }
-      else if (p.type==='team') { map[key].teamMembers.push(p); if(p.tier) map[key].tiers.add(p.tier); }
-      else map[key].prospects.push(p);
-      if (p.delivery) map[key].deliveries.add(p.delivery);
+  // ── Staged plan change ──
+  let _stagedDelivery = null;
+  let _originalTier = null;
+  let _originalDelivery = null;
+
+  function stagePlanDelivery(delivery) {
+    _stagedDelivery = delivery;
+    const offBtn = document.getElementById('planDeliveryOffice');
+    const homBtn = document.getElementById('planDeliveryHome');
+    [offBtn, homBtn].forEach(b => {
+      if (!b) return;
+      b.style.cssText = b.style.cssText.replace(/border-color:[^;]+;?/g,'').replace(/background:[^;]+;?/g,'').replace(/font-weight:[^;]+;?/g,'');
     });
-    return Object.values(map);
+    const active = delivery === 'office' ? offBtn : homBtn;
+    if (active) {
+      active.style.borderColor = 'var(--accent)';
+      active.style.background = 'rgba(246,77,37,0.07)';
+      active.style.fontWeight = '600';
+    }
+    const row = document.getElementById('changeDelivRow');
+    if (row) row.style.borderLeft = (delivery !== _originalDelivery) ? '3px solid var(--accent)' : '3px solid transparent';
+    _updateChangeSummary();
+  }
+
+  function onPlanTierChange() {
+    const tier = document.getElementById('planBulkTier')?.value;
+    const row = document.getElementById('changeTierRow');
+    if (row) row.style.borderLeft = (tier && tier !== _originalTier) ? '3px solid var(--accent)' : '3px solid transparent';
+    _updateChangeSummary();
+  }
+
+  function _updateChangeSummary() {
+    const el = document.getElementById('changeSummaryLine');
+    if (!el) return;
+    const newTier = document.getElementById('planBulkTier')?.value;
+    const tierChanged = newTier && newTier !== _originalTier;
+    const deliveryChanged = _stagedDelivery !== null && _stagedDelivery !== _originalDelivery;
+    if (!tierChanged && !deliveryChanged) {
+      el.innerHTML = 'Select a change above, then submit.';
+      el.style.color = ''; el.style.opacity = '0.38';
+      return;
+    }
+    const parts = [];
+    if (tierChanged) parts.push(`<strong>${TIER_LABEL[_originalTier]}</strong> → <strong>${TIER_LABEL[newTier]}</strong>`);
+    if (deliveryChanged) parts.push(`<strong>${_originalDelivery==='home'?'Home':'Office'}</strong> → <strong>${_stagedDelivery==='home'?'Home':'Office'}</strong>`);
+    el.innerHTML = `Requesting: ${parts.join(' &nbsp;·&nbsp; ')}`;
+    el.style.color = 'var(--accent)'; el.style.opacity = '0.9';
+  }
+
+  // ── Plan groups ──
+  // planGroups DB table: { id, name, type:'team'|'leadlist', tier, delivery, createdAt }
+
+  function ensurePlanGroups() {
+    // Migrate existing people-groups that have no explicit planGroup record
+    const existing=new Set(DB.get('planGroups').map(g=>g.name));
+    const seen=new Set();
+    allPeople().forEach(p=>{
+      if (!p.group||existing.has(p.group)||seen.has(p.group)) return;
+      seen.add(p.group);
+      const members=allPeople().filter(x=>x.group===p.group);
+      const allProspects=members.every(x=>x.type==='prospect');
+      const type=allProspects?'leadlist':'team';
+      const tier=members.find(x=>x.tier)?.tier||'birthday';
+      const delivery=members.find(x=>x.delivery)?.delivery||'office';
+      DB.add('planGroups',{name:p.group,type,tier,delivery,createdAt:new Date().toISOString()});
+      existing.add(p.group);
+    });
+  }
+
+  function getPlanGroups() {
+    ensurePlanGroups();
+    const groups=DB.get('planGroups');
+    const people=allPeople();
+    return groups.map(g=>{
+      const members=people.filter(p=>p.group===g.name);
+      const employees=members.filter(p=>p.type==='employee'||p.type==='team');
+      const prospects=members.filter(p=>p.type==='prospect');
+      const tiers=new Set(employees.map(p=>p.tier||g.tier||'birthday'));
+      const deliveries=new Set(employees.map(p=>p.delivery||g.delivery||'office'));
+      return {...g,key:g.name,employees,teamMembers:[],prospects,tiers,deliveries};
+    });
+  }
+
+  // ── New plan creation ──
+  let _newPlanTier='birthday';
+  let _newPlanDelivery='office';
+
+  function openNewPlanModal(type) {
+    const isTeam=type==='team';
+    _newPlanTier='birthday'; _newPlanDelivery='office';
+    document.getElementById('newPlanTitle').textContent=isTeam?'Create a team':'Create a lead list';
+    document.getElementById('newPlanSub').textContent=isTeam?'Group employees by department or office — they\'ll all receive the same plan.':'Track prospects for targeted gifting outreach.';
+    document.getElementById('newPlanBody').innerHTML=`
+      <div class="field-group" style="margin-bottom:20px;">
+        <label>${isTeam?'Team name':'List name'}</label>
+        <input type="text" id="newPlanName" placeholder="${isTeam?'e.g. Marketing, Engineering, Amsterdam Office…':'e.g. Q1 Enterprise Leads, VC Pipeline…'}" style="width:100%;" autofocus>
+      </div>
+      ${isTeam?`
+      <div style="margin-bottom:18px;">
+        <div style="font-size:11px;opacity:0.42;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Plan tier</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="newPlanTierOpts">
+          ${[['birthday','🎂 Birthday','€8/person/mo','Birthday cake delivered on their day'],
+             ['christmas','🎄 + Christmas','€14/person/mo','Birthday + Christmas gift, gift-wrapped'],
+             ['premium','✦ Premium','€20/person/mo','Birthday + Christmas + work anniversary']
+            ].map(([val,name,price,desc],i)=>`
+            <div class="plan-card-sel${i===0?' active':''}" data-tier="${val}" onclick="selectNewPlanTier('${val}',this)" style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;">
+              <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${name}</div><div style="font-size:11px;opacity:0.45;">${desc}</div></div>
+              <div style="font-family:'Kaisei Decol',serif;font-size:15px;flex-shrink:0;opacity:0.7;">${price}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:11px;opacity:0.42;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Delivery</div>
+        <div style="display:flex;gap:8px;" id="newPlanDelivOpts">
+          <button id="npd-office" class="btn btn-outline" onclick="selectNewPlanDelivery('office')" style="flex:1;padding:10px;font-size:12px;border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;">🏢 Office delivery</button>
+          <button id="npd-home" class="btn btn-outline" onclick="selectNewPlanDelivery('home')" style="flex:1;padding:10px;font-size:12px;">🏠 Home delivery (+€2)</button>
+        </div>
+      </div>`:''}
+      <div class="form-actions" style="margin-top:4px;">
+        <button class="btn btn-outline" onclick="closeModal('modalNewPlan')">Cancel</button>
+        <button class="btn btn-primary" onclick="createPlanGroup('${type}')">Create ${isTeam?'team':'list'} →</button>
+      </div>`;
+    openModal('modalNewPlan');
+    setTimeout(()=>document.getElementById('newPlanName')?.focus(),50);
+  }
+
+  function selectNewPlanTier(tier,el) {
+    _newPlanTier=tier;
+    document.querySelectorAll('#newPlanTierOpts .plan-card-sel').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function selectNewPlanDelivery(delivery) {
+    _newPlanDelivery=delivery;
+    ['office','home'].forEach(d=>{
+      const btn=document.getElementById('npd-'+d);
+      if (!btn) return;
+      const active=d===delivery;
+      btn.style.borderColor=active?'var(--accent)':'';
+      btn.style.background=active?'rgba(246,77,37,0.07)':'';
+      btn.style.fontWeight=active?'600':'';
+    });
+  }
+
+  function createPlanGroup(type) {
+    const name=(document.getElementById('newPlanName')?.value||'').trim();
+    if (!name) { toast('Please enter a name'); return; }
+    if (DB.get('planGroups').some(g=>g.name===name)) { toast(`"${name}" already exists`); return; }
+    const tier=type==='team'?_newPlanTier:null;
+    const delivery=type==='team'?_newPlanDelivery:null;
+    DB.add('planGroups',{name,type,tier,delivery,status:'draft',createdAt:new Date().toISOString()});
+    closeModal('modalNewPlan');
+    navigate('yourplan');
+    showPlanDetail(encodeURIComponent(name));
+    toast(`"${name}" created`);
   }
 
   const TIER_LABEL={birthday:'Birthday',christmas:'+ Christmas',premium:'Premium'};
@@ -1955,153 +2227,482 @@
     showPlanList();
   }
 
+  function renderPlanCard(g) {
+    const enc=encodeURIComponent(g.key);
+    const safeName=g.name.replace(/'/g,"\\'");
+    const isActive=g.status==='active';
+    if (g.type==='team') {
+      const count=g.employees.length;
+      const tier=g.tier||[...g.tiers][0]||'birthday';
+      const delivery=g.delivery||(g.deliveries.has('home')?'home':'office');
+      const monthly=(RATE[tier]||8)*count;
+      const monthFrac=(new Date().getMonth()+1)/12;
+      const cakesYr=Math.round(count*(tier==='birthday'?1:tier==='christmas'?2:3)*monthFrac);
+      return `<div class="plan-ov-card" onclick="showPlanDetail('${enc}')">
+        <div class="plan-ov-top">
+          <div class="plan-ov-label">👥 Team &nbsp;<span style="font-size:10px;${isActive?'background:rgba(34,197,94,0.12);color:#16a34a':'background:rgba(246,77,37,0.08);color:var(--accent)'};border-radius:10px;padding:2px 8px;font-weight:500;">${isActive?'● Running':'Draft'}</span></div>
+          <div class="plan-ov-name" id="plan-name-${enc}">${g.name}</div>
+          <span class="plan-ov-tier">${TIER_LABEL[tier]}</span>
+          <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${enc}','${safeName}')">✎</button>
+        </div>
+        <div class="plan-ov-bottom">
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count}</div><div class="plan-ov-stat-label">Employees</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count&&isActive?cakesYr||'—':'—'}</div><div class="plan-ov-stat-label">Cakes YTD</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count?`€${monthly}`:'—'}</div><div class="plan-ov-stat-label">Monthly</div></div>
+        </div>
+        <div class="plan-ov-footer">
+          <div class="plan-ov-delivery">${delivery==='home'?'🏠 Home':'🏢 Office'}</div>
+          <div style="font-size:11px;opacity:0.45;">${count?`€${monthly}/mo`:''}</div>
+        </div>
+      </div>`;
+    } else {
+      const count=g.prospects.length;
+      const totalDeal=g.prospects.reduce((s,p)=>s+Number(p.deal||0),0);
+      return `<div class="plan-ov-card" onclick="showPlanDetail('${enc}')">
+        <div class="plan-ov-top">
+          <div class="plan-ov-label">🎯 Lead list</div>
+          <div class="plan-ov-name" id="plan-name-${enc}">${g.name}</div>
+          <span class="plan-ov-tier">${count} prospect${count!==1?'s':''}</span>
+          <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${enc}','${safeName}')">✎</button>
+        </div>
+        <div class="plan-ov-bottom">
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count}</div><div class="plan-ov-stat-label">Prospects</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${totalDeal?`€${(totalDeal/1000).toFixed(0)}k`:'—'}</div><div class="plan-ov-stat-label">Pipeline</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">3</div><div class="plan-ov-stat-label">Touch points</div></div>
+        </div>
+        <div class="plan-ov-footer"><div>${count?'Active outreach':'No prospects yet'}</div></div>
+      </div>`;
+    }
+  }
+
   function showPlanList() {
     document.getElementById('planListView').style.display='block';
     document.getElementById('planDetailView').style.display='none';
+    document.getElementById('topbarTitle').textContent='Plans';
+    _stagedDelivery=null; _planDetailKey=null; _addPersonDefaultGroup=null;
+    _removalMode=false; _pendingRemovals.clear(); _peopleListExpanded=false;
+
+    const pending=DB.get('change_requests').filter(r=>r.status==='pending');
+    const notifEl=document.getElementById('planChangeNotif');
+    if (notifEl) {
+      notifEl.style.display=pending.length?'flex':'none';
+      if (pending.length) notifEl.innerHTML=`<span style="font-size:13px;">⚑ <strong>${pending.length} change request${pending.length!==1?'s':''} pending review</strong> — our team will action within 24h.</span><button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;margin-left:auto;" onclick="dismissChangeNotif()">Dismiss</button>`;
+    }
+
     const groups=getPlanGroups();
     const grid=document.getElementById('plansOverviewGrid');
-    if (!groups.length) {
-      grid.innerHTML='<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">✦</div><div class="empty-text">No plans yet.<br>Use Import CSV or Add one by one above to get started.</div></div>';
-      return;
-    }
-    const s=DB.getObj('settings')||{};
-    const empCount=allPeople().filter(p=>p.type==='employee').length;
-    const activateBanner=(!s.planActive && empCount>0)
-      ? `<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border:2px solid var(--accent);border-radius:6px;background:rgba(246,77,37,0.04);margin-bottom:4px;flex-wrap:wrap;gap:10px;"><div><div style="font-size:13px;font-weight:500;margin-bottom:2px;">Ready to activate?</div><div style="font-size:12px;opacity:0.55;">${empCount} employee${empCount!==1?'s':''} added — confirm and start scheduling deliveries.</div></div><button class="btn btn-primary" onclick="startPlan()">Start plan →</button></div>`
-      : '';
-    grid.innerHTML=activateBanner+groups.map(g=>{
-      const primaryTier=[...g.tiers][0]||'birthday';
-      const tierLabel=g.tiers.size>1?'Mixed plans':TIER_LABEL[primaryTier]||primaryTier;
-      const billable=g.employees.length+g.teamMembers.length;
-      const homeAddon=g.deliveries.has('home')&&!g.deliveries.has('office')?2:0;
-      const rate=RATE[primaryTier]||8;
-      const monthly=(rate+homeAddon)*billable;
-      const delivIcon=g.deliveries.has('home')&&g.deliveries.has('office')?'🏢🏠 Mixed':g.deliveries.has('home')?'🏠 Home':'🏢 Office';
-      const dominantType=g.teamMembers.length>g.employees.length?'team':'employee';
-      const memberLabel=dominantType==='team'?'Team members':'Employees';
-      const memberCount=dominantType==='team'?g.teamMembers.length:g.employees.length;
-      // Cakes expected this year (prorated by current month)
-      const monthFrac=(new Date().getMonth()+1)/12;
-      const cakesYear=Math.round(billable*(rate===8?1:rate===14?2:3)*monthFrac);
-      return `<div class="plan-ov-card" onclick="showPlanDetail('${encodeURIComponent(g.key)}')">
-        <div class="plan-ov-top">
-          <div class="plan-ov-label">${dominantType==='team'?'Team group':'Employee group'}</div>
-          <div class="plan-ov-name" id="plan-name-${encodeURIComponent(g.key)}">${g.name}</div>
-          <span class="plan-ov-tier">${tierLabel}</span>
-          <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${encodeURIComponent(g.key)}','${g.name.replace(/'/g,"\\'")}')">✎</button>
+    const teams=groups.filter(g=>g.type==='team');
+    const leads=groups.filter(g=>g.type==='leadlist');
+
+    const sectionHead=(title,sub,btnLabel,btnFn)=>`
+      <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:4px 0 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+        <div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:2px;">${title}</div>
+          <div style="font-size:12px;opacity:0.42;">${sub}</div>
         </div>
-        <div class="plan-ov-bottom">
-          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${memberCount}</div><div class="plan-ov-stat-label">${memberLabel}</div></div>
-          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${cakesYear||'—'}</div><div class="plan-ov-stat-label">Cakes YTD</div></div>
-          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${monthly?`€${monthly}`:'—'}</div><div class="plan-ov-stat-label">Monthly</div></div>
-        </div>
-        <div class="plan-ov-footer">
-          <div class="plan-ov-delivery">${delivIcon}</div>
-          <div style="font-size:11px;opacity:0.45;">${monthly?`€${monthly}/mo`:''}</div>
-        </div>
+        <button class="btn btn-primary" style="font-size:12px;" onclick="${btnFn}">${btnLabel}</button>
       </div>`;
-    }).join('');
+
+    const emptyRow=(msg)=>`<div style="grid-column:1/-1;padding:18px 0 4px;font-size:13px;opacity:0.38;">${msg}</div>`;
+    const divider=`<div style="grid-column:1/-1;height:1px;background:var(--border);margin:20px 0;"></div>`;
+
+    grid.innerHTML=
+      sectionHead('Teams','Group employees — birthday &amp; holiday cakes','+ New team',"openNewPlanModal('team')")
+      +(teams.length?teams.map(renderPlanCard).join(''):emptyRow('No teams yet. Create your first team above.'))
+      +divider
+      +sectionHead('Lead Lists','Organize prospects for gifting outreach','+ New lead list',"openNewPlanModal('leadlist')")
+      +(leads.length?leads.map(renderPlanCard).join(''):emptyRow('No lead lists yet. Create your first list above.'));
+
+    // keep old grid layout but below add an info note if there are ungrouped people (shouldn't happen in new flow)
+    const groups2=getPlanGroups();
+    if (!groups2.length) {
+      grid.innerHTML=`
+        ${sectionHead('Teams','Group employees — birthday &amp; holiday cakes','+ New team',"openNewPlanModal('team')")}
+        ${emptyRow('No teams yet.')}
+        ${divider}
+        ${sectionHead('Lead Lists','Organize prospects for gifting outreach','+ New lead list',"openNewPlanModal('leadlist')")}
+        ${emptyRow('No lead lists yet.')}`;
+    }
   }
 
-  function showPlanDetail(encodedKey) {
+
+  let _planDetailKey=null;
+  let _addPersonDefaultGroup=null;
+  let _removalMode=false;
+  let _pendingRemovals=new Set();
+  let _peopleListExpanded=false;
+
+  function togglePeopleList() {
+    _peopleListExpanded=!_peopleListExpanded;
+    const body=document.getElementById('planPeopleBody');
+    const arrow=document.getElementById('planPeopleArrow');
+    if (!body) return;
+    body.style.display=_peopleListExpanded?'block':'none';
+    if (arrow) arrow.style.transform=_peopleListExpanded?'rotate(90deg)':'';
+  }
+
+  function getPlanDominantType(g) {
+    if (g.teamMembers.length>0&&g.teamMembers.length>=g.employees.length) return 'team';
+    if (g.prospects.length>0&&g.employees.length===0&&g.teamMembers.length===0) return 'prospect';
+    return 'employee';
+  }
+
+  function goToPlanForPerson(id) {
+    const p=allPeople().find(x=>x.id===id);
+    if (!p) return;
+    navigate('yourplan');
+    showPlanDetail(encodeURIComponent(p.group||'__ungrouped__'));
+  }
+
+  function goToTeamPlan(encodedName) {
+    navigate('yourplan');
+    showPlanDetail(encodedName);
+  }
+
+  function startRemovalMode(encodedKey) { _removalMode=true; _pendingRemovals.clear(); showPlanDetail(encodedKey); }
+  function cancelRemovalMode(encodedKey) { _removalMode=false; _pendingRemovals.clear(); showPlanDetail(encodedKey); }
+
+  function toggleRemovalCheck(id,encodedKey) {
+    if (_pendingRemovals.has(id)) _pendingRemovals.delete(id); else _pendingRemovals.add(id);
+    // update just the footer without full re-render
+    const removalCount=_pendingRemovals.size;
+    const countEl=document.getElementById('removalCountLabel');
+    if (countEl) countEl.textContent=removalCount>0?`${removalCount} person${removalCount!==1?'s':''} selected`:'Select people to remove';
+    const reqBtn=document.getElementById('removalSubmitBtn');
+    if (reqBtn) reqBtn.style.display=removalCount>0?'':'none';
+    // strikethrough
+    document.querySelectorAll('[data-id]').forEach(row=>{
+      const rowId=row.dataset.id;
+      const checked=_pendingRemovals.has(rowId);
+      const cb=row.querySelector('input[type=checkbox]');
+      if (cb) cb.checked=checked;
+      const nameEl=row.querySelector('.removal-name');
+      if (nameEl) { nameEl.style.textDecoration=checked?'line-through':''; nameEl.style.opacity=checked?'0.4':''; }
+    });
+  }
+
+  function submitRemovalRequest(encodedKey) {
     const key=decodeURIComponent(encodedKey);
     const groups=getPlanGroups();
     const g=groups.find(x=>x.key===key);
-    if (!g) return;
+    if (!g||!_pendingRemovals.size) return;
+    const primaryTier=[...g.tiers][0]||'birthday';
+    const billable=g.employees.length;
+    const toRemove=allPeople().filter(p=>_pendingRemovals.has(p.id));
+    const billingPeople=toRemove.filter(p=>p.type!=='prospect').length;
+    const oldM=(RATE[primaryTier]||8)*billable;
+    const newM=(RATE[primaryTier]||8)*Math.max(0,billable-billingPeople);
+    const now=new Date(); const in30=new Date(now.getTime()+30*24*60*60*1000);
+    const upcoming=toRemove.filter(p=>{
+      if (!p.birthday) return false;
+      const b=new Date(p.birthday);
+      let next=new Date(now.getFullYear(),b.getMonth(),b.getDate());
+      if (next<now) next.setFullYear(now.getFullYear()+1);
+      return next<=in30;
+    });
+    const warnHtml=upcoming.length
+      ?`<div style="background:rgba(201,95,0,0.08);border:1px solid rgba(201,95,0,0.2);border-radius:4px;padding:11px 14px;margin:14px 0;font-size:12px;color:#c95f00;">⚑ <strong>${upcoming.length} upcoming birthday${upcoming.length!==1?'s':''}</strong> — we'll confirm before removing.</div>`
+      :`<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:11px 14px;margin:14px 0;font-size:12px;color:#16a34a;">✓ No upcoming birthdays in the next 30 days.</div>`;
+    document.getElementById('planChangeDesc').innerHTML=`
+      <div style="font-size:14px;margin-bottom:8px;">Removing <strong>${toRemove.length} person${toRemove.length!==1?'s':''}</strong> from <strong>${g.name}</strong></div>
+      <div style="font-size:12px;opacity:0.55;margin-bottom:10px;line-height:1.5;">${toRemove.map(p=>`${p.first||p.name||''} ${p.last||''}`).join(', ')}</div>
+      ${billingPeople>0?`<div style="font-size:12px;opacity:0.6;">Monthly cost: €${oldM} → €${newM} (−€${oldM-newM}/mo)</div>`:''}
+      ${warnHtml}
+      <div style="font-size:12px;opacity:0.5;line-height:1.6;">We'll review within 24h to confirm no active delivery is disrupted before processing.</div>`;
+    const btn=document.getElementById('confirmPlanChangeBtn');
+    btn.replaceWith(btn.cloneNode(true));
+    document.getElementById('confirmPlanChangeBtn').onclick=()=>{
+      _pendingRemovals.forEach(id=>DB.remove('people',id));
+      DB.add('change_requests',{group:g.name,changes:[`Removed: ${toRemove.map(p=>`${p.first||''} ${p.last||''}`).join(', ')}`],submittedAt:new Date().toISOString(),status:'pending'});
+      closeModal('modalPlanChangeReview');
+      _removalMode=false; _pendingRemovals.clear();
+      showPlanDetail(encodedKey); renderOverview();
+      toast(`Removal submitted — admin notified ✓`);
+    };
+    openModal('modalPlanChangeReview');
+  }
+
+  function showPlanDetail(encodedKey) {
+    if (_planDetailKey!==encodedKey) _peopleListExpanded=false;
+    _planDetailKey=encodedKey;
+    const key=decodeURIComponent(encodedKey);
+    const groups=getPlanGroups();
+    const g=groups.find(x=>x.key===key);
+    if (!g) { showPlanList(); return; }
     document.getElementById('planListView').style.display='none';
     document.getElementById('planDetailView').style.display='block';
-    const primaryTier=[...g.tiers][0]||'birthday';
-    const tierLabel=g.tiers.size>1?'Mixed plans':TIER_LABEL[primaryTier]||primaryTier;
-    const homeAddon=g.deliveries.has('home')&&!g.deliveries.has('office')?2:0;
-    const rate=RATE[primaryTier]||8;
-    const billable=g.employees.length+g.teamMembers.length;
-    const monthly=(rate+homeAddon)*billable;
-    const delivLabel=g.deliveries.has('home')&&g.deliveries.has('office')?'Mixed (office + home)':g.deliveries.has('home')?'Home delivery (+€2/person/month)':'Office delivery — every Monday';
-    document.getElementById('planDetailTitle').textContent=g.name;
-    document.getElementById('planDetailMeta').textContent=`${tierLabel}  ·  ${delivLabel}`;
-    document.getElementById('planDetailKpis').innerHTML=`
-      <div class="plan-kpi"><div class="plan-kpi-num">${billable+g.prospects.length}</div><div class="plan-kpi-label">Total people</div></div>
-      ${billable?`<div class="plan-kpi"><div class="plan-kpi-num">€${monthly}</div><div class="plan-kpi-label">Monthly est.</div></div>`:''}`;
-    const all=[...g.employees,...g.teamMembers,...g.prospects];
-    const el=document.getElementById('planDetailTable');
-    const billableCount=billable;
-    const s2=DB.getObj('settings')||{};
-    const planStart=s2.planActiveDate?new Date(s2.planActiveDate):null;
-    const monthsRunning=planStart?Math.max(1,Math.round((new Date()-planStart)/(30*24*60*60*1000))):null;
-    const monthFrac=(new Date().getMonth()+1)/12;
-    const cakesYear=Math.round(billable*(RATE[primaryTier]===8?1:RATE[primaryTier]===14?2:3)*monthFrac);
-    const cakesQ=Math.round(billable*(RATE[primaryTier]===8?1:RATE[primaryTier]===14?2:3)/4);
-    const primaryDelivery=g.deliveries.has('office')?'office':'home';
 
-    // Analytics strip at top
-    const analyticsStrip=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);">
-      ${[
-        ['Members',billableCount],
-        ['Cakes this year',cakesYear||'—'],
-        ['Cakes this quarter',cakesQ||'—'],
-        ['Running',monthsRunning?`${monthsRunning}mo`:'—']
-      ].map(([label,val])=>`<div style="padding:14px 18px;border-right:1px solid var(--border);">
-        <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.02em;line-height:1;margin-bottom:3px;">${val}</div>
-        <div style="font-size:11px;opacity:0.38;letter-spacing:0.03em;">${label}</div>
+    const isTeam=g.type==='team';
+    const tier=g.tier||[...g.tiers][0]||'birthday';
+    const delivery=g.delivery||(g.deliveries.has('office')?'office':'home');
+    const members=isTeam?(g.employees.length):0;
+    const monthly=(RATE[tier]||8)*members;
+
+    // Update topbar and header
+    document.getElementById('topbarTitle').textContent=g.name;
+    document.getElementById('planDetailTitle').textContent=g.name;
+    document.getElementById('planDetailMeta').textContent=isTeam
+      ?`${TIER_LABEL[tier]||tier}  ·  ${delivery==='home'?'Home delivery':'Office delivery'}`
+      :`Lead list  ·  ${g.prospects.length} prospect${g.prospects.length!==1?'s':''}`;
+    document.getElementById('planDetailKpis').innerHTML=isTeam
+      ?`<div class="plan-kpi"><div class="plan-kpi-num">${members}</div><div class="plan-kpi-label">Employees</div></div>
+         ${members?`<div class="plan-kpi"><div class="plan-kpi-num">€${monthly}</div><div class="plan-kpi-label">Monthly</div></div>`:''}`
+      :`<div class="plan-kpi"><div class="plan-kpi-num">${g.prospects.length}</div><div class="plan-kpi-label">Prospects</div></div>`;
+
+    // Update header action buttons based on plan type
+    const addBtn=document.getElementById('planDetailAddBtn');
+    const csvBtn=document.getElementById('planDetailCSVBtn');
+    if (addBtn) {
+      addBtn.textContent=isTeam?'+ Add employee':'+ Add prospect';
+      addBtn.onclick=()=>openAddPersonInGroup(encodedKey);
+    }
+    if (csvBtn) { csvBtn.style.display=isTeam?'':'none'; } // CSV only for teams for now
+
+    _stagedDelivery=null; _originalTier=tier; _originalDelivery=delivery;
+    _removalMode=false; _pendingRemovals.clear();
+
+    const all=isTeam?g.employees:g.prospects;
+    const isActive=g.status==='active';
+    const el=document.getElementById('planDetailTable');
+    const monthFrac=(new Date().getMonth()+1)/12;
+    const cakesYear=isTeam?Math.round(members*(tier==='birthday'?1:tier==='christmas'?2:3)*monthFrac):0;
+    const cakesQ=isTeam?Math.round(members*(tier==='birthday'?1:tier==='christmas'?2:3)/4):0;
+
+    // ── Stats bar ──
+    const statsItems=isTeam
+      ?[[members,'employees'],[cakesYear||'—','cakes / yr'],[members?`€${monthly}`:'—','per month'],[delivery==='home'?'🏠 Home':'🏢 Office','delivery']]
+      :[[g.prospects.length,'prospects'],[g.prospects.reduce((s,p)=>s+(p.deal?1:0),0),'with deal value'],[g.prospects.filter(p=>p.sendDate).length,'scheduled']];
+    const statsBar=`<div style="display:flex;gap:0;border-bottom:1px solid var(--border);">
+      ${statsItems.map(([v,lbl],i)=>`<div style="flex:1;padding:12px 16px;${i<statsItems.length-1?'border-right:1px solid var(--border);':''}">
+        <div style="font-family:'Kaisei Decol',serif;font-size:20px;letter-spacing:-0.02em;line-height:1;margin-bottom:2px;">${v}</div>
+        <div style="font-size:10px;opacity:0.38;letter-spacing:0.03em;">${lbl}</div>
       </div>`).join('')}
     </div>`;
 
-    // Change request panel — changes require review before applying
-    const changePanel=billableCount>0?`
-      <div style="padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.02);">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-          <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.4;flex:1;">Request plan change</span>
-          <span style="font-size:11px;opacity:0.45;background:rgba(201,95,0,0.08);color:#c95f00;border-radius:3px;padding:3px 8px;">⚑ Reviewed within 24h</span>
+    // ── Member rows ──
+    const memberRows=all.map(p=>{
+      const initials=((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
+      const sub=isTeam?(p.email||'—'):(p.company||p.email||'—');
+      const right=isTeam?fmtDateShort(p.birthday):( p.deal?`€${p.deal}`:'—');
+      const meta=isTeam?(p.delivery==='home'?'🏠':'🏢'):(p.sendDate?fmtDateShort(p.sendDate):'');
+      return `<div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-top:1px solid var(--border);" data-id="${p.id}">
+        <div class="roster-av" style="flex-shrink:0;width:28px;height:28px;font-size:10px;">${initials}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.first||p.name||''} ${p.last||''}</div>
+          <div style="font-size:11px;opacity:0.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sub}</div>
         </div>
-        <div style="font-size:12px;opacity:0.5;margin-bottom:12px;line-height:1.5;">Changes are reviewed before taking effect — we check for upcoming deliveries to make sure no one misses their cake.</div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
-          <div>
-            <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">Change tier for all ${billableCount} people</div>
-            <div style="display:flex;gap:6px;align-items:center;">
-              <select id="planBulkTier" style="padding:7px 28px 7px 11px;border:1.5px solid var(--border);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--accent);background:var(--bg);outline:none;cursor:pointer;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f64d25' fill-opacity='.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 10px center;">
-                <option value="birthday"${primaryTier==='birthday'?' selected':''}>🎂 Birthday — €8/mo</option>
-                <option value="christmas"${primaryTier==='christmas'?' selected':''}>🎄 + Christmas — €14/mo</option>
-                <option value="premium"${primaryTier==='premium'?' selected':''}>✦ Premium — €20/mo</option>
-              </select>
-              <button class="btn btn-outline" style="font-size:12px;" onclick="requestPlanChange('tier','${encodedKey}')">Request change →</button>
-            </div>
-          </div>
-          <div style="width:1px;background:var(--border);align-self:stretch;min-height:36px;"></div>
-          <div>
-            <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">Delivery for this group</div>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='office'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="requestPlanChange('delivery_office','${encodedKey}')">🏢 Office</button>
-              <button class="btn btn-outline" style="font-size:12px;${primaryDelivery==='home'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="requestPlanChange('delivery_home','${encodedKey}')">🏠 Home (+€2)</button>
-            </div>
-          </div>
+        ${isTeam?`<span class="badge badge-orange" style="font-size:10px;flex-shrink:0;">${TIER_LABEL[p.tier||tier]||'Birthday'}</span>`:''}
+        <span style="font-size:11px;opacity:0.45;flex-shrink:0;">${meta}</span>
+        <span style="font-size:11px;opacity:0.45;flex-shrink:0;">${right||'—'}</span>
+        <button class="btn btn-outline" style="font-size:11px;padding:4px 10px;flex-shrink:0;" onclick="editPersonFromPlan('${p.id}')">Edit</button>
+        <button class="btn btn-danger" style="font-size:11px;padding:4px 8px;flex-shrink:0;" onclick="planDetailRemovePerson('${p.id}','${encodedKey}')">✕</button>
+      </div>`;
+    }).join('');
+
+    const memberLabel=isTeam?'Employees':'Prospects';
+    const emptyMsg=isTeam?'No employees yet — click "+ Add employee" above.':'No prospects yet — click "+ Add prospect" above.';
+    const peopleSection=`
+      <div style="border-bottom:1px solid var(--border);">
+        <div onclick="togglePeopleList()" style="display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;transition:background 0.1s;" onmouseover="this.style.background='rgba(246,77,37,0.03)'" onmouseout="this.style.background=''">
+          <span style="font-size:13px;font-weight:500;flex:1;">${memberLabel} <span style="opacity:0.4;font-weight:400;">(${all.length})</span></span>
+          <span style="font-size:11px;opacity:0.35;">${all.length===0?`None yet`:(_peopleListExpanded?'Collapse':'Expand')}</span>
+          <span id="planPeopleArrow" style="font-size:20px;opacity:0.22;margin-left:4px;transition:transform 0.18s;${_peopleListExpanded?'transform:rotate(90deg);':''}">›</span>
         </div>
-      </div>` :
-      `<div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:12px;opacity:0.45;">Add people to this group to request plan changes.</div>`;
-
-    if (!all.length) { el.innerHTML=analyticsStrip+'<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">No one in this plan yet.</div></div>'; return; }
-
-    // Read-only member list — editing happens in People tab
-    el.innerHTML=analyticsStrip+changePanel+`<table class="tbl">
-      <thead><tr><th>Name</th><th>Type</th><th>Plan / tier</th><th>Delivery</th><th>Key date</th><th>Allergies</th></tr></thead>
-      <tbody>${all.map(p=>{
-        const keyDate=p.type==='employee'||p.type==='team'?fmtDateShort(p.birthday):fmtDateShort(p.sendDate);
-        const planDetail=p.type==='prospect'?`€${p.deal||'—'}`:(TIER_LABEL[p.tier]||p.tier||'Birthday');
-        return `<tr>
-          <td><span style="font-weight:500;">${p.first||p.name||''} ${p.last||''}</span><br><span style="font-size:11px;opacity:0.38;">${p.email||p.company||''}</span></td>
-          <td>${typeBadge(p.type)}</td>
-          <td style="font-size:12px;">${planDetail}</td>
-          <td style="font-size:12px;opacity:0.65;">${p.delivery==='home'?'🏠 Home':'🏢 Office'}</td>
-          <td style="font-size:12px;">${keyDate||'—'}</td>
-          <td>${allergyBadges(p.allergies)}</td>
-        </tr>`;
-      }).join('')}</tbody></table>
-      <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-        <span style="font-size:12px;opacity:0.45;">Edit individual people in the People tab</span>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-outline" style="font-size:12px;" onclick="navigateToPeopleGroup(${JSON.stringify(key)})">Edit in People →</button>
-          <button class="btn btn-danger" style="font-size:12px;" onclick="deleteGroup(${JSON.stringify(key)})">Delete group</button>
+        <div id="planPeopleBody" style="display:${_peopleListExpanded&&all.length?'block':'none'};">
+          ${all.length?memberRows:`<div style="padding:20px 16px;font-size:13px;opacity:0.38;">${emptyMsg}</div>`}
         </div>
       </div>`;
+
+    // ── Action section: draft = Start plan, active = change request prompt ──
+    const selectSt=`padding:8px 32px 8px 12px;border:1.5px solid var(--border);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--accent);background:var(--bg);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f64d25' fill-opacity='.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;`;
+
+    let actionSection='';
+    if (isTeam) {
+      if (!isActive) {
+        // Draft: show Start plan prompt
+        if (all.length>0) {
+          actionSection=`<div style="border-bottom:1px solid var(--border);padding:18px 16px;background:rgba(246,77,37,0.03);">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:3px;">Ready to start this plan?</div>
+                <div style="font-size:12px;opacity:0.52;">${all.length} employee${all.length!==1?'s':''} · ${TIER_LABEL[tier]} · ${delivery==='home'?'Home delivery':'Office delivery'} · <strong>€${monthly}/mo</strong></div>
+              </div>
+              <button class="btn btn-primary" onclick="openStartPlanModal('${encodedKey}')">Start plan →</button>
+            </div>
+          </div>`;
+        } else {
+          actionSection=`<div style="border-bottom:1px solid var(--border);padding:14px 16px;">
+            <div style="font-size:13px;opacity:0.38;">Add employees above to start this plan.</div>
+          </div>`;
+        }
+      } else {
+        // Active: show running status + request changes option
+        const sinceDate=g.startedAt?new Date(g.startedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
+        actionSection=`
+          <div style="border-bottom:1px solid var(--border);padding:14px 16px;background:rgba(34,197,94,0.03);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <span style="font-size:13px;font-weight:600;color:#16a34a;">● Plan is running</span>
+              ${sinceDate?`<span style="font-size:11px;opacity:0.4;">since ${sinceDate}</span>`:''}
+            </div>
+            <div style="font-size:12px;opacity:0.52;margin-bottom:14px;">All changes — adding employees, removing them, or updating tier/delivery — go to our team for review before taking effect. This ensures no delivery is disrupted.</div>
+            <button class="btn btn-outline" style="font-size:12px;" onclick="openPlanChangeRequestModal('${encodedKey}')">Request a change →</button>
+          </div>`;
+      }
+    }
+
+    const groupLabel=isTeam?'team':'lead list';
+    const dangerZone=`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;">
+      <span style="font-size:12px;opacity:0.35;">Delete this ${groupLabel} and all ${all.length} people permanently.</span>
+      <button class="btn btn-danger" style="font-size:12px;opacity:0.7;" onclick="deleteGroup('${encodedKey}')">Delete ${groupLabel}</button>
+    </div>`;
+
+    el.innerHTML=statsBar+peopleSection+actionSection+dangerZone;
+  }
+
+  function editPersonFromPlan(id) {
+    // Navigate to People tab and open that person's edit modal directly
+    _planDetailKey=null; // don't return to plan after saving
+    const p=allPeople().find(x=>x.id===id);
+    if (p) {
+      currentFilter=p.type==='prospect'?'prospect':'employee';
+      document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===currentFilter));
+      currentGroupFilter=p.group||'all'; currentTeamGroup=null; selectedIds.clear();
+    }
+    navigate('people');
+    setTimeout(()=>openEditPerson(id),60);
+  }
+
+  function openStartPlanModal(encodedKey) {
+    const key=decodeURIComponent(encodedKey);
+    const g=getPlanGroups().find(x=>x.key===key);
+    if (!g) return;
+    const tier=g.tier||'birthday';
+    const delivery=g.delivery||'office';
+    const count=g.employees.length;
+    const monthly=(RATE[tier]||8)*count;
+    const d=new Date(); d.setDate(d.getDate()+(8-d.getDay())%7||7);
+    const firstDelivery=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('planChangeDesc').innerHTML=`
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px;">Confirm your plan</div>
+      ${[
+        ['Team',g.name],
+        ['Plan tier',`${TIER_LABEL[tier]} — €${RATE[tier]||8}/person/mo`],
+        ['Delivery',delivery==='home'?'🏠 Home delivery (+€2/person)':'🏢 Office delivery (every Monday)'],
+        ['Employees',`${count} employee${count!==1?'s':''}`],
+        ['Monthly cost',`<strong style="font-family:\'Kaisei Decol\',serif;font-size:18px;">€${monthly}</strong>`],
+        ['First delivery',firstDelivery],
+      ].map(([k,v])=>`<div style="display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="opacity:0.45;font-size:11px;text-transform:uppercase;letter-spacing:0.07em;">${k}</span><span>${v}</span></div>`).join('')}
+      <div style="margin-top:14px;font-size:12px;opacity:0.5;line-height:1.6;">Once confirmed, culturers will schedule deliveries starting the next available Monday. You'll receive a confirmation email before every batch goes out.</div>`;
+    const btn=document.getElementById('confirmPlanChangeBtn');
+    btn.textContent='Start plan →';
+    btn.replaceWith(btn.cloneNode(true));
+    document.getElementById('confirmPlanChangeBtn').textContent='Start plan →';
+    document.getElementById('confirmPlanChangeBtn').onclick=()=>confirmActivatePlan(encodedKey);
+    openModal('modalPlanChangeReview');
+  }
+
+  function confirmActivatePlan(encodedKey) {
+    const key=decodeURIComponent(encodedKey);
+    const pg=DB.get('planGroups').find(g=>g.name===key);
+    if (!pg) return;
+    DB.update('planGroups',pg.id,{status:'active',startedAt:new Date().toISOString()});
+    // Sync tier/delivery to all employees in this team
+    allPeople().filter(p=>p.group===key).forEach(p=>DB.update('people',p.id,{tier:pg.tier,delivery:pg.delivery,planActive:true}));
+    closeModal('modalPlanChangeReview');
+    showPlanDetail(encodedKey);
+    showPlanList(); // refresh plan cards
+    showPlanDetail(encodedKey); // re-enter detail
+    renderOverview();
+    toast(`${pg.name} is now running ✓`);
+  }
+
+  function openPlanChangeRequestModal(encodedKey) {
+    const key=decodeURIComponent(encodedKey);
+    const g=getPlanGroups().find(x=>x.key===key);
+    if (!g) return;
+    const tier=g.tier||'birthday';
+    const delivery=g.delivery||'office';
+    const count=g.employees.length;
+    const selectSt=`padding:8px 28px 8px 11px;border:1.5px solid var(--border);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--accent);background:var(--bg);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f64d25' fill-opacity='.4' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;`;
+    document.getElementById('planChangeDesc').innerHTML=`
+      <div style="font-size:13px;font-weight:600;margin-bottom:14px;">Request changes to ${g.name}</div>
+      <div style="font-size:12px;opacity:0.48;margin-bottom:16px;line-height:1.55;">Changes go to our team for review within 24h — we confirm no active deliveries are disrupted before applying.</div>
+      <div id="changeTierRow" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);border-left:3px solid transparent;transition:border-color 0.2s;">
+        <div style="flex:1;"><div style="font-size:11px;opacity:0.35;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Plan tier</div>
+        <div style="font-size:13px;font-weight:500;">${TIER_LABEL[tier]} <span style="font-size:11px;opacity:0.38;">€${RATE[tier]||8}/mo now</span></div></div>
+        <span style="opacity:0.2;">→</span>
+        <select id="planBulkTier" onchange="onPlanTierChange()" style="${selectSt}">
+          <option value="birthday"${tier==='birthday'?' selected':''}>🎂 Birthday — €8/mo</option>
+          <option value="christmas"${tier==='christmas'?' selected':''}>🎄 + Christmas — €14/mo</option>
+          <option value="premium"${tier==='premium'?' selected':''}>✦ Premium — €20/mo</option>
+        </select>
+      </div>
+      <div id="changeDelivRow" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-left:3px solid transparent;transition:border-color 0.2s;">
+        <div style="flex:1;"><div style="font-size:11px;opacity:0.35;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Delivery</div>
+        <div style="font-size:13px;font-weight:500;">${delivery==='home'?'🏠 Home':'🏢 Office'} <span style="font-size:11px;opacity:0.38;">${delivery==='home'?'+€2/person/mo':'standard rate'}</span></div></div>
+        <span style="opacity:0.2;">→</span>
+        <div style="display:flex;gap:4px;">
+          <button id="planDeliveryOffice" class="btn btn-outline" style="font-size:12px;padding:5px 10px;${delivery==='office'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="stagePlanDelivery('office')">🏢 Office</button>
+          <button id="planDeliveryHome" class="btn btn-outline" style="font-size:12px;padding:5px 10px;${delivery==='home'?'border-color:var(--accent);background:rgba(246,77,37,0.07);font-weight:600;':''}" onclick="stagePlanDelivery('home')">🏠 Home +€2</button>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;opacity:0.38;" id="changeSummaryLine">Select a change above, then submit.</div>`;
+    const btn=document.getElementById('confirmPlanChangeBtn');
+    btn.textContent='Submit change request →';
+    btn.replaceWith(btn.cloneNode(true));
+    document.getElementById('confirmPlanChangeBtn').textContent='Submit change request →';
+    document.getElementById('confirmPlanChangeBtn').onclick=()=>requestPlanChange('combined',encodedKey);
+    _stagedDelivery=null; _originalTier=tier; _originalDelivery=delivery;
+    openModal('modalPlanChangeReview');
+  }
+
+  function openAddPersonInGroup(encodedKey) {
+    _planDetailKey=encodedKey;
+    const key=decodeURIComponent(encodedKey);
+    const groups=getPlanGroups();
+    const g=groups.find(x=>x.key===key);
+    const planType=g?getPlanDominantType(g):'employee';
+    _addPersonDefaultGroup=(key==='__ungrouped__'||planType==='prospect')?'':key;
+    apPersonType=planType;
+    openAddPerson(true, true); // keepType, skipToDetails — remove type step
+  }
+
+  function planDetailRemovePerson(id, encodedKey) {
+    const key=decodeURIComponent(encodedKey);
+    const pg=DB.get('planGroups').find(g=>g.name===key);
+    const p=allPeople().find(x=>x.id===id);
+    if (!p) return;
+    if (pg?.status==='active') {
+      // Active plan — go through review
+      const tier=pg.tier||'birthday';
+      const count=getPlanGroups().find(x=>x.key===key)?.employees.length||0;
+      const oldM=(RATE[tier]||8)*count;
+      const newM=(RATE[tier]||8)*Math.max(0,count-1);
+      document.getElementById('planChangeDesc').innerHTML=`
+        <div style="font-size:14px;margin-bottom:10px;">Remove <strong>${p.first||''} ${p.last||''}</strong> from <strong>${key}</strong></div>
+        <div style="font-size:12px;opacity:0.6;">Monthly cost: €${oldM} → €${newM} (−€${oldM-newM}/mo)</div>
+        <div style="font-size:12px;opacity:0.5;margin-top:14px;line-height:1.6;">Our team reviews within 24h to confirm no upcoming delivery is affected before removing.</div>`;
+      const btn=document.getElementById('confirmPlanChangeBtn');
+      btn.textContent='Submit removal request →';
+      btn.replaceWith(btn.cloneNode(true));
+      document.getElementById('confirmPlanChangeBtn').textContent='Submit removal request →';
+      document.getElementById('confirmPlanChangeBtn').onclick=()=>{
+        DB.remove('people',id);
+        DB.add('change_requests',{group:key,changes:[`Removed: ${p.first||''} ${p.last||''}`],submittedAt:new Date().toISOString(),status:'pending'});
+        closeModal('modalPlanChangeReview');
+        showPlanDetail(encodedKey); renderOverview();
+        toast('Removal submitted — admin notified ✓');
+      };
+      openModal('modalPlanChangeReview');
+    } else {
+      if (!confirm(`Remove ${p.first||''} ${p.last||''} from this plan?`)) return;
+      DB.remove('people',id);
+      showPlanDetail(encodedKey); renderOverview(); toast('Removed');
+    }
+  }
+
+  function planDetailRemove(id, encodedKey) {
+    planDetailRemovePerson(id, encodedKey);
   }
 
   function requestPlanChange(changeType, encodedKey) {
@@ -2109,8 +2710,18 @@
     const groups=getPlanGroups();
     const g=groups.find(x=>x.key===key);
     if (!g) return;
-    const billable=g.employees.length+g.teamMembers.length;
+    const billable=g.employees.length;
     const primaryTier=[...g.tiers][0]||'birthday';
+    const primaryDelivery=g.deliveries.has('office')?'office':'home';
+
+    // Resolve what changed
+    const newTier=document.getElementById('planBulkTier')?.value||primaryTier;
+    const tierChanged=(changeType==='combined'||changeType==='tier')&&newTier!==primaryTier;
+    const newDelivery=changeType==='combined'?_stagedDelivery:
+      changeType==='delivery_office'?'office':changeType==='delivery_home'?'home':null;
+    const deliveryChanged=newDelivery!==null&&newDelivery!==primaryDelivery;
+
+    if (!tierChanged&&!deliveryChanged) { toast('No changes selected — update the tier or delivery first'); return; }
 
     // Check upcoming birthdays in next 30 days
     const allPpl=allPeople().filter(p=>g.key==='__ungrouped__'?!p.group:p.group===g.key);
@@ -2123,22 +2734,19 @@
       return next<=in30;
     });
 
-    let changeDesc='';
-    let impact='';
-    if (changeType==='tier') {
-      const newTier=document.getElementById('planBulkTier')?.value||primaryTier;
-      if (newTier===primaryTier) { toast('Already on this plan'); return; }
-      const oldMonthly=(RATE[primaryTier]||8)*billable;
-      const newMonthly=(RATE[newTier]||8)*billable;
-      const diff=newMonthly-oldMonthly;
-      changeDesc=`Change tier from <strong>${TIER_LABEL[primaryTier]}</strong> → <strong>${TIER_LABEL[newTier]}</strong>`;
-      impact=`Monthly: €${oldMonthly} → €${newMonthly} (${diff>=0?'+':''}€${diff}/mo)`;
-    } else if (changeType==='delivery_office') {
-      changeDesc='Switch delivery to <strong>Office</strong> for all members';
-      impact='Standard rate — batch every Monday';
-    } else if (changeType==='delivery_home') {
-      changeDesc='Switch delivery to <strong>Home</strong> for all members';
-      impact=`+€${billable*2}/mo for home delivery`;
+    const changeSummary=[];
+    let impactLines=[];
+    if (tierChanged) {
+      const oldM=(RATE[primaryTier]||8)*billable;
+      const newM=(RATE[newTier]||8)*billable;
+      const diff=newM-oldM;
+      changeSummary.push(`Tier: <strong>${TIER_LABEL[primaryTier]}</strong> → <strong>${TIER_LABEL[newTier]}</strong>`);
+      impactLines.push(`Monthly cost: €${oldM} → €${newM} (${diff>=0?'+':''}€${diff}/mo)`);
+    }
+    if (deliveryChanged) {
+      changeSummary.push(`Delivery: <strong>${primaryDelivery==='home'?'Home':'Office'}</strong> → <strong>${newDelivery==='home'?'Home (+€2/person/mo)':'Office (standard)'}</strong>`);
+      if (newDelivery==='home') impactLines.push(`+€${billable*2}/mo for home delivery`);
+      else impactLines.push('Switching to standard office delivery rate');
     }
 
     const warningHtml=upcoming.length
@@ -2148,41 +2756,74 @@
       : `<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:11px 14px;margin:14px 0;font-size:12px;color:#16a34a;">✓ No upcoming deliveries in the next 30 days.</div>`;
 
     document.getElementById('planChangeDesc').innerHTML=`
-      <div style="margin-bottom:12px;font-size:14px;">${changeDesc}</div>
-      <div style="font-size:12px;opacity:0.6;">${impact}</div>
+      <div style="margin-bottom:12px;">${changeSummary.map(c=>`<div style="font-size:14px;margin-bottom:4px;">${c}</div>`).join('')}</div>
+      <div style="font-size:12px;opacity:0.6;">${impactLines.join(' · ')}</div>
       <div style="font-size:12px;opacity:0.5;margin-top:4px;">Group: <strong>${g.name}</strong> · ${billable} people affected</div>
       ${warningHtml}
-      <div style="font-size:12px;opacity:0.5;line-height:1.6;">Once submitted, our team reviews within 24h and applies the change only after confirming all upcoming deliveries are safe.</div>`;
+      <div style="font-size:12px;opacity:0.5;line-height:1.6;">Once submitted, our admin team reviews within 24h and applies the change only after confirming all upcoming deliveries are safe.</div>`;
 
     const btn=document.getElementById('confirmPlanChangeBtn');
     btn.replaceWith(btn.cloneNode(true)); // clear old listeners
     document.getElementById('confirmPlanChangeBtn').onclick=()=>{
-      if (changeType==='tier') applyPlanBulkTier(encodedKey);
-      else if (changeType==='delivery_office') applyPlanBulkDelivery(encodedKey,'office');
-      else if (changeType==='delivery_home') applyPlanBulkDelivery(encodedKey,'home');
+      if (tierChanged) applyPlanBulkTier(encodedKey);
+      if (deliveryChanged) applyPlanBulkDelivery(encodedKey, newDelivery);
+      // Record change request — notifies admin
+      DB.add('change_requests',{
+        group: g.name,
+        changes: changeSummary.map(c=>c.replace(/<[^>]+>/g,'')),
+        billableCount: billable,
+        upcomingBirthdays: upcoming.length,
+        submittedAt: new Date().toISOString(),
+        status: 'pending'
+      });
       closeModal('modalPlanChangeReview');
-      toast('Change request submitted — reviewing within 24h ✓');
+      _stagedDelivery=null;
+      toast('Change request submitted — admin notified, reviewing within 24h ✓');
+      showPlanDetail(encodedKey);
     };
     openModal('modalPlanChangeReview');
   }
 
-  function navigateToPeopleGroup(groupKey) {
-    // Go to People → Employees tab, pre-filtered to this group
+  function navigateToPeopleGroup(encodedGroupKey) {
+    const groupKey=decodeURIComponent(encodedGroupKey);
     currentFilter='employee';
-    currentGroupFilter=groupKey==='__ungrouped__'?'all':groupKey;
+    currentGroupFilter=groupKey; // keep '__ungrouped__' so filter works correctly
     currentTeamGroup=null;
     selectedIds.clear();
     document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter==='employee'));
     navigate('people');
+    const banner=document.getElementById('peopleGroupBanner');
+    const label=document.getElementById('peopleGroupBannerName');
+    if (banner&&label) {
+      label.textContent=groupKey==='__ungrouped__'?'Ungrouped (no group)':groupKey;
+      banner.style.display='flex';
+    }
   }
 
-  function deleteGroup(groupKey) {
-    const members=allPeople().filter(p=>groupKey==='__ungrouped__'?!p.group:p.group===groupKey);
-    if (!confirm(`Delete this group and remove all ${members.length} people from it?`)) return;
+  function clearPeopleGroupContext() {
+    currentGroupFilter='all';
+    const banner=document.getElementById('peopleGroupBanner');
+    if (banner) banner.style.display='none';
+    renderPeople(); renderGroupFilter();
+  }
+
+  function deleteGroup(encodedGroupKey) {
+    const groupKey=decodeURIComponent(encodedGroupKey);
+    const pg=DB.get('planGroups').find(g=>g.name===groupKey);
+    const label=pg?.type==='leadlist'?'lead list':'team';
+    const members=allPeople().filter(p=>p.group===groupKey);
+    if (!confirm(`Delete this ${label} and remove all ${members.length} people permanently? This cannot be undone.`)) return;
     members.forEach(p=>DB.remove('people',p.id));
-    showPlanList();
-    renderOverview();
-    toast('Group deleted');
+    if (pg) DB.remove('planGroups',pg.id);
+    showPlanList(); renderOverview();
+    toast(`${label.charAt(0).toUpperCase()+label.slice(1)} deleted`);
+  }
+
+  function dismissChangeNotif() {
+    // Mark all pending as dismissed (keep records but hide banner)
+    DB.get('change_requests').filter(r=>r.status==='pending').forEach(r=>DB.update('change_requests',r.id,{status:'dismissed'}));
+    const notifEl=document.getElementById('planChangeNotif');
+    if (notifEl) notifEl.style.display='none';
   }
 
   function applyPlanBulkTier(encodedKey) {
@@ -2298,8 +2939,9 @@
       restoreEl.textContent=newName||currentName;
       input.replaceWith(restoreEl);
       if (!newName||newName===currentName) return;
-      allPeople().filter(p=>(key==='__ungrouped__'?!p.group:p.group===key))
-        .forEach(p=>DB.update('people',p.id,{group:newName}));
+      allPeople().filter(p=>p.group===key).forEach(p=>DB.update('people',p.id,{group:newName}));
+      const pg=DB.get('planGroups').find(g=>g.name===key);
+      if (pg) DB.update('planGroups',pg.id,{name:newName});
       renderYourPlan();
       toast(`Renamed to "${newName}"`);
     };
@@ -2325,7 +2967,14 @@
             <option value="christmas" ${person.tier==='christmas'?'selected':''}>+ Christmas (€14/mo)</option>
             <option value="premium" ${person.tier==='premium'?'selected':''}>Premium (€20/mo)</option>
           </select>
-        </div>`;
+        </div>
+        <div class="field-group span2"><label>Delivery</label>
+          <select id="ef-delivery">
+            <option value="office" ${(person.delivery||'office')==='office'?'selected':''}>🏢 Office delivery (standard rate)</option>
+            <option value="home" ${person.delivery==='home'?'selected':''}>🏠 Home delivery (+€2/mo)</option>
+          </select>
+        </div>
+        <div class="field-group span2"><label>Group <span style="opacity:0.4;font-size:10px;text-transform:none;letter-spacing:0;">(optional)</span></label><input type="text" id="ef-group" value="${person.group||''}"></div>`;
     } else if (person.type==='team') {
       fieldsEl.innerHTML=`
         <div class="field-group"><label>First name</label><input type="text" id="ef-first" value="${person.first||''}"></div>
@@ -2366,13 +3015,13 @@
     if (!person) return;
     const allergies=Array.from(document.querySelectorAll('#editAllergyGroup input:checked')).map(cb=>cb.value);
     let patch={allergies};
-    if (person.type==='employee') patch={...patch,first:vEl('ef-first'),last:vEl('ef-last'),email:vEl('ef-email'),birthday:vEl('ef-birthday'),tier:vEl('ef-tier')};
+    if (person.type==='employee') patch={...patch,first:vEl('ef-first'),last:vEl('ef-last'),email:vEl('ef-email'),birthday:vEl('ef-birthday'),tier:vEl('ef-tier'),delivery:vEl('ef-delivery'),group:vEl('ef-group')};
     else if (person.type==='team') patch={...patch,first:vEl('ef-first'),last:vEl('ef-last'),email:vEl('ef-email'),birthday:vEl('ef-birthday'),tier:vEl('ef-tier'),group:vEl('ef-group')};
     else patch={...patch,first:vEl('ef-first'),last:vEl('ef-last'),company:vEl('ef-company'),email:vEl('ef-email'),deal:vEl('ef-deal'),sendDate:vEl('ef-sendDate')};
     DB.update('people',id,patch);
     closeModal('modalEditPerson');
-    renderPeople();
-    renderYourPlan();
+    if (_planDetailKey) { showPlanDetail(_planDetailKey); }
+    else { renderPeople(); renderYourPlan(); }
     renderOverview();
     toast('Saved');
   }
@@ -2392,18 +3041,17 @@
 
     people.forEach(p=>{
       let dates=[];
-      if (p.type==='employee' && p.birthday) {
+      if ((p.type==='employee'||p.type==='team') && p.birthday) {
         const b=new Date(p.birthday);
-        const d=new Date(calYear,calMonth,b.getDate());
-        if (b.getMonth()===calMonth) dates.push({date:d,type:'employee',label:`${p.first} ${p.last} — Birthday`});
-      }
-      if (p.type==='team' && p.nextDate) {
-        const d=new Date(p.nextDate);
-        if (d.getMonth()===calMonth&&d.getFullYear()===calYear) dates.push({date:d,type:'team',label:`${p.name||p.first} — Team celebration`});
+        if (b.getMonth()===calMonth) {
+          const d=new Date(calYear,calMonth,b.getDate());
+          const label=p.type==='team'&&p.group?`${p.first} ${p.last} (${p.group}) — Birthday`:`${p.first} ${p.last} — Birthday`;
+          dates.push({date:d,type:p.type,label,id:p.id});
+        }
       }
       if (p.type==='prospect' && p.sendDate) {
         const d=new Date(p.sendDate);
-        if (d.getMonth()===calMonth&&d.getFullYear()===calYear) dates.push({date:d,type:'prospect',label:`${p.first} ${p.last} — Prospect outreach`});
+        if (d.getMonth()===calMonth&&d.getFullYear()===calYear) dates.push({date:d,type:'prospect',label:`${p.first} ${p.last} — Outreach`,id:p.id});
       }
       dates.forEach(ev=>{
         const key=ev.date.getDate();
@@ -2461,7 +3109,7 @@
     }
     const dotColor={employee:'var(--accent)',team:'#2563eb',prospect:'#16a34a'};
     el.innerHTML=`<div class="cal-event-head">${headText} (${evs.length})</div>`+evs.map(e=>`
-      <div class="cal-event-row">
+      <div class="cal-event-row" ${e.id?`onclick="openEditPerson('${e.id}')" style="cursor:pointer;" title="Edit person"`:''}>
         <span class="cal-event-dot" style="background:${dotColor[e.type]}"></span>
         <span class="cal-event-name">${e.label}</span>
         <span class="cal-event-date">${fmtDateShort(e.date)}</span>
@@ -2495,8 +3143,10 @@
           <div class="wish-card-date">📅 ${dateStr(p)||'Date not set'}</div>
           <div class="wish-status ${cls}">${lbl}</div>
           <div class="wish-card-actions">
-            ${status==='pending'||status==='ready'?`<button class="btn btn-outline" style="font-size:11px;padding:5px 10px;" onclick="generateWishCard('${p.id}')">✦ Generate</button>`:''}
-            ${status==='ready'||status==='sent'?`<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="previewWishCard('${p.id}')">Preview</button>`:''}
+            ${status==='pending'?`<button class="btn btn-primary" style="font-size:11px;padding:5px 12px;" onclick="generateWishCard('${p.id}')">✦ Generate card</button>`:''}
+            ${status==='generating'?`<button class="btn btn-outline" style="font-size:11px;padding:5px 10px;opacity:0.5;" disabled>Generating…</button>`:''}
+            ${status==='ready'?`<button class="btn btn-primary" style="font-size:11px;padding:5px 12px;" onclick="previewWishCard('${p.id}')">Preview & send →</button>`:''}
+            ${status==='sent'?`<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="previewWishCard('${p.id}')">View card</button>`:''}
           </div>
         </div>
       </div>`;
@@ -2523,6 +3173,11 @@
       'Celebrating you today. Thank you for everything you bring to the team.',
       'Another year of brilliance. Here\'s to you — enjoy every bite!'];
     document.getElementById('wishPreviewMsg').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+    const alreadySent=p.wishStatus==='sent';
+    const actionBtn=document.getElementById('wishSendBtn');
+    if (actionBtn) { actionBtn.style.display=alreadySent?'none':''; }
+    const sentNote=document.getElementById('wishSentNote');
+    if (sentNote) { sentNote.style.display=alreadySent?'':'none'; }
     openModal('modalWishPreview');
   }
 
@@ -2534,54 +3189,90 @@
   }
 
   // ── Deliveries ──
+  let deliveryFilter='upcoming';
   function renderDeliveries() {
     const people=allPeople();
     const now=new Date();
-    const upcoming=[];
-    people.forEach(p=>{
-      const d=nextDate(p);
-      if (d) upcoming.push({...p,next:d});
-    });
-    upcoming.sort((a,b)=>a.next-b.next);
+    const all=[];
+    people.forEach(p=>{ const d=nextDate(p); if (d) all.push({...p,next:d}); });
+    all.sort((a,b)=>a.next-b.next);
+    const future=all.filter(p=>p.next>=now);
+    const past=all.filter(p=>p.next<now);
+    const shown=deliveryFilter==='all'?all:deliveryFilter==='past'?past:future;
     const el=document.getElementById('deliveriesTable');
-    document.getElementById('deliveryCount').textContent=`${upcoming.length} scheduled`;
-    if (!upcoming.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries scheduled yet.</div></div>'; return; }
-    el.innerHTML=`<table class="tbl"><thead><tr><th></th><th>Name</th><th>Type</th><th>Occasion</th><th>Scheduled</th><th>Status</th></tr></thead>
-      <tbody>${upcoming.map(p=>{
-        const occ=p.type==='employee'?'Birthday':p.type==='team'?'Team celebration':'Prospect outreach';
+    document.getElementById('deliveryCount').textContent=`${future.length} upcoming · ${past.length} past`;
+    el.innerHTML=`<div style="display:flex;gap:2px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(246,77,37,0.01);">
+      ${['upcoming','past','all'].map(f=>`<button class="filter-tab${deliveryFilter===f?' active':''}" style="font-size:11px;padding:5px 12px;" onclick="setDeliveryFilter('${f}')">${f==='upcoming'?`Upcoming (${future.length})`:f==='past'?`Past (${past.length})`:`All (${all.length})`}</button>`).join('')}
+    </div>`;
+    if (!shown.length) {
+      el.innerHTML+=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">${deliveryFilter==='upcoming'?'No upcoming deliveries.<br><button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate(\'yourplan\')">Add people →</button>':'No deliveries in this view.'}</div></div>`;
+      return;
+    }
+    el.innerHTML+=`<table class="tbl"><thead><tr><th></th><th>Name</th><th>Type</th><th>Occasion</th><th>Date</th><th>Delivery</th><th>Status</th></tr></thead>
+      <tbody>${shown.map(p=>{
+        const occ=p.type==='employee'?'Birthday':p.type==='team'?'Team':' Outreach';
         const isPast=p.next<now;
-        return `<tr>
+        return `<tr onclick="openEditPerson('${p.id}')" style="cursor:pointer;">
           <td><div class="delivery-icon">${p.type==='employee'?'🎂':p.type==='team'?'🏢':'🎯'}</div></td>
-          <td style="font-weight:500;">${p.first||p.name||''} ${p.last||''}</td>
+          <td style="font-weight:500;">${p.first||p.name||''} ${p.last||''}<br><span style="font-size:11px;opacity:0.38;">${p.email||p.company||''}</span></td>
           <td>${typeBadge(p.type)}</td>
           <td style="font-size:12px;opacity:0.65;">${occ}</td>
           <td style="font-size:12px;">${fmtDate(p.next)}</td>
-          <td><span class="badge ${isPast?'badge-grey':'badge-green'}">${isPast?'Past':'Scheduled'}</span></td>
+          <td style="font-size:12px;">${p.delivery==='home'?'🏠 Home':'🏢 Office'}</td>
+          <td><span class="badge ${isPast?'badge-grey':'badge-green'}">${isPast?'Completed':'Scheduled'}</span></td>
         </tr>`;
       }).join('')}</tbody></table>`;
   }
+  function setDeliveryFilter(f) { deliveryFilter=f; renderDeliveries(); }
 
   // ── Catalog ──
   let catalogCity='All';
+  let catalogAllergen='';
+  let selectedCakeId=null;
 
   function renderCatalog() {
+    let filtered=catalogCity==='All'?CAKES:CAKES.filter(c=>c.cities.includes(catalogCity));
+    if (catalogAllergen) filtered=filtered.filter(c=>!c.allergens.includes(catalogAllergen));
     const el=document.getElementById('catalogGrid');
-    const filtered=catalogCity==='All'?CAKES:CAKES.filter(c=>c.cities.includes(catalogCity));
     el.innerHTML=filtered.map(c=>`
-      <div class="catalog-card">
+      <div class="catalog-card${selectedCakeId===c.id?' selected':''}" onclick="selectCake('${c.id}')">
         <div class="catalog-card-img">${c.emoji}</div>
         <div class="catalog-card-info">
           <div class="catalog-card-name">${c.name}</div>
           <div class="catalog-tags">${c.tags.map(t=>`<span class="catalog-tag">${t}</span>`).join('')}</div>
-          <div class="catalog-city-badge">${c.cities.join(' · ')}</div>
+          <div class="catalog-city-badge" style="margin-top:4px;">${c.cities.join(' · ')}</div>
+          <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap;">${c.allergens.map(a=>`<span style="font-size:10px;padding:1px 6px;border-radius:10px;background:rgba(201,95,0,0.08);color:#c95f00;">${a}</span>`).join('')}</div>
         </div>
-      </div>`).join('');
+      </div>`).join('')||`<div class="empty" style="grid-column:1/-1;"><div class="empty-text">No cakes match your filters.</div></div>`;
+
+    // Allergen filter row (rendered just above grid — injected here for simplicity)
+    const allergenRow=document.getElementById('catalogAllergenRow');
+    if (allergenRow) {
+      const allAllergens=[...new Set(CAKES.flatMap(c=>c.allergens))].sort();
+      allergenRow.innerHTML=`<span style="font-size:10px;opacity:0.42;letter-spacing:0.08em;text-transform:uppercase;margin-right:4px;">Hide allergen</span>
+        <button class="grp-btn${catalogAllergen===''?' active':''}" onclick="setCatalogAllergen('')">None</button>
+        ${allAllergens.map(a=>`<button class="grp-btn${catalogAllergen===a?' active':''}" onclick="setCatalogAllergen('${a}')">${a}</button>`).join('')}`;
+    }
+  }
+
+  function selectCake(id) {
+    selectedCakeId=selectedCakeId===id?null:id;
+    renderCatalog();
+    if (selectedCakeId) {
+      const c=CAKES.find(x=>x.id===selectedCakeId);
+      if (c) toast(`${c.name} — available in ${c.cities.join(', ')}`);
+    }
   }
 
   function setCatalogCity(city,btn) {
     catalogCity=city;
     document.querySelectorAll('.loc-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
+    renderCatalog();
+  }
+
+  function setCatalogAllergen(a) {
+    catalogAllergen=a;
     renderCatalog();
   }
 
@@ -2705,7 +3396,7 @@
 
     const now=new Date();
     const h=now.getHours();
-    const g=h<12?'Good morning':'Good afternoon';
+    const g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
     document.getElementById('helloGreeting').textContent=g+'.';
     document.getElementById('helloDate').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
 

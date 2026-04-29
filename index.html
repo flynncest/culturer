@@ -62,7 +62,7 @@
       display: flex; gap: 36px; list-style: none;
     }
 
-    .nav-links a { font-size: 13px; color: var(--accent); opacity: 0.52; transition: opacity 0.2s; }
+    .nav-links a { font-size: 14px; color: var(--accent); opacity: 0.62; transition: opacity 0.2s; }
     .nav-links a:hover { opacity: 1; }
 
     .nav-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
@@ -90,7 +90,7 @@
     }
 
     .nav-drawer.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
-    .nav-drawer a { font-size: 14px; color: var(--accent); opacity: 0.68; padding: 14px 0; border-bottom: 1px solid rgba(246,77,37,0.08); transition: opacity 0.2s; }
+    .nav-drawer a { font-size: 15px; color: var(--accent); opacity: 0.72; padding: 14px 0; border-bottom: 1px solid rgba(246,77,37,0.08); transition: opacity 0.2s; }
     .nav-drawer a:last-child { border-bottom: none; }
     .nav-drawer a:hover { opacity: 1; }
 
@@ -169,8 +169,8 @@
     .marquee-track { display: flex; width: max-content; animation: ticker 36s linear infinite; }
 
     .marquee-track span {
-      font-family: 'Kaisei Decol', serif; font-size: clamp(11px, 1.39vw, 19.5px);
-      padding: 0 24px; flex-shrink: 0; line-height: 1;
+      font-family: 'Kaisei Decol', serif; font-size: clamp(13px, 1.39vw, 19.5px);
+      padding: 0 24px; flex-shrink: 0; line-height: 1; font-weight: 500;
     }
 
     @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -187,7 +187,7 @@
     .section { padding: 100px 5vw; }
     .section-dark { background: var(--accent); color: var(--bg); }
 
-    .section-tag { display: block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.42; margin-bottom: 36px; }
+    .section-tag { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.42; margin-bottom: 36px; }
 
     /* ════════ SECTION 2: MISSION — data-driven ════════ */
     .mission-inner { display: flex; flex-direction: column; gap: 45px; }
@@ -229,8 +229,8 @@
       line-height: 1; letter-spacing: -0.025em; margin-bottom: 8px;
     }
 
-    .data-title { font-size: 13px; font-weight: 500; margin-bottom: 5px; opacity: 0.82; }
-    .data-desc { font-size: 12px; line-height: 1.36; opacity: 0.48; }
+    .data-title { font-size: 14px; font-weight: 500; margin-bottom: 5px; opacity: 0.82; }
+    .data-desc { font-size: 14px; line-height: 1.36; opacity: 0.52; }
 
     /* ════════ SECTION 3: VALUES ════════ */
     .values-head {
@@ -239,7 +239,7 @@
     }
 
     .values-head h2 { font-size: clamp(32px, 4.42vw, 65px); line-height: 0.99; letter-spacing: -0.03em; }
-    .values-head-note { font-size: 14px; line-height: 1.40; max-width: 34ch; opacity: 0.58; text-align: right; }
+    .values-head-note { font-size: 14px; line-height: 1.40; max-width: 34ch; opacity: 0.72; text-align: right; font-weight: 500; }
 
     .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(247,246,242,0.18); }
 
@@ -249,7 +249,7 @@
 
     .val-body { padding: 24px 26px 36px; }
     .val-body h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; margin-bottom: 10px; }
-    .val-body p { font-size: 14px; line-height: 1.40; opacity: 0.6; }
+    .val-body p { font-size: 14px; line-height: 1.40; opacity: 0.72; font-weight: 500; }
 
     /* ════════ PHOTO ROW ════════ */
     .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 38px; }
@@ -272,7 +272,7 @@
     .photo-item-img.pi-d { background: #cbc8c1; }
     .photo-item-img.pi-e { background: #bfbcb6; }
     .photo-item-img.pi-f { background: var(--ph2); }
-    .photo-item-cap { font-size: 11px; opacity: 0.38; letter-spacing: 0.04em; }
+    .photo-item-cap { font-size: 13px; opacity: 0.5; letter-spacing: 0.04em; }
 
     /* ════════ PLANS ════════ */
     #plans { padding-top: 41px; }
@@ -280,7 +280,7 @@
     .plans-header { margin-bottom: 20px; }
 
     .plans-header h2 { font-size: clamp(32px, 4.25vw, 63px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 10px; }
-    .plans-header p { font-size: 15px; line-height: 1.40; opacity: 0.55; max-width: 48ch; }
+    .plans-header p { font-size: 16px; line-height: 1.40; opacity: 0.62; max-width: 48ch; }
 
     .plans-nav {
       display: flex; justify-content: space-between; align-items: center;
@@ -321,13 +321,13 @@
     .p-card:last-child { border-right: none; }
 
     .p-body { padding: 22px 26px 20px; display: flex; flex-direction: column; flex: 1; order: 1; }
-    .p-tier { font-size: 10px; letter-spacing: 0.17em; text-transform: uppercase; opacity: 0.55; margin-bottom: 10px; padding-top: 14px; }
+    .p-tier { font-size: 12px; letter-spacing: 0.17em; text-transform: uppercase; opacity: 0.65; margin-bottom: 10px; padding-top: 14px; }
     .p-price { font-family: 'Kaisei Decol', serif; font-size: clamp(36px, 3.4vw, 56px); line-height: 1; letter-spacing: -0.02em; }
-    .p-unit { font-size: 12px; opacity: 0.55; margin-top: 4px; margin-bottom: 18px; }
+    .p-unit { font-size: 13px; opacity: 0.62; margin-top: 4px; margin-bottom: 18px; }
     .p-rule { height: 1px; background: currentColor; opacity: 0.12; margin-bottom: 16px; }
 
     .p-features { list-style: none; flex: 1; }
-    .p-features li { font-size: 13px; line-height: 1.36; padding: 7px 0; opacity: 0.72; display: flex; gap: 9px; align-items: flex-start; }
+    .p-features li { font-size: 14px; line-height: 1.36; padding: 7px 0; opacity: 0.78; display: flex; gap: 9px; align-items: flex-start; }
     .p-features li::before { content: '—'; opacity: 0.35; flex-shrink: 0; }
 
     .p-cta { margin-top: 18px; margin-bottom: 20px; }
@@ -345,15 +345,15 @@
     .big-price { font-family: 'Kaisei Decol', serif; font-size: clamp(42px, 4.5vw, 72px); line-height: 1; letter-spacing: -0.02em; }
     .prospect-imgs-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
     .prospect-img-b { background: var(--ph2); }
-    .price-unit { font-size: 11px; opacity: 0.42; margin-top: 4px; margin-bottom: 28px; }
-    .prospect-left p { font-size: clamp(13px, 1.2vw, 16px); line-height: 1.46; opacity: 0.62; margin-bottom: 14px; }
+    .price-unit { font-size: 13px; opacity: 0.52; margin-top: 4px; margin-bottom: 28px; }
+    .prospect-left p { font-size: clamp(14px, 1.2vw, 16px); line-height: 1.46; opacity: 0.68; margin-bottom: 14px; }
     .prospect-right { display: flex; flex-direction: column; gap: 20px; }
     .prospect-img { width: 100%; height: 280px; background: var(--ph); }
 
     .flow-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.1); }
     .flow-list li { display: flex; gap: 20px; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.1); align-items: flex-start; }
-    .flow-n { font-size: 10px; letter-spacing: 0.14em; opacity: 0.32; flex-shrink: 0; padding-top: 2px; }
-    .flow-t { font-size: 13px; line-height: 1.40; opacity: 0.68; }
+    .flow-n { font-size: 12px; letter-spacing: 0.14em; opacity: 0.45; flex-shrink: 0; padding-top: 2px; }
+    .flow-t { font-size: 14px; line-height: 1.40; opacity: 0.72; }
 
     /* ════════ ARTISAN — top/bottom stack ════════ */
     .artisan-stack { display: flex; flex-direction: column; gap: 52px; }
@@ -412,10 +412,10 @@
     }
 
     .why-matters-desc {
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1.40;
       color: var(--accent);
-      opacity: 0.48;
+      opacity: 0.55;
     }
 
     /* ════════ PLANS on dark bg ════════ */
@@ -438,7 +438,7 @@
     .video-thumb { width: 100%; aspect-ratio: 3/3.68; background: var(--ph); display: flex; align-items: center; justify-content: center; }
     .play-btn { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(246,77,37,0.3); display: flex; align-items: center; justify-content: center; }
     .play-btn::after { content: ''; border-style: solid; border-width: 8px 0 8px 15px; border-color: transparent transparent transparent rgba(246,77,37,0.5); margin-left: 4px; }
-    .video-cap { font-size: 12px; opacity: 0.45; letter-spacing: 0.04em; }
+    .video-cap { font-size: 14px; opacity: 0.55; letter-spacing: 0.04em; }
 
     /* ════════ CTA ════════ */
     #contact.section { padding: 0; }
@@ -505,15 +505,15 @@
     /* ════════ FOOTER ════════ */
     footer { border-top: 1px solid rgba(246,77,37,0.12); }
     .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; padding: 56px 5vw 52px; }
-    .footer-col-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.3; margin-bottom: 18px; }
-    .footer-col address { font-style: normal; font-size: 13px; opacity: 0.52; line-height: 1.57; }
-    .footer-col .footer-coc { font-size: 12px; opacity: 0.32; margin-top: 10px; }
-    .footer-col a { display: block; font-size: 13px; color: var(--accent); opacity: 0.52; margin-bottom: 11px; transition: opacity 0.2s; }
+    .footer-col-label { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.4; margin-bottom: 18px; }
+    .footer-col address { font-style: normal; font-size: 14px; opacity: 0.62; line-height: 1.57; }
+    .footer-col .footer-coc { font-size: 13px; opacity: 0.42; margin-top: 10px; }
+    .footer-col a { display: block; font-size: 14px; color: var(--accent); opacity: 0.62; margin-bottom: 11px; transition: opacity 0.2s; }
     .footer-col a:hover { opacity: 1; }
     .footer-bottom { padding: 20px 5vw; border-top: 1px solid rgba(246,77,37,0.07); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
-    .footer-bottom-left { font-size: 11px; opacity: 0.3; }
+    .footer-bottom-left { font-size: 13px; opacity: 0.42; }
     .footer-bottom-right { display: flex; gap: 20px; }
-    .footer-bottom-right a { font-size: 11px; opacity: 0.3; color: var(--accent); transition: opacity 0.2s; }
+    .footer-bottom-right a { font-size: 13px; opacity: 0.42; color: var(--accent); transition: opacity 0.2s; }
     .footer-bottom-right a:hover { opacity: 0.7; }
     .footer-wordmark { overflow: hidden; padding: 0 4vw; line-height: 0.88; }
     .footer-wordmark-text { font-family: 'Kaisei Decol', serif; font-size: 23vw; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9; display: block; white-space: nowrap; }
@@ -569,14 +569,14 @@
       .data-card:last-child { border-bottom: none; }
       .mission-h { font-size: clamp(22px, 6vw, 36px); }
       .data-num { font-size: clamp(32px, 9vw, 50px); }
-      .data-desc { font-size: 13px; }
+      .data-desc { font-size: 14px; }
       .val-body p { font-size: 15px; }
-      .p-features li { font-size: 14px; }
+      .p-features li { font-size: 15px; }
       .plans-tabs { flex-wrap: wrap; gap: 6px; }
       .tab-btn { padding: 10px 20px; font-size: 12px; }
       .nav-cta { display: none; }
       .nav-drawer a { font-size: 14px; }
-      .marquee-track span { font-size: clamp(12.65px, 3.5vw, 19.5px); }
+      .marquee-track span { font-size: clamp(13px, 3.5vw, 19.5px); }
       .final-cta { padding: 80px 5vw 100px; }
       .cta-pills { position: static; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 24px; }
       .cta-pill { position: static; }
@@ -744,7 +744,7 @@
       </div>
     </div>
     <div style="text-align:center;padding-top:12px;">
-      <a href="our-bakers.html" style="font-size:13px;color:var(--accent);opacity:0.5;border-bottom:1px solid rgba(246,77,37,0.3);padding-bottom:2px;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">Meet our bakers ↗</a>
+      <a href="our-bakers.html" style="font-size:14px;color:var(--accent);opacity:0.6;border-bottom:1px solid rgba(246,77,37,0.3);padding-bottom:2px;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">Meet our bakers ↗</a>
     </div>
   </div>
 </section>
@@ -774,7 +774,7 @@
 
   <!-- TAB 0: EMPLOYEES -->
   <div class="tab-panel active" id="tab-0">
-    <p style="font-size:14px;opacity:0.5;max-width:52ch;line-height:1.40;margin-bottom:28px;">Your people are your biggest competitive advantage. Make them feel it — on their birthday, at Christmas, every year.</p>
+    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Your people are your biggest competitive advantage. Make them feel it — on their birthday, at Christmas, every year.</p>
     <div class="pricing-grid">
       <div class="p-card">
         <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
@@ -829,7 +829,7 @@
 
   <!-- TAB 1: TEAMS -->
   <div class="tab-panel" id="tab-1">
-    <p style="font-size:14px;opacity:0.5;max-width:52ch;line-height:1.40;margin-bottom:28px;">Culture isn't built in all-hands. It's built in the moments people share — like a quarterly cake big enough for everyone.</p>
+    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Culture isn't built in all-hands. It's built in the moments people share — like a quarterly cake big enough for everyone.</p>
     <div class="pricing-grid">
       <div class="p-card">
         <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>

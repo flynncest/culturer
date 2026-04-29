@@ -45,7 +45,7 @@
     /* ── Main ── */
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
     .topbar { border-bottom: 1px solid var(--border); padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 16px; }
-    .topbar-title { font-family: 'Kaisei Decol', serif; font-size: 17px; letter-spacing: -0.01em; flex-shrink: 0; }
+    .topbar-title { font-family: 'Kaisei Decol', serif; font-size: 20px; letter-spacing: -0.01em; flex-shrink: 0; }
     .topbar-actions { display: flex; gap: 8px; align-items: center; }
 
     /* ── Buttons ── */
@@ -64,13 +64,13 @@
     /* ── Cards ── */
     .card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
     .card-head { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .card-title { font-family: 'Kaisei Decol', serif; font-size: 14px; letter-spacing: -0.01em; }
+    .card-title { font-family: 'Kaisei Decol', serif; font-size: 16px; letter-spacing: -0.01em; }
     .card-body { padding: 20px; }
 
     /* ── Stats row ── */
     .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     .stat-card { border: 1px solid var(--border); padding: 18px 20px; border-radius: 4px; }
-    .stat-num { font-family: 'Kaisei Decol', serif; font-size: 32px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 5px; }
+    .stat-num { font-family: 'Kaisei Decol', serif; font-size: 38px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 5px; }
     .stat-label { font-size: 13px; opacity: 0.55; letter-spacing: 0.04em; }
     .stat-card[onclick] { transition: border-color 0.15s, box-shadow 0.15s; }
     .stat-card[onclick]:hover { border-color: rgba(246,77,37,0.3); box-shadow: 0 2px 8px rgba(246,77,37,0.07); }
@@ -147,7 +147,7 @@
     .modal-sm { max-width: 460px; }
     .modal-lg { max-width: 740px; }
     .modal-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 1; }
-    .modal-title { font-family: 'Kaisei Decol', serif; font-size: 19px; letter-spacing: -0.01em; }
+    .modal-title { font-family: 'Kaisei Decol', serif; font-size: 23px; letter-spacing: -0.01em; }
     .modal-sub { font-size: 13px; opacity: 0.52; margin-top: 3px; }
     .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; opacity: 0.35; transition: opacity 0.15s; color: var(--accent); padding: 2px 4px; line-height: 1; }
     .modal-close:hover { opacity: 0.9; }
@@ -184,7 +184,7 @@
 
     /* ── Calendar ── */
     .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .cal-month-label { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.02em; }
+    .cal-month-label { font-family: 'Kaisei Decol', serif; font-size: 27px; letter-spacing: -0.02em; }
     .cal-nav-btns { display: flex; gap: 6px; }
     .cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; color: var(--accent); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .cal-nav-btn:hover { border-color: var(--accent); }
@@ -240,7 +240,7 @@
 
     /* ── Overview greeting ── */
     .overview-hello { margin-bottom: 28px; }
-    .hello-greeting { font-family: 'Kaisei Decol', serif; font-size: clamp(26px, 3vw, 40px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 8px; }
+    .hello-greeting { font-family: 'Kaisei Decol', serif; font-size: clamp(30px, 3.4vw, 48px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 8px; }
     .hello-date { font-size: 13px; opacity: 0.45; letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
 
     /* ── Setup strip ── */
@@ -369,7 +369,7 @@
     .plan-ov-tier { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 12px; font-weight: 500; background: rgba(246,77,37,0.1); color: var(--accent); }
     .plan-ov-bottom { padding: 14px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .plan-ov-stat { }
-    .plan-ov-stat-num { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.02em; line-height: 1; }
+    .plan-ov-stat-num { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1; }
     .plan-ov-stat-label { font-size: 11px; opacity: 0.48; margin-top: 2px; letter-spacing: 0.04em; }
     .plan-ov-footer { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 12px; opacity: 0.58; }
     .plan-ov-delivery { display: flex; align-items: center; gap: 5px; }
@@ -378,17 +378,17 @@
     .plan-detail-back { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; cursor: pointer; opacity: 0.6; font-size: 13px; transition: opacity 0.15s; }
     .plan-detail-back:hover { opacity: 1; }
     .plan-detail-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
-    .plan-detail-title { font-family: 'Kaisei Decol', serif; font-size: 24px; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-detail-title { font-family: 'Kaisei Decol', serif; font-size: 28px; letter-spacing: -0.02em; margin-bottom: 4px; }
     .plan-detail-meta { font-size: 13px; opacity: 0.58; }
     .plan-detail-kpis { display: flex; gap: 24px; flex-wrap: wrap; }
     .plan-kpi { text-align: right; }
-    .plan-kpi-num { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1; }
+    .plan-kpi-num { font-family: 'Kaisei Decol', serif; font-size: 30px; letter-spacing: -0.02em; line-height: 1; }
     .plan-kpi-label { font-size: 11px; opacity: 0.48; margin-top: 2px; }
 
     /* ── People analytics strip ── */
     .people-analytics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
     .pa-card { border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
-    .pa-num { font-family: 'Kaisei Decol', serif; font-size: 26px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 3px; }
+    .pa-num { font-family: 'Kaisei Decol', serif; font-size: 30px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 3px; }
     .pa-label { font-size: 12px; opacity: 0.5; letter-spacing: 0.03em; }
     @media (max-width: 900px) { .people-analytics { grid-template-columns: repeat(3, 1fr); } .plans-overview-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .people-analytics { grid-template-columns: repeat(2, 1fr); } .plans-overview-grid { grid-template-columns: 1fr; } }

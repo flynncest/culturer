@@ -1621,9 +1621,9 @@
   }
 
   // ── Quiz view ──
-  const ART_LABELS = {minimalist:'Minimalist & Clean',vibrant:'Vibrant & Bold',natural:'Natural & Earthy',dreamy:'Dreamy & Artistic',modern:'Modern & Geometric',vintage:'Vintage & Classic'};
-  const HOBBY_LABELS = {travel:'Travel & Adventure',art:'Art & Creativity',fitness:'Sports & Fitness',music:'Music',food:'Food & Cooking',reading:'Reading & Learning',nature:'Nature & Outdoors',gaming:'Gaming & Tech'};
-  const PERS_LABELS = {adventurer:'The adventurer',creative:'The creative',nurturer:'The nurturer',achiever:'The achiever','free-spirit':'The free spirit',thinker:'The thinker'};
+  const ART_LABELS = {'minimal-nordic':'Minimal & Nordic','bold-maximalist':'Bold & Maximalist','natural-botanic':'Natural & Botanical','retro-vintage':'Retro & Vintage','dreamy-soft':'Dreamy & Watercolour','urban-street':'Urban & Street','elegant-luxury':'Elegant & Luxury','playful-cartoon':'Playful & Illustrated','geometric':'Geometric & Abstract','dark-cinematic':'Dark & Cinematic'};
+  const HOBBY_LABELS = {travel:'Travel',hiking:'Hiking',photography:'Photography',painting:'Painting','music-listen':'Music','music-play':'Playing music',gym:'Gym',running:'Running',yoga:'Yoga',cooking:'Cooking','wine-dining':'Wine & dining',reading:'Reading',gaming:'Gaming',film:'Film',plants:'Gardening',pets:'Pets',surfing:'Watersports',theatre:'Theatre',crafting:'Crafting',tech:'Tech'};
+  const CELEB_LABELS = {surprise:'A surprise',message:'Heartfelt message',family:'Share with family',experience:'An experience',public:'Public recognition',private:'Private & quiet',creative:'Creative & unique',quality:'Quality & thoughtful'};
 
   function renderQuiz() {
     const employees = allPeople().filter(p => p.type === 'employee' || p.type === 'team');
@@ -1666,9 +1666,9 @@
             <div style="font-size:14px;font-weight:500;margin-bottom:6px;">${name} <span class="quiz-badge-done" style="margin-left:6px;">✓ Completed</span></div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;">
               ${p.artStyle ? `<span class="badge badge-grey">🎨 ${ART_LABELS[p.artStyle]||p.artStyle}</span>` : ''}
-              ${(p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${p.allergies.join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary needs</span>'}
-              ${p.hobby ? `<span class="badge badge-blue">💡 ${HOBBY_LABELS[p.hobby]||p.hobby}</span>` : ''}
-              ${p.personality ? `<span class="badge badge-purple">✦ ${PERS_LABELS[p.personality]||p.personality}</span>` : ''}
+              ${(p.hobby||[]).length ? `<span class="badge badge-blue">💡 ${(p.hobby||[]).map(h=>HOBBY_LABELS[h]||h).join(', ')}${p.hobbyOther?', '+p.hobbyOther:''}</span>` : ''}
+              ${p.celebStyle ? `<span class="badge badge-purple">✦ ${CELEB_LABELS[p.celebStyle]||p.celebStyle}</span>` : ''}
+              ${(p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${p.allergies.join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary info</span>'}
             </div>
           </div>
           <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Re-open ↗</button>
@@ -3125,13 +3125,14 @@
       const HOBBY_LABELS = {travel:'Travel & Adventure',art:'Art & Creativity',fitness:'Sports & Fitness',music:'Music',food:'Food & Cooking',reading:'Reading & Learning',nature:'Nature & Outdoors',gaming:'Gaming & Tech'};
       const PERS_LABELS = {adventurer:'The adventurer',creative:'The creative',nurturer:'The nurturer',achiever:'The achiever','free-spirit':'The free spirit',thinker:'The thinker'};
       if (person.quizDone) {
+        const hobbyList = (person.hobby||[]).map(h=>HOBBY_LABELS[h]||h).join(', ') + (person.hobbyOther?', '+person.hobbyOther:'') || '—';
         quizEl.innerHTML = `
           <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.42;margin-bottom:10px;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">Quiz answers</div>
           <div class="quiz-answers">
             <div class="quiz-answer-row"><span class="quiz-answer-label">Art style</span><span class="quiz-answer-val">${ART_LABELS[person.artStyle]||person.artStyle||'—'}</span></div>
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Hobbies</span><span class="quiz-answer-val">${hobbyList}</span></div>
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Celebration</span><span class="quiz-answer-val">${CELEB_LABELS[person.celebStyle]||person.celebStyle||'—'}</span></div>
             <div class="quiz-answer-row"><span class="quiz-answer-label">Dietary</span><span class="quiz-answer-val">${(person.allergies||[]).join(', ')||'None'}</span></div>
-            <div class="quiz-answer-row"><span class="quiz-answer-label">Hobby</span><span class="quiz-answer-val">${HOBBY_LABELS[person.hobby]||person.hobby||'—'}</span></div>
-            <div class="quiz-answer-row"><span class="quiz-answer-label">Personality</span><span class="quiz-answer-val">${PERS_LABELS[person.personality]||person.personality||'—'}</span></div>
           </div>
           <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="window.open('quiz.html?id=${person.id}','_blank')">Re-send quiz link ↗</button>`;
       } else {

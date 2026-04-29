@@ -246,12 +246,18 @@
   // ─────────────────────────────────────────────
   // INIT
   // ─────────────────────────────────────────────
+  const isPreview = !personId || personId === 'preview';
+
   function init() {
-    if (!personId) { renderInvalid(); return; }
     const people = DB.getPeople();
-    person = people.find(p => p.id === personId) || null;
+    person = personId ? (people.find(p => p.id === personId) || null) : null;
+
+    if (!isPreview && !person) {
+      // Valid-looking ID but not found in this browser — still show quiz
+      // (it will save to fallback key on submit)
+    }
+
     if (person && person.quizDone) {
-      // Pre-fill so they can update
       answers.artStyle   = person.artStyle   || null;
       answers.hobby      = person.hobby      || [];
       answers.hobbyOther = person.hobbyOther || '';
@@ -260,15 +266,6 @@
     }
     document.getElementById('progressWrap').style.display = 'block';
     renderStep();
-  }
-
-  function renderInvalid() {
-    document.getElementById('progressWrap').style.display = 'none';
-    document.getElementById('quizContent').innerHTML = `
-      <div class="invalid-wrap">
-        <h2>Link not found.</h2>
-        <p>This quiz link doesn't look right. Ask your HR team to send a fresh one.</p>
-      </div>`;
   }
 
   // ─────────────────────────────────────────────
@@ -282,7 +279,8 @@
 
     const firstName = person ? (person.first || person.name || 'there') : 'there';
     const greeting = step === 0
-      ? `<p style="font-size:16px;opacity:0.52;line-height:1.5;margin-bottom:32px;">Hi <strong>${firstName}</strong> 👋 &nbsp;This takes 60 seconds and helps us make every moment feel genuinely personal to you.</p>`
+      ? `${isPreview ? '<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(246,77,37,0.08);border-radius:100px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Preview mode</div>' : ''}
+         <p style="font-size:16px;opacity:0.52;line-height:1.5;margin-bottom:32px;">Hi <strong>${isPreview ? 'there' : firstName}</strong> 👋 &nbsp;This takes 60 seconds and helps us make every moment feel genuinely personal to you.</p>`
       : '';
 
     const qLines = s.q.split('\n').join('<br>');
@@ -422,6 +420,18 @@
   function submitQuiz() {
     if (!canProceed()) return;
 
+    if (isPreview) {
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('quizContent').innerHTML = `
+        <div class="thank-you">
+          <div class="ty-icon">👀</div>
+          <div class="ty-h">Preview complete.</div>
+          <p class="ty-p">This was a preview of the quiz. Employees will see the same flow with their name personalised and their answers saved to the dashboard.</p>
+        </div>`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     const quizData = {
       artStyle:    answers.artStyle,
       hobby:       answers.hobby,
@@ -438,7 +448,6 @@
       people[idx] = { ...people[idx], ...quizData };
       DB.setPeople(people);
     } else {
-      // Different browser/device — save under fallback key
       localStorage.setItem('cult_quiz_' + personId, JSON.stringify(quizData));
     }
 

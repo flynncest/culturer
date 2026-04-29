@@ -641,7 +641,7 @@
             <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.01em;margin-bottom:4px;">Personalisation quiz</div>
             <div style="font-size:13px;opacity:0.48;">Each employee fills a 60-second quiz so every delivery is built around who they actually are.</div>
           </div>
-          <button class="btn btn-outline" style="font-size:12px;" onclick="window.open('quiz.html','_blank')">Preview quiz ↗</button>
+          <button class="btn btn-outline" style="font-size:12px;" onclick="window.open('quiz.html?id=preview','_blank')">Preview quiz ↗</button>
         </div>
         <div id="quizStats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;"></div>
         <div class="card">
@@ -1011,6 +1011,30 @@
           <button type="submit" class="btn btn-primary">Save →</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUIZ LINK MODAL ══ -->
+<div class="modal-backdrop" id="modalQuizLink">
+  <div class="modal modal-sm">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Quiz link ready ✓</div>
+        <div class="modal-sub" id="quizLinkPersonName"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalQuizLink')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;opacity:0.58;line-height:1.5;margin-bottom:20px;">Share this link with <span id="quizLinkFirstName">them</span> — when they fill it in, their profile updates automatically in the dashboard.</p>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 14px;border:1.5px solid var(--border);border-radius:6px;background:rgba(246,77,37,0.03);margin-bottom:20px;">
+        <span id="quizLinkUrl" style="flex:1;font-size:13px;word-break:break-all;opacity:0.72;font-family:monospace;"></span>
+        <button class="btn btn-outline" style="flex-shrink:0;font-size:12px;padding:6px 14px;" onclick="copyQuizLink()">Copy</button>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="openQuizFromModal()">Open quiz ↗</button>
+        <button class="btn btn-ghost" style="flex:1;" onclick="closeModal('modalQuizLink')">Done</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1620,6 +1644,34 @@
     window.open('quiz.html?id=' + id, '_blank');
   }
 
+  let _quizLinkCurrentId = null;
+
+  function showQuizLinkModal(person) {
+    _quizLinkCurrentId = person.id;
+    const base = window.location.href.replace(/[^/]*$/, '');
+    const url = base + 'quiz.html?id=' + person.id;
+    const firstName = person.first || person.name || 'them';
+    document.getElementById('quizLinkPersonName').textContent = `${firstName} ${person.last || ''}`.trim();
+    document.getElementById('quizLinkFirstName').textContent = firstName;
+    document.getElementById('quizLinkUrl').textContent = url;
+    openModal('modalQuizLink');
+  }
+
+  function copyQuizLink() {
+    const url = document.getElementById('quizLinkUrl').textContent;
+    navigator.clipboard.writeText(url).then(() => toast('Quiz link copied ✓')).catch(() => {
+      // fallback
+      const el = document.createElement('textarea');
+      el.value = url; document.body.appendChild(el); el.select();
+      document.execCommand('copy'); document.body.removeChild(el);
+      toast('Quiz link copied ✓');
+    });
+  }
+
+  function openQuizFromModal() {
+    if (_quizLinkCurrentId) window.open('quiz.html?id=' + _quizLinkCurrentId, '_blank');
+  }
+
   // ── Quiz view ──
   const ART_LABELS = {'minimal-nordic':'Minimal & Nordic','bold-maximalist':'Bold & Maximalist','natural-botanic':'Natural & Botanical','retro-vintage':'Retro & Vintage','dreamy-soft':'Dreamy & Watercolour','urban-street':'Urban & Street','elegant-luxury':'Elegant & Luxury','playful-cartoon':'Playful & Illustrated','geometric':'Geometric & Abstract','dark-cinematic':'Dark & Cinematic'};
   const HOBBY_LABELS = {travel:'Travel',hiking:'Hiking',photography:'Photography',painting:'Painting','music-listen':'Music','music-play':'Playing music',gym:'Gym',running:'Running',yoga:'Yoga',cooking:'Cooking','wine-dining':'Wine & dining',reading:'Reading',gaming:'Gaming',film:'Film',plants:'Gardening',pets:'Pets',surfing:'Watersports',theatre:'Theatre',crafting:'Crafting',tech:'Tech'};
@@ -1671,7 +1723,10 @@
               ${(p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${p.allergies.join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary info</span>'}
             </div>
           </div>
-          <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Re-open ↗</button>
+          <div style="display:flex;gap:5px;flex-shrink:0;">
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="showQuizLinkModal(allPeople().find(p=>p.id==='${p.id}'))">Copy link</button>
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="openQuizLink('${p.id}')">Re-open ↗</button>
+          </div>
         </div>`;
       } else {
         return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
@@ -1681,7 +1736,10 @@
             <div style="font-size:12px;opacity:0.42;margin-top:2px;">${p.email || 'No email on file'}</div>
           </div>
           <span class="quiz-badge-pending" style="flex-shrink:0;">Pending</span>
-          <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Open quiz ↗</button>
+          <div style="display:flex;gap:5px;flex-shrink:0;">
+            <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">📋 Copy link</button>
+            <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;" onclick="openQuizLink('${p.id}')">Open ↗</button>
+          </div>
         </div>`;
       }
     }).join('')
@@ -1921,23 +1979,26 @@
     }
 
     DB.add('people',person);
+    const savedPerson={...person};
     const savedPlanKey=_planDetailKey;
     const wasFromPlan=_addingFromPlan;
     _addPersonDefaultGroup=null; _planDetailKey=null; _addingFromPlan=false;
     closeModal('modalAddPerson');
     if (savedPlanKey) {
-      // Check if active plan — notify admin
       const key=decodeURIComponent(savedPlanKey);
       const pg=DB.get('planGroups').find(g=>g.name===key);
       if (wasFromPlan && pg?.status==='active') {
         DB.add('change_requests',{group:key,changes:[`Added: ${person.first||''} ${person.last||''}`],submittedAt:new Date().toISOString(),status:'pending'});
-        toast(`${person.first||'Person'} added — admin notified for billing review ✓`);
-      } else {
-        toast(`${person.first||'Person'} added ✓`);
       }
       showPlanDetail(savedPlanKey);
-    } else { navigate('people'); toast(`${person.first||'Person'} added ✓`); }
+    } else { navigate('people'); }
     renderOverview();
+    // Show quiz link modal for employees & team members (not prospects)
+    if (savedPerson.type !== 'prospect') {
+      setTimeout(() => showQuizLinkModal(savedPerson), 200);
+    } else {
+      toast(`${savedPerson.first||'Person'} added ✓`);
+    }
   }
 
   function selectDelivery(type, el) {

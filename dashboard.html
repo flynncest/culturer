@@ -459,6 +459,7 @@
       <div class="nav-item" data-view="deliveries"><span class="nav-icon">📦</span>Deliveries</div>
       <div class="nav-label">Catalog</div>
       <div class="nav-item" data-view="catalog"><span class="nav-icon">🎂</span>Cake catalog</div>
+      <div class="nav-item" data-view="quiz"><span class="nav-icon">✏️</span>Personalisation quiz</div>
       <div class="nav-label">Account</div>
       <div class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Settings</div>
     </nav>
@@ -630,6 +631,25 @@
             <span id="deliveryCount" style="font-size:11px;opacity:0.38;"></span>
           </div>
           <div id="deliveriesTable"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No deliveries yet.</div></div></div>
+        </div>
+      </div>
+
+      <!-- ══ QUIZ ══ -->
+      <div class="view" id="view-quiz">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.01em;margin-bottom:4px;">Personalisation quiz</div>
+            <div style="font-size:13px;opacity:0.48;">Each employee fills a 60-second quiz so every delivery is built around who they actually are.</div>
+          </div>
+          <button class="btn btn-outline" style="font-size:12px;" onclick="window.open('quiz.html','_blank')">Preview quiz ↗</button>
+        </div>
+        <div id="quizStats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Employee quiz status</span>
+            <span id="quizTableCount" style="font-size:12px;opacity:0.38;"></span>
+          </div>
+          <div id="quizTable"></div>
         </div>
       </div>
 
@@ -1118,10 +1138,11 @@
     wishcards: { title: 'Wish cards',   actions: '' },
     deliveries:{ title: 'Deliveries',   actions: '' },
     catalog:   { title: 'Cake catalog', actions: '' },
+    quiz:      { title: 'Personalisation quiz', actions: '' },
     settings:  { title: 'Settings',     actions: '' },
   };
 
-  const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, settings: renderSettings, yourplan: renderYourPlan };
+  const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, settings: renderSettings, yourplan: renderYourPlan, quiz: renderQuiz };
 
   function navigate(name) {
     // clear plan-detail context when leaving plans
@@ -1596,8 +1617,75 @@
   }
 
   function openQuizLink(id) {
-    const url = 'quiz.html?id=' + id;
-    window.open(url, '_blank');
+    window.open('quiz.html?id=' + id, '_blank');
+  }
+
+  // ── Quiz view ──
+  const ART_LABELS = {minimalist:'Minimalist & Clean',vibrant:'Vibrant & Bold',natural:'Natural & Earthy',dreamy:'Dreamy & Artistic',modern:'Modern & Geometric',vintage:'Vintage & Classic'};
+  const HOBBY_LABELS = {travel:'Travel & Adventure',art:'Art & Creativity',fitness:'Sports & Fitness',music:'Music',food:'Food & Cooking',reading:'Reading & Learning',nature:'Nature & Outdoors',gaming:'Gaming & Tech'};
+  const PERS_LABELS = {adventurer:'The adventurer',creative:'The creative',nurturer:'The nurturer',achiever:'The achiever','free-spirit':'The free spirit',thinker:'The thinker'};
+
+  function renderQuiz() {
+    const employees = allPeople().filter(p => p.type === 'employee' || p.type === 'team');
+    const done = employees.filter(p => p.quizDone);
+    const pending = employees.filter(p => !p.quizDone);
+    const pct = employees.length ? Math.round((done.length / employees.length) * 100) : 0;
+
+    // Stats strip
+    document.getElementById('quizStats').innerHTML = `
+      <div class="stat-card" style="border-color:rgba(34,197,94,0.3);">
+        <div class="stat-num" style="color:#16a34a;">${done.length}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(201,95,0,0.2);">
+        <div class="stat-num" style="color:#c95f00;">${pending.length}</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${pct}%</div>
+        <div class="stat-label">Completion rate</div>
+      </div>`;
+
+    document.getElementById('quizTableCount').textContent = `${employees.length} employee${employees.length !== 1 ? 's' : ''}`;
+
+    if (!employees.length) {
+      document.getElementById('quizTable').innerHTML = '<div class="empty"><div class="empty-icon">✏️</div><div class="empty-text">No employees yet. Add people in Plans to get started.</div></div>';
+      return;
+    }
+
+    // Sort: pending first, then done
+    const sorted = [...pending, ...done];
+
+    document.getElementById('quizTable').innerHTML = sorted.map(p => {
+      const name = `${p.first || p.name || ''} ${p.last || ''}`.trim();
+      const initials = ((p.first || p.name || '?')[0] + ((p.last || '')[0] || '')).toUpperCase();
+      if (p.quizDone) {
+        return `<div style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+          <div class="roster-av" style="flex-shrink:0;margin-top:2px;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:500;margin-bottom:6px;">${name} <span class="quiz-badge-done" style="margin-left:6px;">✓ Completed</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              ${p.artStyle ? `<span class="badge badge-grey">🎨 ${ART_LABELS[p.artStyle]||p.artStyle}</span>` : ''}
+              ${(p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${p.allergies.join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary needs</span>'}
+              ${p.hobby ? `<span class="badge badge-blue">💡 ${HOBBY_LABELS[p.hobby]||p.hobby}</span>` : ''}
+              ${p.personality ? `<span class="badge badge-purple">✦ ${PERS_LABELS[p.personality]||p.personality}</span>` : ''}
+            </div>
+          </div>
+          <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Re-open ↗</button>
+        </div>`;
+      } else {
+        return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+          <div class="roster-av" style="flex-shrink:0;opacity:0.45;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:500;">${name}</div>
+            <div style="font-size:12px;opacity:0.42;margin-top:2px;">${p.email || 'No email on file'}</div>
+          </div>
+          <span class="quiz-badge-pending" style="flex-shrink:0;">Pending</span>
+          <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Open quiz ↗</button>
+        </div>`;
+      }
+    }).join('')
+    + (employees.length ? '<div style="padding:10px 20px;font-size:12px;opacity:0.38;">Click "Open quiz ↗" to open the quiz link for that person in a new tab — share the URL with them directly.</div>' : '');
   }
 
   // ── Add Person Modal ──

@@ -539,8 +539,8 @@
           <div class="bulk-bar-divider"></div>
           <select class="bulk-select" id="bulkTierSelect" title="Bulk change plan">
             <option value="">Change plan…</option>
-            <option value="birthday">Birthday (€8/mo)</option>
-            <option value="christmas">+ Christmas (€14/mo)</option>
+            <option value="birthday">Essentials (€8/mo)</option>
+            <option value="christmas">Standard (€12/mo)</option>
             <option value="premium">Premium (€20/mo)</option>
           </select>
           <div class="bulk-bar-divider"></div>
@@ -893,19 +893,19 @@
           <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4;margin-bottom:10px;">Plan tier for employees</div>
           <div class="plan-cards" id="csvPlanTabs">
             <div class="plan-card-sel active" data-plan="birthday" onclick="setCsvPlan('birthday',this)">
-              <div class="plan-card-sel-name">🎂 Birthday</div>
+              <div class="plan-card-sel-name">🎂 Essentials</div>
               <div class="plan-card-sel-price">€8<span> / person / month</span></div>
-              <div class="plan-card-sel-desc">Handmade birthday cake delivered to the door</div>
+              <div class="plan-card-sel-desc">Birthday cake + personalised card + AI greeting video</div>
             </div>
             <div class="plan-card-sel" data-plan="christmas" onclick="setCsvPlan('christmas',this)">
-              <div class="plan-card-sel-name">🎄 + Christmas</div>
-              <div class="plan-card-sel-price">€14<span> / person / month</span></div>
-              <div class="plan-card-sel-desc">Birthday cake + Christmas gift, gift-wrapped</div>
+              <div class="plan-card-sel-name">✦ Standard</div>
+              <div class="plan-card-sel-price">€12<span> / person / month</span></div>
+              <div class="plan-card-sel-desc">Essentials + €20 interest voucher + work anniversary card</div>
             </div>
             <div class="plan-card-sel" data-plan="premium" onclick="setCsvPlan('premium',this)">
-              <div class="plan-card-sel-name">✦ Premium</div>
+              <div class="plan-card-sel-name">⬆ Premium</div>
               <div class="plan-card-sel-price">€20<span> / person / month</span></div>
-              <div class="plan-card-sel-desc">Everything + work anniversary + priority delivery</div>
+              <div class="plan-card-sel-desc">Everything + seasonal gift + priority delivery &amp; support</div>
             </div>
           </div>
         </div>
@@ -1696,8 +1696,8 @@
         <div class="field-group"><label>Birthday</label><input type="date" id="ap-birthday"></div>
         <div class="field-group"><label>Plan tier</label>
           <select id="ap-tier">
-            <option value="birthday">Birthday (€8/mo)</option>
-            <option value="christmas">+ Christmas (€14/mo)</option>
+            <option value="birthday">Essentials (€8/mo)</option>
+            <option value="christmas">Standard (€12/mo)</option>
             <option value="premium">Premium (€20/mo)</option>
           </select>
         </div>
@@ -1712,8 +1712,8 @@
         <div class="field-group span2"><label>Team name <span style="color:var(--accent);font-size:10px;text-transform:none;letter-spacing:0;">(required — groups this person with their team)</span></label><input type="text" id="ap-group" placeholder="e.g. Marketing, Engineering…" value="${_addPersonDefaultGroup||''}" required></div>
         <div class="field-group span2"><label>Plan tier</label>
           <select id="ap-tier">
-            <option value="birthday">Birthday (€8/mo)</option>
-            <option value="christmas">+ Christmas (€14/mo)</option>
+            <option value="birthday">Essentials (€8/mo)</option>
+            <option value="christmas">Standard (€12/mo)</option>
             <option value="premium">Premium (€20/mo)</option>
           </select>
         </div>
@@ -1738,7 +1738,7 @@
       lines.push(['Name',`${v('ap-first')} ${v('ap-last')}`]);
       lines.push(['Email',v('ap-email')||'—']);
       lines.push(['Birthday',v('ap-birthday')||'—']);
-      lines.push(['Plan',{birthday:'Birthday (€8/mo)',christmas:'+ Christmas (€14/mo)',premium:'Premium (€20/mo)'}[v('ap-tier')]||'—']);
+      lines.push(['Plan',{birthday:'Essentials (€8/mo)',christmas:'Standard (€12/mo)',premium:'Premium (€20/mo)'}[v('ap-tier')]||'—']);
       if (v('ap-group')) lines.push(['Group',v('ap-group')]);
     } else if (apPersonType==='team') {
       lines.push(['Type','Team member']);
@@ -1746,7 +1746,7 @@
       lines.push(['Email',v('ap-email')||'—']);
       lines.push(['Team',v('ap-group')||'—']);
       lines.push(['Birthday',v('ap-birthday')||'—']);
-      lines.push(['Plan',{birthday:'Birthday (€8/mo)',christmas:'+ Christmas (€14/mo)',premium:'Premium (€20/mo)'}[v('ap-tier')]||'Birthday']);
+      lines.push(['Plan',{birthday:'Essentials (€8/mo)',christmas:'Standard (€12/mo)',premium:'Premium (€20/mo)'}[v('ap-tier')]||'Birthday']);
     } else {
       lines.push(['Type','Prospect']);
       lines.push(['Name',`${v('ap-first')} ${v('ap-last')}`]);
@@ -2006,7 +2006,7 @@
 
   function showKickoffBanner(total, empCount, plan, delivery) {
     _kickoffPlan=plan; _kickoffDelivery=delivery; _kickoffCount=empCount;
-    const planLabel={birthday:'Birthday (€8/mo)',christmas:'+ Christmas (€14/mo)',premium:'Premium (€20/mo)'}[plan]||plan;
+    const planLabel={birthday:'Essentials (€8/mo)',christmas:'Standard (€12/mo)',premium:'Premium (€20/mo)'}[plan]||plan;
     const delivLabel=delivery==='home'?'Home delivery (+€2/person/month)':'Office delivery every Monday';
     document.getElementById('kickoffTitle').textContent=`${total} ${total===1?'person':'people'} imported — ready to activate`;
     document.getElementById('kickoffSub').textContent=`Plan: ${planLabel}  ·  ${delivLabel}`;
@@ -2025,7 +2025,7 @@
       _kickoffPlan=emps.find(p=>p.tier)?.tier||'birthday';
       _kickoffDelivery=emps.find(p=>p.delivery)?.delivery||'office';
     }
-    const planLabel={birthday:'Birthday (€8/mo)',christmas:'+ Christmas (€14/mo)',premium:'Premium (€20/mo)'}[_kickoffPlan]||_kickoffPlan;
+    const planLabel={birthday:'Essentials (€8/mo)',christmas:'Standard (€12/mo)',premium:'Premium (€20/mo)'}[_kickoffPlan]||_kickoffPlan;
     const delivLabel=_kickoffDelivery==='home'?'Home delivery (+€2/person/month)':'Office delivery every Monday';
     const allPpl=allPeople();
     const emps=allPpl.filter(p=>p.type==='employee').length;
@@ -2850,7 +2850,7 @@
   function toggleRosterRow(row) { row.classList.toggle('open'); }
 
   function rosterDetail(p) {
-    const tier={birthday:'Birthday (€8/mo)',christmas:'+ Christmas (€14/mo)',premium:'Premium (€20/mo)'}[p.tier]||p.tier||'—';
+    const tier={birthday:'Essentials (€8/mo)',christmas:'Standard (€12/mo)',premium:'Premium (€20/mo)'}[p.tier]||p.tier||'—';
     const planVal=(p.type==='employee'||p.type==='team')?tier:`€${p.deal||'—'}`;
     const keyDateLabel=p.type==='employee'||p.type==='team'?'Birthday':'Send date';
     const keyDateVal=fmtDate(p.type==='employee'||p.type==='team'?p.birthday:p.sendDate)||'—';
@@ -2963,8 +2963,8 @@
         <div class="field-group"><label>Birthday</label><input type="date" id="ef-birthday" value="${person.birthday||''}"></div>
         <div class="field-group"><label>Plan</label>
           <select id="ef-tier">
-            <option value="birthday" ${person.tier==='birthday'?'selected':''}>Birthday (€8/mo)</option>
-            <option value="christmas" ${person.tier==='christmas'?'selected':''}>+ Christmas (€14/mo)</option>
+            <option value="birthday" ${person.tier==='birthday'?'selected':''}>Essentials (€8/mo)</option>
+            <option value="christmas" ${person.tier==='christmas'?'selected':''}>Standard (€12/mo)</option>
             <option value="premium" ${person.tier==='premium'?'selected':''}>Premium (€20/mo)</option>
           </select>
         </div>
@@ -2983,8 +2983,8 @@
         <div class="field-group"><label>Birthday</label><input type="date" id="ef-birthday" value="${person.birthday||''}"></div>
         <div class="field-group"><label>Plan</label>
           <select id="ef-tier">
-            <option value="birthday" ${person.tier==='birthday'?'selected':''}>Birthday (€8/mo)</option>
-            <option value="christmas" ${person.tier==='christmas'?'selected':''}>+ Christmas (€14/mo)</option>
+            <option value="birthday" ${person.tier==='birthday'?'selected':''}>Essentials (€8/mo)</option>
+            <option value="christmas" ${person.tier==='christmas'?'selected':''}>Standard (€12/mo)</option>
             <option value="premium" ${person.tier==='premium'?'selected':''}>Premium (€20/mo)</option>
           </select>
         </div>

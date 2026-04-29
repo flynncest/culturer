@@ -385,13 +385,23 @@
     .plan-kpi-num { font-family: 'Kaisei Decol', serif; font-size: 30px; letter-spacing: -0.02em; line-height: 1; }
     .plan-kpi-label { font-size: 11px; opacity: 0.48; margin-top: 2px; }
 
+    /* ── Quiz badge ── */
+    .quiz-badge-done { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(34,197,94,0.12);color:#16a34a; }
+    .quiz-badge-pending { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(201,95,0,0.1);color:#c95f00; }
+    .quiz-answers { background:rgba(246,77,37,0.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;margin-top:16px; }
+    .quiz-answer-row { display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px; }
+    .quiz-answer-row:last-child { border-bottom:none; }
+    .quiz-answer-label { opacity:0.45;flex-shrink:0;width:100px; }
+    .quiz-answer-val { font-weight:500; }
+
     /* ── People analytics strip ── */
-    .people-analytics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+    .people-analytics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 20px; }
     .pa-card { border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
     .pa-num { font-family: 'Kaisei Decol', serif; font-size: 30px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 3px; }
     .pa-label { font-size: 12px; opacity: 0.5; letter-spacing: 0.03em; }
     @media (max-width: 900px) { .people-analytics { grid-template-columns: repeat(3, 1fr); } .plans-overview-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .people-analytics { grid-template-columns: repeat(2, 1fr); } .plans-overview-grid { grid-template-columns: 1fr; } }
+
 
     /* ── Start plan confirm modal ── */
     .plan-confirm-row { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
@@ -519,6 +529,7 @@
           <div class="pa-card"><div class="pa-num" id="pa-teams">0</div><div class="pa-label">Teams</div></div>
           <div class="pa-card"><div class="pa-num" id="pa-prospects">0</div><div class="pa-label">Prospects</div></div>
           <div class="pa-card"><div class="pa-num" id="pa-bdays">0</div><div class="pa-label">Birthdays this month</div></div>
+          <div class="pa-card" style="border-color:rgba(34,197,94,0.25);"><div class="pa-num" id="pa-quiz" style="color:#16a34a;">0</div><div class="pa-label">Quiz completed</div></div>
         </div>
         <div class="people-filter-bar">
           <div class="filter-tabs">
@@ -974,6 +985,7 @@
             <label class="allergy-label"><input type="checkbox" value="vegan"> 🌱 Vegan</label>
           </div>
         </div>
+        <div id="editQuizAnswers"></div>
         <div class="form-actions">
           <button type="button" class="btn btn-outline" onclick="closeModal('modalEditPerson')">Cancel</button>
           <button type="submit" class="btn btn-primary">Save →</button>
@@ -1308,6 +1320,7 @@
     document.getElementById('pa-teams').textContent=teamGroups.size;
     document.getElementById('pa-prospects').textContent=everyone.filter(p=>p.type==='prospect').length;
     document.getElementById('pa-bdays').textContent=bdays;
+    document.getElementById('pa-quiz').textContent=everyone.filter(p=>p.quizDone).length;
 
     // Teams tab: grouped two-level view
     if (currentFilter==='team') {
@@ -1345,13 +1358,17 @@
       <span class="sort-th" style="${thStyle}width:80px;" onclick="setSortField('team')">Team ${sortArrow('team')}</span>
       <span class="sort-th" style="${thStyle}width:90px;" onclick="setSortField('plan')">Plan ${sortArrow('plan')}</span>
       <span class="sort-th" style="${thStyle}width:72px;" onclick="setSortField('birthday')">Birthday ${sortArrow('birthday')}</span>
-      <span style="width:120px;"></span>
+      <span style="${thStyle}width:68px;">Quiz</span>
+      <span style="width:160px;"></span>
     </div>
     <div class="roster-list">${sorted.map(p=>{
       const initials=((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
       const keyDate=p.type==='prospect'?fmtDateShort(p.sendDate):fmtDateShort(p.birthday);
       const planLabel=p.type==='prospect'?(p.deal?`€${p.deal}`:'—'):(TIER_LABEL[p.tier||'birthday']||'Birthday');
       const teamLabel=p.group||'—';
+      const quizBadge=p.quizDone
+        ? `<span class="quiz-badge-done">✓ Done</span>`
+        : `<span class="quiz-badge-pending">Pending</span>`;
       return `<div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);${selectedIds.has(p.id)?'background:rgba(246,77,37,0.04);':''}" data-id="${p.id}">
         <input type="checkbox" class="row-check" ${selectedIds.has(p.id)?'checked':''} onchange="toggleRow('${p.id}',this)" style="flex-shrink:0;">
         <div class="roster-av" style="flex-shrink:0;">${initials}</div>
@@ -1362,7 +1379,9 @@
         <div style="width:80px;font-size:12px;opacity:0.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${teamLabel}</div>
         <div style="width:90px;"><span class="badge badge-orange" style="font-size:10px;">${planLabel}</span></div>
         <div style="width:72px;font-size:12px;opacity:0.45;">${keyDate||'—'}</div>
-        <div style="flex-shrink:0;">
+        <div style="width:68px;">${quizBadge}</div>
+        <div style="display:flex;gap:5px;flex-shrink:0;">
+          <button class="btn btn-outline" style="font-size:11px;padding:5px 10px;" onclick="openQuizLink('${p.id}')" title="Open quiz for this person">📋 Quiz</button>
           <button class="btn btn-outline" style="font-size:11px;padding:5px 12px;" onclick="openEditPerson('${p.id}')">Edit</button>
         </div>
       </div>`;
@@ -1574,6 +1593,11 @@
     renderPeople();
     renderOverview();
     toast('Removed');
+  }
+
+  function openQuizLink(id) {
+    const url = 'quiz.html?id=' + id;
+    window.open(url, '_blank');
   }
 
   // ── Add Person Modal ──
@@ -3005,6 +3029,32 @@
       lbl.classList.toggle('active',cb.checked);
     });
     initAllergyToggle('editAllergyGroup');
+
+    // Quiz answers panel
+    const quizEl = document.getElementById('editQuizAnswers');
+    if (quizEl) {
+      const ART_LABELS = {minimalist:'Minimalist & Clean',vibrant:'Vibrant & Bold',natural:'Natural & Earthy',dreamy:'Dreamy & Artistic',modern:'Modern & Geometric',vintage:'Vintage & Classic'};
+      const HOBBY_LABELS = {travel:'Travel & Adventure',art:'Art & Creativity',fitness:'Sports & Fitness',music:'Music',food:'Food & Cooking',reading:'Reading & Learning',nature:'Nature & Outdoors',gaming:'Gaming & Tech'};
+      const PERS_LABELS = {adventurer:'The adventurer',creative:'The creative',nurturer:'The nurturer',achiever:'The achiever','free-spirit':'The free spirit',thinker:'The thinker'};
+      if (person.quizDone) {
+        quizEl.innerHTML = `
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.42;margin-bottom:10px;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">Quiz answers</div>
+          <div class="quiz-answers">
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Art style</span><span class="quiz-answer-val">${ART_LABELS[person.artStyle]||person.artStyle||'—'}</span></div>
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Dietary</span><span class="quiz-answer-val">${(person.allergies||[]).join(', ')||'None'}</span></div>
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Hobby</span><span class="quiz-answer-val">${HOBBY_LABELS[person.hobby]||person.hobby||'—'}</span></div>
+            <div class="quiz-answer-row"><span class="quiz-answer-label">Personality</span><span class="quiz-answer-val">${PERS_LABELS[person.personality]||person.personality||'—'}</span></div>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="window.open('quiz.html?id=${person.id}','_blank')">Re-send quiz link ↗</button>`;
+      } else {
+        quizEl.innerHTML = `
+          <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
+            <div style="font-size:12px;opacity:0.45;margin-bottom:10px;">No quiz completed yet.</div>
+            <button class="btn btn-outline" style="font-size:12px;padding:7px 16px;" onclick="window.open('quiz.html?id=${person.id}','_blank')">Open quiz for this person ↗</button>
+          </div>`;
+      }
+    }
+
     openModal('modalEditPerson');
   }
 

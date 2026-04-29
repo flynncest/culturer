@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturers — Your personal profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #f64d25; --bg: #f7f6f2; --border: rgba(246,77,37,0.14); }
+    html, body { min-height: 100%; background: var(--bg); color: var(--accent); font-family: 'DM Sans', sans-serif; }
+
+    /* ── Shell ── */
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 60px;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      width: 100%; max-width: 600px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 0 0;
+      margin-bottom: 40px;
+    }
+    .logo { font-family: 'Kaisei Decol', serif; font-size: 20px; color: var(--accent); text-decoration: none; }
+
+    /* ── Progress ── */
+    .progress-wrap { width: 100%; max-width: 600px; margin-bottom: 48px; }
+    .progress-label { font-size: 12px; opacity: 0.42; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .progress-bar { height: 3px; background: rgba(246,77,37,0.12); border-radius: 2px; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+
+    /* ── Card / step ── */
+    .step-card {
+      width: 100%; max-width: 600px;
+      animation: fadeUp 0.36s ease forwards;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+    .step-eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.38; margin-bottom: 14px; }
+    .step-q { font-family: 'Kaisei Decol', serif; font-size: clamp(26px, 5vw, 38px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .step-hint { font-size: 14px; opacity: 0.5; margin-bottom: 32px; line-height: 1.4; }
+
+    /* ── Option grid ── */
+    .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
+    .opt-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+
+    .opt {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.12s;
+      user-select: none;
+    }
+    .opt:hover { border-color: rgba(246,77,37,0.45); background: rgba(246,77,37,0.03); }
+    .opt.selected { border-color: var(--accent); background: rgba(246,77,37,0.07); }
+    .opt:active { transform: scale(0.98); }
+    .opt-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+    .opt-name { font-size: 14px; font-weight: 500; line-height: 1.3; margin-bottom: 3px; }
+    .opt-desc { font-size: 12px; opacity: 0.5; line-height: 1.4; }
+
+    /* ── Pills (multi-select) ── */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+    .pill {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border: 1.5px solid var(--border);
+      border-radius: 100px; cursor: pointer;
+      font-size: 14px; transition: all 0.15s; user-select: none;
+    }
+    .pill:hover { border-color: rgba(246,77,37,0.45); background: rgba(246,77,37,0.03); }
+    .pill.selected { border-color: var(--accent); background: rgba(246,77,37,0.07); font-weight: 500; }
+    .pill-check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; transition: background 0.15s; }
+    .pill.selected .pill-check { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .pill.selected .pill-check::after { content: '✓'; }
+
+    /* ── Nav buttons ── */
+    .btn-row { display: flex; gap: 10px; }
+    .btn {
+      padding: 14px 32px; border-radius: 100px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.04em; cursor: pointer; transition: opacity 0.15s; border: none;
+    }
+    .btn:hover { opacity: 0.78; }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-ghost { background: transparent; color: var(--accent); border: 1.5px solid rgba(246,77,37,0.25); }
+    .btn:disabled { opacity: 0.32; cursor: not-allowed; }
+
+    /* ── Thank you ── */
+    .thank-you {
+      width: 100%; max-width: 600px;
+      text-align: center;
+      padding-top: 60px;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    .ty-icon { font-size: 52px; margin-bottom: 24px; }
+    .ty-h { font-family: 'Kaisei Decol', serif; font-size: clamp(30px, 6vw, 48px); line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 16px; }
+    .ty-p { font-size: 16px; opacity: 0.58; line-height: 1.5; max-width: 40ch; margin: 0 auto; }
+
+    /* ── Invalid ── */
+    .invalid-wrap { width: 100%; max-width: 600px; text-align: center; padding-top: 80px; }
+    .invalid-wrap h2 { font-family: 'Kaisei Decol', serif; font-size: 32px; margin-bottom: 12px; }
+    .invalid-wrap p { font-size: 15px; opacity: 0.5; }
+
+    @media (max-width: 480px) {
+      .opt-grid { grid-template-columns: 1fr 1fr; }
+      .opt-grid.three-col { grid-template-columns: 1fr 1fr; }
+      .step-q { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <a class="logo" href="index.html">culturers</a>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap" style="display:none;">
+    <div class="progress-label" id="progressLabel">Step 1 of 4</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+  </div>
+
+  <div id="quizContent"></div>
+
+</div>
+
+<script>
+  // ── Data ──
+  const DB = {
+    getPeople: () => JSON.parse(localStorage.getItem('cult_people') || '[]'),
+    setPeople: v => localStorage.setItem('cult_people', JSON.stringify(v)),
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const personId = params.get('id');
+
+  // ── Steps definition ──
+  const STEPS = [
+    {
+      key: 'artStyle',
+      eyebrow: 'Step 1 — Visual style',
+      q: 'What visual style\nspeaks to you?',
+      hint: 'We use this to create your personalised digital greeting card.',
+      type: 'single',
+      opts: [
+        { value: 'minimalist', icon: '◻', name: 'Minimalist & Clean', desc: 'Simple, calm, uncluttered' },
+        { value: 'vibrant', icon: '🎨', name: 'Vibrant & Bold', desc: 'Bright colours, big energy' },
+        { value: 'natural', icon: '🌿', name: 'Natural & Earthy', desc: 'Warm tones, organic feel' },
+        { value: 'dreamy', icon: '✨', name: 'Dreamy & Artistic', desc: 'Soft, painterly, imaginative' },
+        { value: 'modern', icon: '📐', name: 'Modern & Geometric', desc: 'Sharp, structured, precise' },
+        { value: 'vintage', icon: '🖼', name: 'Vintage & Classic', desc: 'Timeless, nostalgic, warm' },
+      ],
+    },
+    {
+      key: 'allergies',
+      eyebrow: 'Step 2 — Your cake',
+      q: 'Any dietary needs\nwe should know about?',
+      hint: 'Select all that apply. We\'ll make sure your cake is made just for you.',
+      type: 'multi',
+      opts: [
+        { value: 'none', icon: '🎂', name: 'No restrictions' },
+        { value: 'lactose', icon: '🥛', name: 'Lactose-free' },
+        { value: 'nuts', icon: '🥜', name: 'Nut-free' },
+        { value: 'gluten', icon: '🌾', name: 'Gluten-free' },
+        { value: 'vegan', icon: '🌱', name: 'Vegan' },
+        { value: 'other', icon: '✏️', name: 'Other — I\'ll add a note' },
+      ],
+    },
+    {
+      key: 'hobby',
+      eyebrow: 'Step 3 — Your voucher',
+      q: 'What do you love doing\nin your spare time?',
+      hint: 'On the Standard plan and above, you\'ll receive a €20 voucher for something you actually love.',
+      type: 'single',
+      opts: [
+        { value: 'travel', icon: '✈️', name: 'Travel & Adventure', desc: 'Exploring new places' },
+        { value: 'art', icon: '🎨', name: 'Art & Creativity', desc: 'Making, designing, crafting' },
+        { value: 'fitness', icon: '🏋️', name: 'Sports & Fitness', desc: 'Movement, training, sport' },
+        { value: 'music', icon: '🎵', name: 'Music', desc: 'Listening, playing, concerts' },
+        { value: 'food', icon: '🍳', name: 'Food & Cooking', desc: 'Dining out, cooking, wine' },
+        { value: 'reading', icon: '📚', name: 'Reading & Learning', desc: 'Books, podcasts, ideas' },
+        { value: 'nature', icon: '🌿', name: 'Nature & Outdoors', desc: 'Hiking, gardening, fresh air' },
+        { value: 'gaming', icon: '🎮', name: 'Gaming & Tech', desc: 'Games, gadgets, digital worlds' },
+      ],
+    },
+    {
+      key: 'personality',
+      eyebrow: 'Step 4 — The real you',
+      q: 'How would the people\nwho know you best\ndescribe you?',
+      hint: 'This shapes the tone and message of everything we create for you.',
+      type: 'single',
+      opts: [
+        { value: 'adventurer', icon: '🚀', name: 'The adventurer', desc: 'Always seeking what\'s next' },
+        { value: 'creative', icon: '🎭', name: 'The creative', desc: 'Sees the world differently' },
+        { value: 'nurturer', icon: '🤝', name: 'The nurturer', desc: 'Family, connection, warmth' },
+        { value: 'achiever', icon: '🏆', name: 'The achiever', desc: 'Driven, focused, ambitious' },
+        { value: 'free-spirit', icon: '🌊', name: 'The free spirit', desc: 'Spontaneous, joyful, present' },
+        { value: 'thinker', icon: '💡', name: 'The thinker', desc: 'Curious, deep, thoughtful' },
+      ],
+    },
+  ];
+
+  // ── State ──
+  let person = null;
+  let step = 0;
+  let answers = { artStyle: null, allergies: [], hobby: null, personality: null };
+
+  // ── Init ──
+  function init() {
+    const content = document.getElementById('quizContent');
+
+    if (!personId) {
+      renderInvalid(); return;
+    }
+
+    const people = DB.getPeople();
+    person = people.find(p => p.id === personId) || null;
+
+    // If already completed, show update option
+    if (person && person.quizDone) {
+      // Pre-fill answers so they can update
+      answers.artStyle = person.artStyle || null;
+      answers.allergies = person.allergies || [];
+      answers.hobby = person.hobby || null;
+      answers.personality = person.personality || null;
+    }
+
+    document.getElementById('progressWrap').style.display = 'block';
+    renderStep();
+  }
+
+  function renderInvalid() {
+    document.getElementById('progressWrap').style.display = 'none';
+    document.getElementById('quizContent').innerHTML = `
+      <div class="invalid-wrap">
+        <h2>Link not found.</h2>
+        <p>This quiz link doesn't seem right. Ask your HR team for a fresh one.</p>
+      </div>`;
+  }
+
+  // ── Render step ──
+  function renderStep() {
+    const s = STEPS[step];
+    const pct = ((step + 1) / STEPS.length) * 100;
+    document.getElementById('progressLabel').textContent = `Step ${step + 1} of ${STEPS.length}`;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    const firstName = person ? (person.first || person.name || 'there') : 'there';
+    const greeting = step === 0
+      ? `<p style="font-size:16px;opacity:0.52;margin-bottom:32px;">Hi <strong>${firstName}</strong> 👋  This takes 60 seconds and helps us make every moment we send feel genuinely personal to you.</p>`
+      : '';
+
+    const qLines = s.q.split('\n').join('<br>');
+
+    let optionsHTML = '';
+    if (s.type === 'single') {
+      optionsHTML = `<div class="opt-grid${s.opts.length > 6 ? '' : ''}">
+        ${s.opts.map(o => `
+          <div class="opt${answers[s.key] === o.value ? ' selected' : ''}" onclick="selectSingle('${s.key}','${o.value}',this)">
+            <span class="opt-icon">${o.icon}</span>
+            <div class="opt-name">${o.name}</div>
+            ${o.desc ? `<div class="opt-desc">${o.desc}</div>` : ''}
+          </div>`).join('')}
+      </div>`;
+    } else {
+      // multi-select pills
+      optionsHTML = `<div class="pill-grid">
+        ${s.opts.map(o => `
+          <div class="pill${answers[s.key].includes(o.value) ? ' selected' : ''}" onclick="toggleMulti('${s.key}','${o.value}',this)">
+            <span>${o.icon}</span>
+            <span>${o.name}</span>
+            <span class="pill-check"></span>
+          </div>`).join('')}
+      </div>`;
+    }
+
+    const isLast = step === STEPS.length - 1;
+    const isFirst = step === 0;
+
+    document.getElementById('quizContent').innerHTML = `
+      <div class="step-card">
+        ${greeting}
+        <div class="step-eyebrow">${s.eyebrow}</div>
+        <div class="step-q">${qLines}</div>
+        <div class="step-hint">${s.hint}</div>
+        ${optionsHTML}
+        <div class="btn-row">
+          ${!isFirst ? `<button class="btn btn-ghost" onclick="prevStep()">← Back</button>` : ''}
+          <button class="btn btn-primary" id="btnNext" onclick="${isLast ? 'submitQuiz()' : 'nextStep()'}"
+            ${!canProceed() ? 'disabled' : ''}>
+            ${isLast ? 'Submit →' : 'Next →'}
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function canProceed() {
+    const s = STEPS[step];
+    if (s.type === 'single') return answers[s.key] !== null;
+    return answers[s.key].length > 0; // at least one selected for multi
+  }
+
+  function selectSingle(key, value, el) {
+    answers[key] = value;
+    document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  function toggleMulti(key, value, el) {
+    // "none" is exclusive
+    if (value === 'none') {
+      answers[key] = ['none'];
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    } else {
+      answers[key] = answers[key].filter(v => v !== 'none');
+      const idx = answers[key].indexOf(value);
+      if (idx === -1) answers[key].push(value);
+      else answers[key].splice(idx, 1);
+      // Re-render pills
+      document.querySelectorAll('.pill').forEach(p => {
+        const v = p.querySelector('span')?.nextElementSibling?.nextElementSibling ? null : null;
+        // Re-check by comparing text
+      });
+      el.classList.toggle('selected', answers[key].includes(value));
+      document.querySelector('.pill[onclick*="\'none\'"]')?.classList.remove('selected');
+    }
+    document.getElementById('btnNext').disabled = !canProceed();
+  }
+
+  function nextStep() {
+    if (!canProceed()) return;
+    step++;
+    renderStep();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function prevStep() {
+    step--;
+    renderStep();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitQuiz() {
+    if (!canProceed()) return;
+
+    // Save to localStorage
+    const people = DB.getPeople();
+    const idx = people.findIndex(p => p.id === personId);
+    const quizData = {
+      artStyle: answers.artStyle,
+      allergies: answers.allergies,
+      hobby: answers.hobby,
+      personality: answers.personality,
+      quizDone: true,
+      quizDate: new Date().toISOString(),
+    };
+
+    if (idx !== -1) {
+      people[idx] = { ...people[idx], ...quizData };
+      DB.setPeople(people);
+    } else {
+      // Person not found in this browser — save under a separate key so
+      // the dashboard can pick it up if synced manually
+      localStorage.setItem('cult_quiz_' + personId, JSON.stringify(quizData));
+    }
+
+    // Show thank you
+    document.getElementById('progressWrap').style.display = 'none';
+    const firstName = person ? (person.first || person.name || '') : '';
+    document.getElementById('quizContent').innerHTML = `
+      <div class="thank-you">
+        <div class="ty-icon">🎂</div>
+        <div class="ty-h">You're all set${firstName ? ', ' + firstName : ''}.</div>
+        <p class="ty-p">Every moment we send you from now on will be built around who you actually are. We can't wait to surprise you.</p>
+      </div>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  init();
+</script>
+</body>
+</html>

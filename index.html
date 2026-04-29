@@ -256,9 +256,20 @@
     /* ════════ PHOTO ROW ════════ */
     .photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding-top: 38px; }
     .photo-item { display: flex; flex-direction: column; gap: 10px; }
+    .photo-item-wrap { position: relative; }
 
     .photo-item-img { background: var(--ph); border-radius: 0; aspect-ratio: 3/4.08; background-size: cover; background-position: center; }
     video.photo-item-img { object-fit: cover; display: block; width: 100%; height: 100%; }
+
+    .photo-cat-pill {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(246,77,37,0.88); color: #f7f6f2;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.03em;
+      padding: 4px 10px; border-radius: 100px;
+      backdrop-filter: blur(6px);
+      white-space: nowrap; line-height: 1.4;
+      pointer-events: none;
+    }
     .photo-item-img.pi-b { background: var(--ph2); }
     .photo-item-img.pi-c { background: #d0ccc6; }
     .photo-item-img.pi-d { background: #cbc8c1; }
@@ -307,7 +318,7 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ════════ PRICING CARDS — image at bottom ════════ */
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid currentColor; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid currentColor; }
 
     .p-card { border-right: 1px solid currentColor; display: flex; flex-direction: column; overflow: hidden; }
     .p-card:last-child { border-right: none; }
@@ -648,10 +659,22 @@
       <a href="login.html" class="btn btn-fill" style="margin-top: 36px; align-self: flex-start;">See how it works →</a>
     </div>
     <div class="photo-row">
-      <div class="photo-item"><video class="photo-item-img" src="images/quiz.mp4" autoplay loop muted playsinline></video><span class="photo-item-cap">Hyper-personalised Q&amp;A<br><span style="opacity:0.7;font-weight:500;">to know your people at a human level</span></span></div>
-      <div class="photo-item"><video class="photo-item-img" src="images/greeting.mp4" autoplay loop muted playsinline></video><span class="photo-item-cap">Digital greetings, instantly shareable<br><span style="opacity:0.7;font-weight:500;">to family &amp; colleagues — driving brand awareness</span></span></div>
-      <div class="photo-item"><div class="photo-item-img pi-c"></div><span class="photo-item-cap">While others send cold emails,<br><span style="opacity:0.7;font-weight:500;">you send a personalised experience that converts 3× better.</span></span></div>
-      <div class="photo-item"><div class="photo-item-img pi-d"></div><span class="photo-item-cap">The cake<br><span style="opacity:0.7;font-weight:500;">Handmade, delivered to their door</span></span></div>
+      <div class="photo-item">
+        <div class="photo-item-wrap"><video class="photo-item-img" src="images/quiz.mp4" autoplay loop muted playsinline></video><span class="photo-cat-pill">Employees</span></div>
+        <span class="photo-item-cap">Hyper-personalised Q&amp;A<br><span style="opacity:0.7;font-weight:500;">to know your people at a human level</span></span>
+      </div>
+      <div class="photo-item">
+        <div class="photo-item-wrap"><video class="photo-item-img" src="images/greeting.mp4" autoplay loop muted playsinline></video><span class="photo-cat-pill">Employees · Clients</span></div>
+        <span class="photo-item-cap">Digital greetings, instantly shareable<br><span style="opacity:0.7;font-weight:500;">to family &amp; colleagues — driving brand awareness</span></span>
+      </div>
+      <div class="photo-item">
+        <div class="photo-item-wrap"><div class="photo-item-img pi-c"></div><span class="photo-cat-pill">Prospects</span></div>
+        <span class="photo-item-cap">While others send cold emails,<br><span style="opacity:0.7;font-weight:500;">you send a personalised experience that converts 3× better.</span></span>
+      </div>
+      <div class="photo-item">
+        <div class="photo-item-wrap"><div class="photo-item-img pi-d"></div><span class="photo-cat-pill">Everyone</span></div>
+        <span class="photo-item-cap">The cake<br><span style="opacity:0.7;font-weight:500;">Handmade, delivered to their door</span></span>
+      </div>
     </div>
   </div>
 </section>
@@ -752,7 +775,7 @@
     <div class="plans-nav-left">
       <div class="plans-tabs">
         <button class="tab-btn active" data-idx="0">Employees</button>
-        <button class="tab-btn" data-idx="1">Teams</button>
+        <button class="tab-btn" data-idx="1">Clients</button>
         <button class="tab-btn" data-idx="2">Prospects</button>
       </div>
     </div>
@@ -764,7 +787,7 @@
 
   <!-- TAB 0: EMPLOYEES -->
   <div class="tab-panel active" id="tab-0">
-    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Each person fills a 60-second quiz on their interests and preferences. Everything we send is built around them — personally, automatically, every year.</p>
+    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Each person fills a 60-second quiz on their interests. Everything we send is built around them — personally, automatically, every year.</p>
     <div class="pricing-grid">
       <div class="p-card">
         <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
@@ -772,14 +795,12 @@
           <div class="p-tier">Essentials</div>
           <div class="p-price">€8</div>
           <div class="p-unit">per employee / month</div>
-
           <ul class="p-features">
             <li>Handmade birthday cake, delivered</li>
             <li>Personalised message card</li>
             <li>AI digital greeting card — your brand + their interests</li>
             <li>1-click shareable video to family &amp; colleagues</li>
           </ul>
-
         </div>
       </div>
       <div class="p-card">
@@ -788,85 +809,47 @@
           <div class="p-tier">Standard</div>
           <div class="p-price">€12</div>
           <div class="p-unit">per employee / month</div>
-
           <ul class="p-features">
             <li>Everything in Essentials</li>
             <li>€20 interest voucher — their hobby or passion</li>
             <li>Work anniversary digital card, auto-sent</li>
             <li>All milestone moments shareable in 1 click</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- TAB 1: CLIENTS -->
+  <div class="tab-panel" id="tab-1">
+    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Stay front of mind with the clients who matter most. A quarterly cake at their office and a digital card their team can share — no effort on your part.</p>
+    <div class="pricing-grid">
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Essential</div>
+          <div class="p-price">€30</div>
+          <div class="p-unit">per client / month</div>
+          <ul class="p-features">
+            <li>Quarterly artisan cake for their team</li>
+            <li>AI digital greeting card, shareable in 1 click</li>
+            <li>Personalised message in your brand's voice</li>
+            <li>Fully automated — zero logistics</li>
+          </ul>
         </div>
       </div>
       <div class="p-card">
         <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
         <div class="p-body">
           <div class="p-tier">Premium</div>
-          <div class="p-price">€20</div>
-          <div class="p-unit">per employee / month</div>
-
-          <ul class="p-features">
-            <li>Everything in Standard</li>
-            <li>Premium artisan cake selection</li>
-            <li>Seasonal gift, curated &amp; gift-wrapped</li>
-            <li>Priority delivery &amp; dedicated support</li>
-          </ul>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 1: TEAMS -->
-  <div class="tab-panel" id="tab-1">
-    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Culture isn't built in all-hands. It's built in the moments people share — like a quarterly cake big enough for everyone.</p>
-    <div class="pricing-grid">
-      <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
-        <div class="p-body">
-          <div class="p-tier">Small Team</div>
-          <div class="p-price">€30</div>
-          <div class="p-unit">per team / month</div>
-
-          <ul class="p-features">
-            <li>1 artisan cake per quarter</li>
-            <li>Feeds 12–16 people</li>
-            <li>Delivered on time, automated</li>
-            <li>No logistics to manage</li>
-          </ul>
-
-        </div>
-      </div>
-      <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
-        <div class="p-body">
-          <div class="p-tier">Medium Team</div>
-          <div class="p-price">€40</div>
-          <div class="p-unit">per team / month</div>
-
-          <ul class="p-features">
-            <li>1 artisan cake per quarter</li>
-            <li>Feeds 16–20 people</li>
-            <li>Custom team message</li>
-            <li>Quarterly reminder, automated</li>
-          </ul>
-
-        </div>
-      </div>
-      <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
-        <div class="p-body">
-          <div class="p-tier">Large Team</div>
           <div class="p-price">€50</div>
-          <div class="p-unit">per team / month</div>
-
+          <div class="p-unit">per client / month</div>
           <ul class="p-features">
-            <li>1 artisan cake per quarter</li>
-            <li>Feeds 20–24 people</li>
-            <li>Premium artisan selection</li>
-            <li>Priority logistics &amp; packaging</li>
+            <li>Everything in Essential</li>
+            <li>€20 interest voucher for their team lead</li>
+            <li>Key milestone &amp; anniversary recognition</li>
+            <li>Priority delivery &amp; premium cake selection</li>
           </ul>
-
         </div>
       </div>
     </div>
@@ -874,25 +857,35 @@
 
   <!-- TAB 2: PROSPECTS -->
   <div class="tab-panel" id="tab-2">
-    <div class="prospect-panel">
-      <div class="prospect-left">
-        <span class="section-tag">For your pipeline</span>
-        <h2>Win clients<br>with cake.</h2>
-        <div class="big-price">€140</div>
-        <div class="price-unit">one-time per prospect</div>
-        <p>Your competitors send emails. You send a handmade cake. Stand out from the first touch and stay present until the deal is done — automatically.</p>
-        <p>No reply? A follow-up cake goes out. Deal closed? Champagne and a thank-you. One flow, zero effort.</p>
-      </div>
-      <div class="prospect-right">
-        <div class="prospect-imgs-stack">
-          <div class="prospect-img"></div>
-          <div class="prospect-img prospect-img-b"></div>
+    <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Stand out from the first touch. While your competitors flood inboxes, you send a personalised experience they actually remember.</p>
+    <div class="pricing-grid">
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Digital</div>
+          <div class="p-price">€59</div>
+          <div class="p-unit">one-time per prospect</div>
+          <ul class="p-features">
+            <li>Personalised landing page — their name, interests &amp; your brand</li>
+            <li>AI digital greeting card, auto-sent</li>
+            <li>3-touch follow-up sequence, fully automated</li>
+            <li>Engagement tracking in your dashboard</li>
+          </ul>
         </div>
-        <ul class="flow-list">
-          <li><span class="flow-n">01</span><span class="flow-t">First touch — a handmade cake arrives the same day your email lands. Impossible to ignore.</span></li>
-          <li><span class="flow-n">02</span><span class="flow-t">No reply? A second cake ships automatically — a gentle, tangible reminder.</span></li>
-          <li><span class="flow-n">03</span><span class="flow-t">Deal closed — champagne and a thank-you cake to celebrate the win together.</span></li>
-        </ul>
+      </div>
+      <div class="p-card">
+        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-body">
+          <div class="p-tier">Digital + Cake</div>
+          <div class="p-price">€199</div>
+          <div class="p-unit">one-time per prospect</div>
+          <ul class="p-features">
+            <li>Everything in Digital</li>
+            <li>Handmade cake delivered to their door (€140)</li>
+            <li>Personalised message card enclosed</li>
+            <li>Deal closed? Champagne &amp; thank-you — automated</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

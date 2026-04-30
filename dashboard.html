@@ -766,6 +766,23 @@
         </form>
       </div>
 
+      <!-- ══ ONBOARDING CATALOG ══ -->
+      <div class="view" id="view-onboarding">
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.02em;margin-bottom:6px;">Onboarding catalog</div>
+          <div style="font-size:13px;opacity:0.48;max-width:54ch;line-height:1.5;">Each new employee gets <strong>3 credits</strong> to spend on their welcome kit. They can mix and match any items below. Credits are included in the Onboarding Kickstart plan.</div>
+        </div>
+        <div id="onboardingCatalogGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;"></div>
+        <div style="border:1px solid var(--border);border-radius:4px;padding:18px 20px;background:rgba(246,77,37,0.025);">
+          <div style="font-family:'Kaisei Decol',serif;font-size:15px;margin-bottom:10px;">How it works</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+            <div><div style="font-size:20px;margin-bottom:6px;">1️⃣</div><div style="font-size:13px;opacity:0.62;line-height:1.4;">New employee joins and fills the onboarding quiz on Day 1</div></div>
+            <div><div style="font-size:20px;margin-bottom:6px;">2️⃣</div><div style="font-size:13px;opacity:0.62;line-height:1.4;">They receive a link to choose their 3-credit welcome kit</div></div>
+            <div><div style="font-size:20px;margin-bottom:6px;">3️⃣</div><div style="font-size:13px;opacity:0.62;line-height:1.4;">Items are branded and delivered to their home or office</div></div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /shell -->
@@ -1164,38 +1181,39 @@
 
   const CAT_NAV = {
     employee: [
-      { view: 'overview',   icon: '◎',  label: 'Overview' },
-      { view: 'people',     icon: '👥', label: 'People' },
-      { view: 'yourplan',   icon: '✦',  label: 'Plans' },
-      { view: 'calendar',   icon: '📅', label: 'Calendar' },
-      { view: 'wishcards',  icon: '✦',  label: 'Wish cards' },
-      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
-      null, // divider
-      { view: 'catalog',    icon: '🎂', label: 'Cake catalog' },
-      { view: 'quiz',       icon: '✏️', label: 'Personalisation quiz' },
-      null,
-      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+      { view: 'overview',    icon: '◎',  label: 'Overview' },
+      { view: 'yourplan',    icon: '✦',  label: 'Plans' },
+      { view: 'people',      icon: '👥', label: 'People' },
+      { view: 'calendar',    icon: '📅', label: 'Calendar' },
+      { view: 'wishcards',   icon: '✦',  label: 'Wish cards' },
+      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { type: 'label', text: 'Catalog' },
+      { view: 'catalog',     icon: '🎂', label: 'Cake catalog' },
+      { view: 'onboarding',  icon: '🎁', label: 'Onboarding catalog' },
+      { type: 'label', text: 'Account' },
+      { view: 'quiz',        icon: '✏️', label: 'Personalisation quiz' },
+      { view: 'settings',    icon: '⚙',  label: 'Settings' },
     ],
     prospect: [
-      { view: 'overview',   icon: '◎',  label: 'Overview' },
-      { view: 'people',     icon: '🎯', label: 'Prospects' },
-      { view: 'yourplan',   icon: '📋', label: 'Lead lists' },
-      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
-      null,
-      { view: 'quiz',       icon: '✏️', label: 'Prospect quiz' },
-      null,
-      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+      { view: 'overview',    icon: '◎',  label: 'Overview' },
+      { view: 'yourplan',    icon: '📋', label: 'Lead lists' },
+      { view: 'people',      icon: '🎯', label: 'Prospects' },
+      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { type: 'label', text: 'Tools' },
+      { view: 'quiz',        icon: '✏️', label: 'Landing page quiz' },
+      { type: 'label', text: 'Account' },
+      { view: 'settings',    icon: '⚙',  label: 'Settings' },
     ],
     client: [
-      { view: 'overview',   icon: '◎',  label: 'Overview' },
-      { view: 'people',     icon: '🤝', label: 'Clients' },
-      { view: 'yourplan',   icon: '📋', label: 'Accounts' },
-      { view: 'wishcards',  icon: '✦',  label: 'Recap videos' },
-      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
-      null,
-      { view: 'quiz',       icon: '✏️', label: 'Client quiz' },
-      null,
-      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+      { view: 'overview',    icon: '◎',  label: 'Overview' },
+      { view: 'yourplan',    icon: '📋', label: 'Accounts' },
+      { view: 'people',      icon: '🤝', label: 'Clients' },
+      { view: 'wishcards',   icon: '✦',  label: 'Recap videos' },
+      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { type: 'label', text: 'Tools' },
+      { view: 'quiz',        icon: '✏️', label: 'Client feedback quiz' },
+      { type: 'label', text: 'Account' },
+      { view: 'settings',    icon: '⚙',  label: 'Settings' },
     ],
   };
 
@@ -1204,7 +1222,8 @@
     if (!nav) return;
     const items = CAT_NAV[activeCategory] || CAT_NAV.employee;
     nav.innerHTML = items.map(item => {
-      if (!item) return `<div class="nav-label" style="margin-top:8px;"></div>`;
+      if (!item) return `<div style="height:8px;"></div>`;
+      if (item.type === 'label') return `<div class="nav-label">${item.text}</div>`;
       return `<div class="nav-item${currentView===item.view?' active':''}" data-view="${item.view}" onclick="navigate('${item.view}')">
         <span class="nav-icon">${item.icon}</span>${item.label}
       </div>`;
@@ -1223,18 +1242,19 @@
 
   // ── Nav ──
   const VIEW_META = {
-    overview:  { title: 'Overview',     actions: '' },
-    yourplan:  { title: 'Plans',        actions: '' },
-    people:    { title: 'People',       actions: '' },
-    calendar:  { title: 'Calendar',     actions: '' },
-    wishcards: { title: 'Wish cards',   actions: '' },
-    deliveries:{ title: 'Deliveries',   actions: '' },
-    catalog:   { title: 'Cake catalog', actions: '' },
-    quiz:      { title: 'Personalisation quiz', actions: '' },
-    settings:  { title: 'Settings',     actions: '' },
+    overview:   { title: 'Overview',              actions: '' },
+    yourplan:   { title: 'Plans',                 actions: '' },
+    people:     { title: 'People',                actions: '' },
+    calendar:   { title: 'Calendar',              actions: '' },
+    wishcards:  { title: 'Wish cards',            actions: '' },
+    deliveries: { title: 'Deliveries',            actions: '' },
+    catalog:    { title: 'Cake catalog',          actions: '' },
+    onboarding: { title: 'Onboarding catalog',    actions: '' },
+    quiz:       { title: 'Personalisation quiz',  actions: '' },
+    settings:   { title: 'Settings',              actions: '' },
   };
 
-  const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, settings: renderSettings, yourplan: renderYourPlan, quiz: renderQuiz };
+  const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, onboarding: renderOnboarding, settings: renderSettings, yourplan: renderYourPlan, quiz: renderQuiz };
 
   function navigate(name) {
     if (name!=='yourplan') { _planDetailKey=null; _addPersonDefaultGroup=null; _removalMode=false; if(_pendingRemovals) _pendingRemovals.clear(); }
@@ -1247,11 +1267,13 @@
     const meta=VIEW_META[name]||{title:name,actions:''};
     // Use category-aware title for shared views
     const catTitles = {
-      people:    { employee:'People — Employees', prospect:'People — Prospects', client:'People — Clients' },
-      overview:  { employee:'Overview', prospect:'Overview', client:'Overview' },
-      yourplan:  { employee:'Plans', prospect:'Lead lists', client:'Accounts' },
-      wishcards: { employee:'Wish cards', prospect:'Wish cards', client:'Recap videos' },
-      quiz:      { employee:'Personalisation quiz', prospect:'Prospect quiz', client:'Client quiz' },
+      people:     { employee:'People — Employees', prospect:'People — Prospects', client:'People — Clients' },
+      overview:   { employee:'Overview', prospect:'Overview', client:'Overview' },
+      yourplan:   { employee:'Plans', prospect:'Lead lists', client:'Accounts' },
+      wishcards:  { employee:'Wish cards', prospect:'Wish cards', client:'Recap videos' },
+      deliveries: { employee:'Deliveries', prospect:'Deliveries', client:'Deliveries' },
+      quiz:       { employee:'Personalisation quiz', prospect:'Landing page quiz', client:'Client feedback quiz' },
+      onboarding: { employee:'Onboarding catalog', prospect:'Onboarding catalog', client:'Onboarding catalog' },
     };
     const title = (catTitles[name] && catTitles[name][activeCategory]) || meta.title;
     document.getElementById('topbarTitle').textContent=title;
@@ -3765,6 +3787,79 @@
   function setCatalogAllergen(a) {
     catalogAllergen=a;
     renderCatalog();
+  }
+
+  // ── Onboarding catalog ──
+  const ONBOARDING_ITEMS = [
+    { id: 'tshirt',   icon: '👕', name: 'Branded T-shirt',    credits: 1, desc: 'Soft-feel unisex tee in your brand colours. Sizes XS–XXL.' },
+    { id: 'bottle',   icon: '💧', name: 'Water bottle',        credits: 1, desc: 'Insulated 500ml bottle with laser-engraved logo.' },
+    { id: 'notebook', icon: '📓', name: 'Notebook & pen',      credits: 1, desc: 'A5 hardcover notebook with branded pen. Lay-flat binding.' },
+    { id: 'socks',    icon: '🧦', name: 'Branded socks',       credits: 1, desc: 'Bold, custom-designed socks people actually want to wear.' },
+    { id: 'hoodie',   icon: '🧥', name: 'Branded hoodie',      credits: 2, desc: 'Premium heavyweight hoodie. Embroidered logo. Sizes XS–XXL.' },
+    { id: 'backpack', icon: '🎒', name: 'Backpack',            credits: 2, desc: 'Minimalist 20L backpack with laptop sleeve. Subtle branding.' },
+  ];
+  const TOTAL_CREDITS = 3;
+  let _onboardingSelected = {};
+
+  function renderOnboarding() {
+    const grid = document.getElementById('onboardingCatalogGrid');
+    if (!grid) return;
+    const used = Object.entries(_onboardingSelected).reduce((s,[id,q])=>s+(ONBOARDING_ITEMS.find(i=>i.id===id)?.credits||0)*q,0);
+    const remaining = TOTAL_CREDITS - used;
+    grid.innerHTML = ONBOARDING_ITEMS.map(item => {
+      const qty = _onboardingSelected[item.id]||0;
+      const canAdd = remaining >= item.credits;
+      const isSelected = qty > 0;
+      return `<div class="card${isSelected?' ':''}\" style="border:1.5px solid ${isSelected?'var(--accent)':'var(--border)'};border-radius:6px;overflow:hidden;transition:border-color 0.15s;">
+        <div style="background:rgba(246,77,37,0.04);padding:28px 16px;text-align:center;border-bottom:1px solid var(--border);">
+          <div style="font-size:52px;margin-bottom:8px;">${item.icon}</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;opacity:0.48;margin-bottom:2px;">${item.credits} credit${item.credits>1?'s':''}</div>
+        </div>
+        <div style="padding:14px 16px 16px;">
+          <div style="font-family:'Kaisei Decol',serif;font-size:15px;letter-spacing:-0.01em;margin-bottom:5px;">${item.name}</div>
+          <div style="font-size:12px;opacity:0.5;line-height:1.45;margin-bottom:14px;">${item.desc}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            ${qty>0?`<button class="btn btn-outline" style="padding:5px 12px;font-size:12px;" onclick="adjustOnboarding('${item.id}',-1)">−</button>
+            <span style="font-size:14px;font-weight:600;min-width:20px;text-align:center;">${qty}</span>`:''}
+            <button class="btn${canAdd||qty>0?' btn-primary':' btn-outline'}" style="padding:5px 14px;font-size:12px;${!canAdd&&qty===0?'opacity:0.35;cursor:not-allowed;':''}" onclick="adjustOnboarding('${item.id}',1)" ${!canAdd?'disabled':''}>
+              ${qty>0?'+':'Add'}
+            </button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Credits bar
+    const topbar = document.getElementById('topbarActions');
+    const pips = Array.from({length:TOTAL_CREDITS},(_,i)=>`<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${i<used?'var(--accent)':'rgba(246,77,37,0.18)'};transition:background 0.2s;"></span>`).join('');
+    topbar.innerHTML=`<div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+      <span style="opacity:0.5;">Credits:</span>
+      <div style="display:flex;gap:5px;align-items:center;">${pips}</div>
+      <span style="font-weight:600;">${remaining} left</span>
+      ${used>0?`<button class="btn btn-outline" style="padding:5px 14px;font-size:11px;margin-left:8px;" onclick="confirmOnboardingKit()">Confirm kit →</button>`:''}
+    </div>`;
+  }
+
+  function adjustOnboarding(id, delta) {
+    const item = ONBOARDING_ITEMS.find(i=>i.id===id);
+    if (!item) return;
+    const cur = _onboardingSelected[id]||0;
+    const used = Object.entries(_onboardingSelected).reduce((s,[k,q])=>s+(ONBOARDING_ITEMS.find(i=>i.id===k)?.credits||0)*q,0);
+    const newQty = Math.max(0, cur+delta);
+    const newUsed = used - (cur*item.credits) + (newQty*item.credits);
+    if (newUsed > TOTAL_CREDITS) { toast(`Only ${TOTAL_CREDITS} credits per employee`); return; }
+    if (newQty===0) delete _onboardingSelected[id]; else _onboardingSelected[id]=newQty;
+    renderOnboarding();
+  }
+
+  function confirmOnboardingKit() {
+    const lines = Object.entries(_onboardingSelected).map(([id,q])=>{
+      const item=ONBOARDING_ITEMS.find(i=>i.id===id);
+      return item?`${q}× ${item.name}`:'';
+    }).filter(Boolean);
+    toast(`Kit confirmed: ${lines.join(', ')}`);
+    _onboardingSelected={};
+    renderOnboarding();
   }
 
   // ── Settings ──

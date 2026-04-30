@@ -345,90 +345,86 @@
 
     prospect: [
       {
+        key: 'prospectInfo',
+        eyebrow: 'Step 1 of 6 — Who are we approaching?',
+        q: 'Tell us about\nthe prospect.',
+        hint: 'This info goes directly on their personalised landing page — be as specific as possible.',
+        type: 'text-inputs',
+        fields: [
+          { id: 'pro-company',  label: 'Company name',       placeholder: 'e.g. Acme Corp',           required: true },
+          { id: 'pro-contact',  label: 'Decision maker name',placeholder: 'e.g. Sarah Kim',            required: true },
+          { id: 'pro-role',     label: 'Their role / title', placeholder: 'e.g. Head of People, CEO', required: false },
+          { id: 'pro-email',    label: 'Their email',        placeholder: 'sarah@acme.com',            required: false },
+        ],
+      },
+      {
         key: 'challenge',
-        eyebrow: 'Step 1 of 6 — Their situation',
-        q: 'Main company\nchallenge right now?',
-        hint: 'This powers the AI landing page hook — pick what you know from research.',
+        eyebrow: 'Step 2 of 6 — Their situation',
+        q: 'What\'s their\nbiggest challenge?',
+        hint: 'This becomes the headline of their landing page — pick what you know from research or calls.',
         type: 'single',
         opts: [
-          { value: 'growth',     icon: '📈', name: 'Growth',      desc: 'Scaling fast, need to hire / expand' },
-          { value: 'efficiency', icon: '⚙️',  name: 'Efficiency',  desc: 'Streamlining ops, cutting overhead' },
-          { value: 'retention',  icon: '🔒', name: 'Retention',   desc: 'Keeping employees or customers longer' },
-          { value: 'brand',      icon: '✨', name: 'Brand',        desc: 'Building trust and market presence' },
+          { value: 'retention',  icon: '🔒', name: 'Employee retention',   desc: 'Struggling to keep great people long-term' },
+          { value: 'growth',     icon: '📈', name: 'Scaling the team',     desc: 'Growing fast and need culture to keep up' },
+          { value: 'engagement', icon: '💡', name: 'Low engagement',       desc: 'Team feels disconnected or undervalued' },
+          { value: 'clients',    icon: '🤝', name: 'Client relationships', desc: 'Want to stand out and deepen trust with clients' },
         ],
       },
       {
         key: 'industry',
-        eyebrow: 'Step 2 of 6 — Their world',
-        q: 'Industry\nor role focus?',
-        hint: 'Used to tailor the page copy and imagery to their sector.',
+        eyebrow: 'Step 3 of 6 — Their world',
+        q: 'Their industry\nor sector?',
+        hint: 'Used to tailor the page copy, case studies, and imagery to their world.',
         type: 'single',
         opts: [
-          { value: 'tech',    icon: '💻', name: 'Tech / SaaS',   desc: 'Software, platforms, digital-first' },
-          { value: 'events',  icon: '🎪', name: 'Events',         desc: 'Conferences, experiences, hospitality' },
-          { value: 'retail',  icon: '🛍', name: 'Retail & CPG',  desc: 'Consumer products, physical goods' },
-          { value: 'finance', icon: '📊', name: 'Finance / FS',  desc: 'Banking, insurance, professional services' },
+          { value: 'tech',        icon: '💻', name: 'Tech / SaaS',            desc: 'Software, platforms, digital-first' },
+          { value: 'finance',     icon: '📊', name: 'Finance & professional', desc: 'Banking, legal, consulting, insurance' },
+          { value: 'events',      icon: '🎪', name: 'Events & hospitality',   desc: 'Conferences, venues, tourism' },
+          { value: 'retail',      icon: '🛍', name: 'Retail & consumer',      desc: 'Physical goods, CPG, e-commerce' },
+          { value: 'health',      icon: '🏥', name: 'Healthcare & pharma',    desc: 'Clinics, biotech, wellbeing' },
+          { value: 'other',       icon: '🌐', name: 'Other',                  desc: 'Something else entirely' },
         ],
       },
       {
         key: 'personalInterest',
-        eyebrow: 'Step 3 of 6 — Personal touch',
-        q: 'Known personal\ninterest of theirs?',
-        hint: 'From LinkedIn, your call notes, or mutual connections — makes the outreach feel personal.',
+        eyebrow: 'Step 4 of 6 — Personal touch',
+        q: 'Known interest of\nthe decision maker?',
+        hint: 'From LinkedIn, call notes, or a mutual connection — this personalises the physical outreach.',
         type: 'pills',
         pills: [
-          { value: 'sports',    label: '⚽ Sports' },
-          { value: 'art',       label: '🎨 Art' },
-          { value: 'food',      label: '🍽 Food & dining' },
-          { value: 'travel',    label: '✈️ Travel' },
           { value: 'golf',      label: '⛳ Golf' },
+          { value: 'wine',      label: '🍷 Wine' },
+          { value: 'art',       label: '🎨 Art & culture' },
+          { value: 'sports',    label: '⚽ Sports' },
+          { value: 'travel',    label: '✈️ Travel' },
           { value: 'running',   label: '🏃 Running' },
           { value: 'music',     label: '🎵 Music' },
-          { value: 'tech',      label: '💻 Tech' },
-          { value: 'wine',      label: '🍷 Wine' },
+          { value: 'tech',      label: '💻 Tech & gadgets' },
+          { value: 'food',      label: '🍽 Fine dining' },
           { value: 'books',     label: '📚 Books' },
-          { value: 'family',    label: '👨‍👩‍👧 Family' },
           { value: 'fitness',   label: '🏋️ Fitness' },
+          { value: 'family',    label: '👨‍👩‍👧 Family' },
         ],
       },
       {
-        key: 'officeTreat',
-        eyebrow: 'Step 4 of 6 — Office treat',
-        q: 'Preferred\noffice treat?',
-        hint: 'Delivered with the outreach package — the thing that gets you the meeting.',
-        type: 'single',
-        opts: [
-          { value: 'cakes',    icon: '🎂', name: 'Artisan cakes',    desc: 'Handmade, branded, impossible to ignore' },
-          { value: 'snacks',   icon: '🍿', name: 'Premium snacks',   desc: 'Curated snack box for the whole team' },
-          { value: 'drinks',   icon: '🥂', name: 'Drinks',           desc: 'Craft coffee, fine tea, or sparkling' },
-          { value: 'healthy',  icon: '🥗', name: 'Healthy box',      desc: 'Fresh, clean, wellness-focused' },
-        ],
-      },
-      {
-        key: 'dietary',
-        eyebrow: 'Step 5 of 6 — Dietary needs',
-        q: 'Dietary needs\nfor the treats?',
-        hint: 'Select all that apply for the prospect\'s office.',
-        type: 'dietary',
-        pills: [
-          { value: 'none',  icon: '✅', label: 'None' },
-          { value: 'nuts',  icon: '🥜', label: 'Nut-free' },
-          { value: 'vegan', icon: '🌱', label: 'Vegan' },
-          { value: 'halal', icon: '☪️',  label: 'Halal' },
-          { value: 'other', icon: '✏️', label: 'Other' },
-        ],
+        key: 'valueProposition',
+        eyebrow: 'Step 5 of 6 — Your value to them',
+        q: 'What do we offer\nthat\'s right for them?',
+        hint: 'Write the one thing that makes your solution the obvious choice for this specific prospect. This becomes landing page body copy.',
+        type: 'textarea',
+        placeholder: 'e.g. "We help companies like Acme reduce employee turnover by 30% through hyper-personalised birthday and milestone recognition — fully automated."',
       },
       {
         key: 'pageHook',
-        eyebrow: 'Step 6 of 6 — Landing page hook',
-        q: 'What will convert\nthis prospect?',
-        hint: 'The AI landing page is built around this priority — pick the angle most likely to land.',
+        eyebrow: 'Step 6 of 6 — Landing page angle',
+        q: 'What angle will\nconvert this prospect?',
+        hint: 'We build the landing page around this hook — choose the one most likely to land for them.',
         type: 'single',
         opts: [
-          { value: 'casestudy', icon: '📋', name: 'Case study',   desc: 'Proof from a similar company or role' },
-          { value: 'roi',       icon: '📈', name: 'ROI tool',     desc: 'Interactive calculator showing their upside' },
-          { value: 'demo',      icon: '🎬', name: 'Demo video',   desc: 'See it live before committing a minute' },
-          { value: 'social',    icon: '⭐', name: 'Social proof', desc: 'Reviews, logos, testimonials from peers' },
+          { value: 'casestudy', icon: '📋', name: 'Customer case study', desc: 'Proof from a similar company or sector' },
+          { value: 'roi',       icon: '📈', name: 'ROI calculator',      desc: 'Interactive tool showing their business upside' },
+          { value: 'demo',      icon: '🎬', name: 'Product demo',        desc: 'See the platform live before a conversation' },
+          { value: 'social',    icon: '⭐', name: 'Social proof',        desc: 'Customer logos, reviews, testimonials' },
         ],
       },
     ],
@@ -444,7 +440,7 @@
   let answers = {};
 
   function resetAnswers() {
-    answers = { dietary: [], pills: {}, nps: null, feedbackGood: '', feedbackImprove: '' };
+    answers = { dietary: [], pills: {}, nps: null, feedbackGood: '', feedbackImprove: '', textInputs: {}, textarea: {} };
   }
 
   // ─── INIT ─────────────────────────────────────────────────────────────────
@@ -482,7 +478,10 @@
     const greeting = step === 0 ? `
       ${isPreview ? `<div class="preview-banner">Preview — ${quizType}</div>` : ''}
       <p style="font-size:16px;opacity:0.52;line-height:1.5;margin-bottom:32px;">
-        Hi <strong>${isPreview ? 'there' : firstName}</strong> 👋 &nbsp;This takes under 90 seconds${quizType === 'employee' ? ' and helps us make every moment feel genuinely personal to you' : quizType === 'client' ? ' — your answers help us personalise our partnership' : ' — your answers help us tailor our outreach to you'}.
+        ${quizType === 'prospect'
+          ? '👋 &nbsp;Fill in what you know about your prospect — we\'ll build them a personalised landing page and send you the link to share.'
+          : `Hi <strong>${isPreview ? 'there' : firstName}</strong> 👋 &nbsp;This takes under 90 seconds${quizType === 'employee' ? ' and helps us make every moment feel genuinely personal to you' : ' — your answers help us personalise our partnership and keep improving for you'}.`
+        }
       </p>` : '';
 
     const qLines = s.q.split('\n').join('<br>');
@@ -532,6 +531,23 @@
           <textarea class="feedback-ta" id="fbImprove" placeholder="e.g. Onboarding could be smoother, more case studies…" oninput="answers.feedbackImprove=this.value;refreshNext()">${answers.feedbackImprove}</textarea>
         </div>
       </div>`;
+
+    } else if (s.type === 'text-inputs') {
+      bodyHTML = `<div class="feedback-grid" style="gap:12px;margin-bottom:32px;">
+        ${s.fields.map(f => `
+          <div>
+            <div class="feedback-label">${f.label}${f.required ? ' <span style="opacity:0.4;">*</span>' : ''}</div>
+            <input class="other-input" id="${f.id}" type="text" placeholder="${f.placeholder}"
+              value="${answers.textInputs[f.id]||''}"
+              oninput="answers.textInputs['${f.id}']=this.value;refreshNext()">
+          </div>`).join('')}
+      </div>`;
+
+    } else if (s.type === 'textarea') {
+      bodyHTML = `<div style="margin-bottom:32px;">
+        <textarea class="feedback-ta" style="min-height:120px;" placeholder="${s.placeholder}"
+          oninput="answers.textarea['${s.key}']=this.value;refreshNext()">${answers.textarea[s.key]||''}</textarea>
+      </div>`;
     }
 
     const isLast = step === steps.length - 1;
@@ -555,11 +571,13 @@
 
   function canProceed() {
     const s = steps[step];
-    if (s.type === 'single') return answers[s.key] != null;
-    if (s.type === 'pills')  return (answers.pills[s.key] || []).length > 0;
-    if (s.type === 'dietary') return answers.dietary.length > 0;
-    if (s.type === 'nps')    return answers.nps != null;
-    if (s.type === 'feedback') return answers.feedbackGood.trim().length > 0 || answers.feedbackImprove.trim().length > 0;
+    if (s.type === 'single')      return answers[s.key] != null;
+    if (s.type === 'pills')       return (answers.pills[s.key] || []).length > 0;
+    if (s.type === 'dietary')     return answers.dietary.length > 0;
+    if (s.type === 'nps')         return answers.nps != null;
+    if (s.type === 'feedback')    return answers.feedbackGood.trim().length > 0 || answers.feedbackImprove.trim().length > 0;
+    if (s.type === 'text-inputs') return s.fields.filter(f=>f.required).every(f=>(answers.textInputs[f.id]||'').trim().length > 0);
+    if (s.type === 'textarea')    return (answers.textarea[s.key]||'').trim().length > 0;
     return true;
   }
 
@@ -678,10 +696,10 @@
         detail: npsFlag ? `${npsFlag} — we\'ll be in touch shortly.` : 'We\'ll use your gift preferences for our next milestone together.',
       },
       prospect: {
-        icon: '🎯',
-        h: 'Profile saved.',
-        p: 'Your personalised page and outreach are being prepared. Expect something in your office within the week.',
-        detail: 'These notes power our AI landing page — built around what you actually care about.',
+        icon: '🚀',
+        h: 'Landing page in progress.',
+        p: `Your personalised page for <strong>${answers.textInputs['pro-company']||'your prospect'}</strong> is being generated. We'll send you the shareable link within 24 hours.`,
+        detail: `The page will be built around their ${answers.challenge||'challenge'} and personalised to ${answers.textInputs['pro-contact']||'the decision maker'}'s profile. Share the link directly — or we can send it for you.`,
       },
     };
 

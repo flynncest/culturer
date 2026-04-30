@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>culturers — For Prospects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #f64d25; --bg: #f7f6f2; --border: rgba(246,77,37,0.14); --nav-h: 60px; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--accent); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Kaisei Decol', serif; font-weight: 400; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 300; height: var(--nav-h); background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 5vw; gap: 24px; }
+    .nav-logo { font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--accent); }
+    .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 14px; color: var(--accent); opacity: 0.52; transition: opacity 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-right { margin-left: auto; }
+    .nav-cta { font-size: 13px; font-weight: 500; color: var(--accent); opacity: 0.85; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 1; }
+
+    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 13px 28px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; border: none; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.75; }
+    .btn-fill { background: var(--accent); color: var(--bg); }
+    .btn-stroke { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-fill-inv { background: var(--bg); color: var(--accent); }
+
+    /* ── Hero ── */
+    .page-hero { padding: calc(var(--nav-h) + 80px) 5vw 80px; border-bottom: 1px solid var(--border); }
+    .page-tag { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.42; margin-bottom: 28px; }
+    .page-hero h1 { font-size: clamp(38px, 5.5vw, 78px); line-height: 0.97; letter-spacing: -0.03em; max-width: 18ch; margin-bottom: 36px; }
+    .hero-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .hero-lead { font-size: clamp(15px, 1.4vw, 19px); line-height: 1.5; opacity: 0.62; }
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); }
+    .hero-stat { padding: 24px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .hero-stat:nth-child(2n) { border-right: none; }
+    .hero-stat:nth-last-child(-n+2) { border-bottom: none; }
+    .hero-stat-num { font-family: 'Kaisei Decol', serif; font-size: clamp(30px, 3.4vw, 50px); line-height: 1; letter-spacing: -0.025em; margin-bottom: 6px; }
+    .hero-stat-label { font-size: 13px; opacity: 0.52; line-height: 1.4; }
+
+    /* ── Section ── */
+    .section { padding: 96px 5vw; border-bottom: 1px solid var(--border); }
+    .section-dark { background: var(--accent); color: var(--bg); }
+    .section-tag { display: block; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.42; margin-bottom: 36px; }
+
+    /* ── Plans ── */
+    .plans-head { margin-bottom: 52px; }
+    .plans-head h2 { font-size: clamp(30px, 4vw, 60px); line-height: 0.99; letter-spacing: -0.03em; margin-bottom: 14px; }
+    .plans-head p { font-size: 16px; opacity: 0.58; max-width: 52ch; line-height: 1.5; }
+
+    .plans-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--border); }
+    .plan-card { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+    .plan-card:last-child { border-right: none; }
+    .plan-card.featured { background: rgba(246,77,37,0.03); }
+    .plan-img { height: 200px; background: rgba(246,77,37,0.07); flex-shrink: 0; }
+    .plan-body { padding: 28px 28px 28px; flex: 1; display: flex; flex-direction: column; }
+    .plan-tag { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.45; margin-bottom: 10px; }
+    .plan-name { font-family: 'Kaisei Decol', serif; font-size: 22px; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .plan-trigger { font-size: 12px; opacity: 0.45; margin-bottom: 20px; }
+    .plan-price { font-family: 'Kaisei Decol', serif; font-size: clamp(36px, 3.2vw, 52px); line-height: 1; letter-spacing: -0.025em; margin-bottom: 4px; }
+    .plan-price-note { font-size: 12px; opacity: 0.5; margin-bottom: 24px; }
+    .plan-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+    .plan-features { list-style: none; flex: 1; margin-bottom: 28px; }
+    .plan-features li { font-size: 14px; line-height: 1.4; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; opacity: 0.78; }
+    .plan-features li:last-child { border-bottom: none; }
+    .plan-features li::before { content: '→'; opacity: 0.4; flex-shrink: 0; margin-top: 1px; }
+    .plan-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 500; background: rgba(246,77,37,0.1); color: var(--accent); margin-bottom: 16px; align-self: flex-start; }
+
+    /* ── Flow ── */
+    .flow-section { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .flow-left h2 { font-size: clamp(28px, 3.5vw, 52px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px; }
+    .flow-left p { font-size: 15px; opacity: 0.58; line-height: 1.5; margin-bottom: 32px; }
+    .flow-list { list-style: none; border-top: 1px solid var(--border); }
+    .flow-item { display: flex; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .flow-n { font-size: 11px; letter-spacing: 0.14em; opacity: 0.35; flex-shrink: 0; padding-top: 2px; }
+    .flow-t { font-size: 14px; line-height: 1.45; opacity: 0.72; }
+    .flow-right { display: flex; flex-direction: column; gap: 3px; }
+    .flow-img { width: 100%; aspect-ratio: 1/1.2; background: rgba(246,77,37,0.06); }
+    .flow-img-b { background: rgba(246,77,37,0.1); }
+
+    /* ── CTA ── */
+    .cta-strip { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .cta-strip h2 { font-size: clamp(28px, 3.8vw, 56px); line-height: 0.99; letter-spacing: -0.03em; max-width: 20ch; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-left { font-size: 13px; opacity: 0.38; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; opacity: 0.45; color: var(--accent); transition: opacity 0.2s; }
+    .footer-links a:hover { opacity: 1; }
+
+    @media (max-width: 960px) {
+      .hero-cols { grid-template-columns: 1fr; gap: 40px; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .plan-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .plan-card:last-child { border-bottom: none; }
+      .flow-section { grid-template-columns: 1fr; gap: 40px; }
+      .nav-links { display: none; }
+      .cta-strip { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">culturers</a>
+  <ul class="nav-links">
+    <li><a href="employees.html">Employees</a></li>
+    <li><a href="prospects.html" class="active">Prospects</a></li>
+    <li><a href="clients.html">Clients</a></li>
+    <li><a href="automations.html">How it works</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="login.html" class="nav-cta">Get started ↗</a>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="page-hero">
+  <span class="page-tag">For prospects</span>
+  <h1>Stop sending cold emails. Start sending experiences.</h1>
+  <div class="hero-cols">
+    <p class="hero-lead">While your competitors flood inboxes, you show up with something they actually remember — treats to their office, a personalised greeting card, or an AI-generated landing page built entirely around them. The meeting you couldn't get by email? You'll get it.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3×</div>
+        <div class="hero-stat-label">more replies vs cold email outreach</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">40%</div>
+        <div class="hero-stat-label">faster conversion with personalised gifting</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">82%</div>
+        <div class="hero-stat-label">remember an unexpected gesture for months</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">1</div>
+        <div class="hero-stat-label">click to share — your brand reaches their whole office</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Plans ── -->
+<section class="section">
+  <div class="plans-head">
+    <span class="section-tag">Prospect plans</span>
+    <h2>Two ways to stand<br>out from day one.</h2>
+    <p>Start digital-only or go all-in with physical treats. Either way, you're the one they remember when the budget conversation starts.</p>
+  </div>
+
+  <div class="plans-grid">
+
+    <!-- Plan 1: Treat Outreach -->
+    <div class="plan-card">
+      <div class="plan-img"></div>
+      <div class="plan-body">
+        <div class="plan-tag">Physical + digital</div>
+        <div class="plan-name">Treat Outreach</div>
+        <div class="plan-trigger">🎯 Trigger: Initial outreach — one-time per lead</div>
+        <div class="plan-price">€150</div>
+        <div class="plan-price-note">per lead / one-time</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Sharable treats delivered to their office (your logo + their logo)</li>
+          <li>Personalised greeting card — handwritten tone, automated</li>
+          <li>Automatic email sequence, timed to the delivery</li>
+          <li>Fully trackable in your dashboard</li>
+          <li>Deal closed? A thank-you moment auto-triggered</li>
+        </ul>
+        <a href="login.html" class="btn btn-stroke" style="align-self:flex-start;">Get started →</a>
+      </div>
+    </div>
+
+    <!-- Plan 2: Conversion Landing -->
+    <div class="plan-card featured">
+      <div class="plan-img" style="background:rgba(246,77,37,0.12);"></div>
+      <div class="plan-body">
+        <div class="plan-badge">✦ Highest conversion</div>
+        <div class="plan-name">Conversion Landing</div>
+        <div class="plan-trigger">🎯 Trigger: Initial outreach — one-time per lead</div>
+        <div class="plan-price">€250</div>
+        <div class="plan-price-note">per lead / one-time</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Everything in Treat Outreach</li>
+          <li>Personalisation quiz sent to the prospect</li>
+          <li>AI-generated landing page — built around their interests &amp; your offer</li>
+          <li>Higher conversion: they feel known before you've even spoken</li>
+          <li>Shareable page drives brand awareness across their company</li>
+        </ul>
+        <a href="login.html" class="btn btn-fill" style="align-self:flex-start;">Get started →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── The flow ── -->
+<section class="section">
+  <div class="flow-section">
+    <div class="flow-left">
+      <span class="section-tag">The outreach flow</span>
+      <h2>One flow.<br>Zero manual steps.</h2>
+      <p>Add your prospect, set your message, and let culturers handle the rest. From first touch to deal closed — automatically.</p>
+      <ul class="flow-list">
+        <li class="flow-item"><span class="flow-n">01</span><span class="flow-t"><strong>First touch</strong> — treats arrive at their office the same day your email lands. Your logo on the box. Impossible to ignore.</span></li>
+        <li class="flow-item"><span class="flow-n">02</span><span class="flow-t"><strong>Quiz sent (Conversion plan)</strong> — they fill a quick quiz about their interests. Your personalised landing page is auto-generated from their answers.</span></li>
+        <li class="flow-item"><span class="flow-n">03</span><span class="flow-t"><strong>No reply?</strong> A follow-up moment ships automatically — a gentle, tangible reminder that you're different.</span></li>
+        <li class="flow-item"><span class="flow-n">04</span><span class="flow-t"><strong>Deal closed</strong> — champagne and a thank-you. They share it. Your brand reaches their whole network.</span></li>
+      </ul>
+    </div>
+    <div class="flow-right">
+      <div class="flow-img"></div>
+      <div class="flow-img flow-img-b"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<div style="background:var(--accent);color:var(--bg);padding:80px 5vw;">
+  <div class="cta-strip">
+    <h2>Your next client is<br>waiting to be impressed.</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+      <a href="login.html" class="btn btn-fill-inv">Get started →</a>
+      <a href="clients.html" style="font-size:13px;opacity:0.6;border-bottom:1px solid rgba(247,246,242,0.4);padding-bottom:1px;">See Client plans ↗</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-left">© 2026 culturers BV</span>
+  <div class="footer-links">
+    <a href="employees.html">Employees</a>
+    <a href="prospects.html">Prospects</a>
+    <a href="clients.html">Clients</a>
+    <a href="automations.html">How it works</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

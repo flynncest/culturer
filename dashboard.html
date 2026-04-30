@@ -42,6 +42,17 @@
     .btn-logout { background: none; border: none; padding: 7px 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--accent); opacity: 0.48; cursor: pointer; display: flex; align-items: center; gap: 7px; width: 100%; transition: opacity 0.15s; border-radius: 4px; }
     .btn-logout:hover { opacity: 0.85; background: rgba(246,77,37,0.06); }
 
+    /* ── Category switcher ── */
+    .cat-switch { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 4px; }
+    .cat-btn {
+      flex: 1; padding: 7px 4px; border-radius: 4px; border: none; background: transparent;
+      color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.04em; cursor: pointer; opacity: 0.45; transition: all 0.15s; text-align: center;
+    }
+    .cat-btn:hover { opacity: 0.8; background: rgba(246,77,37,0.06); }
+    .cat-btn.active { opacity: 1; background: rgba(246,77,37,0.1); color: var(--accent); }
+    .cat-btn-icon { display: block; font-size: 15px; margin-bottom: 2px; }
+
     /* ── Main ── */
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
     .topbar { border-bottom: 1px solid var(--border); padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 16px; }
@@ -395,11 +406,11 @@
     .quiz-answer-val { font-weight:500; }
 
     /* ── People analytics strip ── */
-    .people-analytics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 20px; }
+    .people-analytics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
     .pa-card { border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
     .pa-num { font-family: 'Kaisei Decol', serif; font-size: 30px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 3px; }
     .pa-label { font-size: 12px; opacity: 0.5; letter-spacing: 0.03em; }
-    @media (max-width: 900px) { .people-analytics { grid-template-columns: repeat(3, 1fr); } .plans-overview-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 900px) { .people-analytics { grid-template-columns: repeat(2, 1fr); } .plans-overview-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) { .people-analytics { grid-template-columns: repeat(2, 1fr); } .plans-overview-grid { grid-template-columns: 1fr; } }
 
 
@@ -449,19 +460,21 @@
       <span class="sidebar-brand">culturers</span>
     </div>
 
-    <nav class="sidebar-nav">
-      <div class="nav-label">Workspace</div>
-      <div class="nav-item active" data-view="overview"><span class="nav-icon">◎</span>Overview</div>
-      <div class="nav-item" data-view="yourplan" id="navYourPlan"><span class="nav-icon">✦</span>Plans</div>
-      <div class="nav-item" data-view="people"><span class="nav-icon">👥</span>People</div>
-      <div class="nav-item" data-view="calendar"><span class="nav-icon">📅</span>Calendar</div>
-      <div class="nav-item" data-view="wishcards"><span class="nav-icon">✦</span>Wish cards</div>
-      <div class="nav-item" data-view="deliveries"><span class="nav-icon">📦</span>Deliveries</div>
-      <div class="nav-label">Catalog</div>
-      <div class="nav-item" data-view="catalog"><span class="nav-icon">🎂</span>Cake catalog</div>
-      <div class="nav-item" data-view="quiz"><span class="nav-icon">✏️</span>Personalisation quiz</div>
-      <div class="nav-label">Account</div>
-      <div class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Settings</div>
+    <!-- Category switcher -->
+    <div class="cat-switch" id="catSwitch">
+      <button class="cat-btn active" id="catBtn-employee" onclick="switchCategory('employee')">
+        <span class="cat-btn-icon">👥</span>Employees
+      </button>
+      <button class="cat-btn" id="catBtn-prospect" onclick="switchCategory('prospect')">
+        <span class="cat-btn-icon">🎯</span>Prospects
+      </button>
+      <button class="cat-btn" id="catBtn-client" onclick="switchCategory('client')">
+        <span class="cat-btn-icon">🤝</span>Clients
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <!-- Rendered by renderSidebarNav() -->
     </nav>
 
     <div class="sidebar-foot">
@@ -472,7 +485,7 @@
           <div class="user-role" id="sidebarRole">Head of People</div>
         </div>
       </div>
-      <button class="btn-logout" onclick="window.location.href='login.html'">↩ Sign out</button>
+      <button class="btn-logout" onclick="window.location.href='/login'">↩ Sign out</button>
     </div>
   </aside>
 
@@ -498,8 +511,8 @@
 
         <div class="stats-row">
           <div class="stat-card" onclick="navigate('people')" style="cursor:pointer;" title="View employees"><div class="stat-num" id="stat-employees">0</div><div class="stat-label">Active employees</div></div>
-          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=team]').click()" style="cursor:pointer;" title="View teams"><div class="stat-num" id="stat-teams">0</div><div class="stat-label">Teams</div></div>
-          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=prospect]').click()" style="cursor:pointer;" title="View prospects"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Prospects in flow</div></div>
+          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=prospect]').click()" style="cursor:pointer;" title="View prospects"><div class="stat-num" id="stat-teams">0</div><div class="stat-label">Prospects</div></div>
+          <div class="stat-card" onclick="navigate('people');document.querySelector('[data-filter=client]').click()" style="cursor:pointer;" title="View clients"><div class="stat-num" id="stat-prospects">0</div><div class="stat-label">Clients</div></div>
           <div class="stat-card" onclick="navigate('calendar')" style="cursor:pointer;" title="View calendar"><div class="stat-num" id="stat-upcoming">0</div><div class="stat-label">Occasions this month</div></div>
         </div>
 
@@ -525,20 +538,11 @@
       <!-- ══ PEOPLE ══ -->
       <div class="view" id="view-people">
         <div class="people-analytics" id="peopleAnalytics">
-          <div class="pa-card"><div class="pa-num" id="pa-total">0</div><div class="pa-label">Total people</div></div>
-          <div class="pa-card"><div class="pa-num" id="pa-emp">0</div><div class="pa-label">Employees</div></div>
-          <div class="pa-card"><div class="pa-num" id="pa-teams">0</div><div class="pa-label">Teams</div></div>
-          <div class="pa-card"><div class="pa-num" id="pa-prospects">0</div><div class="pa-label">Prospects</div></div>
-          <div class="pa-card"><div class="pa-num" id="pa-bdays">0</div><div class="pa-label">Birthdays this month</div></div>
-          <div class="pa-card" style="border-color:rgba(34,197,94,0.25);"><div class="pa-num" id="pa-quiz" style="color:#16a34a;">0</div><div class="pa-label">Quiz completed</div></div>
+          <!-- Rendered by renderPeopleAnalytics() -->
         </div>
-        <div class="people-filter-bar">
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="employee">Employees</button>
-            <button class="filter-tab" data-filter="team">Teams</button>
-            <button class="filter-tab" data-filter="prospect">Prospects</button>
-          </div>
-          <input class="people-search" type="text" id="peopleSearch" placeholder="Search people…">
+        <div class="people-filter-bar" style="margin-bottom:16px;">
+          <div id="peopleFilterLabel" style="font-size:12px;font-weight:500;opacity:0.45;letter-spacing:0.06em;text-transform:uppercase;"></div>
+          <input class="people-search" type="text" id="peopleSearch" placeholder="Search…">
         </div>
         <div id="peopleGroupBanner" style="display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(246,77,37,0.06);border:1px solid rgba(246,77,37,0.2);border-radius:4px;margin-bottom:12px;">
           <span style="font-size:13px;">Viewing group: <strong id="peopleGroupBannerName"></strong></span>
@@ -574,7 +578,7 @@
             <span class="card-title">Roster</span>
             <div style="display:flex;align-items:center;gap:12px;">
               <span id="rosterCount" style="font-size:11px;opacity:0.38;">0 people</span>
-              <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;opacity:0.45;" onclick="navigate('yourplan')">+ Add in Plans</button>
+              <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;opacity:0.45;" onclick="openAddPersonFromPeopleTab()">+ Add person</button>
             </div>
           </div>
           <div id="rosterTable">
@@ -1153,6 +1157,70 @@
     setTimeout(()=>el.classList.remove('show'),2600);
   }
 
+  // ── Category mode ──
+  let activeCategory = 'employee'; // 'employee' | 'prospect' | 'client'
+
+  const CAT_LABEL = { employee: 'Employees', prospect: 'Prospects', client: 'Clients' };
+
+  const CAT_NAV = {
+    employee: [
+      { view: 'overview',   icon: '◎',  label: 'Overview' },
+      { view: 'people',     icon: '👥', label: 'People' },
+      { view: 'yourplan',   icon: '✦',  label: 'Plans' },
+      { view: 'calendar',   icon: '📅', label: 'Calendar' },
+      { view: 'wishcards',  icon: '✦',  label: 'Wish cards' },
+      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
+      null, // divider
+      { view: 'catalog',    icon: '🎂', label: 'Cake catalog' },
+      { view: 'quiz',       icon: '✏️', label: 'Personalisation quiz' },
+      null,
+      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+    ],
+    prospect: [
+      { view: 'overview',   icon: '◎',  label: 'Overview' },
+      { view: 'people',     icon: '🎯', label: 'Prospects' },
+      { view: 'yourplan',   icon: '📋', label: 'Lead lists' },
+      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
+      null,
+      { view: 'quiz',       icon: '✏️', label: 'Prospect quiz' },
+      null,
+      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+    ],
+    client: [
+      { view: 'overview',   icon: '◎',  label: 'Overview' },
+      { view: 'people',     icon: '🤝', label: 'Clients' },
+      { view: 'yourplan',   icon: '📋', label: 'Accounts' },
+      { view: 'wishcards',  icon: '✦',  label: 'Recap videos' },
+      { view: 'deliveries', icon: '📦', label: 'Deliveries' },
+      null,
+      { view: 'quiz',       icon: '✏️', label: 'Client quiz' },
+      null,
+      { view: 'settings',   icon: '⚙',  label: 'Settings' },
+    ],
+  };
+
+  function renderSidebarNav() {
+    const nav = document.getElementById('sidebarNav');
+    if (!nav) return;
+    const items = CAT_NAV[activeCategory] || CAT_NAV.employee;
+    nav.innerHTML = items.map(item => {
+      if (!item) return `<div class="nav-label" style="margin-top:8px;"></div>`;
+      return `<div class="nav-item${currentView===item.view?' active':''}" data-view="${item.view}" onclick="navigate('${item.view}')">
+        <span class="nav-icon">${item.icon}</span>${item.label}
+      </div>`;
+    }).join('');
+  }
+
+  let currentView = 'overview';
+
+  function switchCategory(cat) {
+    activeCategory = cat;
+    // Update category buttons
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.id === 'catBtn-' + cat));
+    renderSidebarNav();
+    navigate('overview');
+  }
+
   // ── Nav ──
   const VIEW_META = {
     overview:  { title: 'Overview',     actions: '' },
@@ -1169,24 +1237,27 @@
   const renders = { overview: renderOverview, people: renderPeople, calendar: renderCalendarView, wishcards: renderWishCards, deliveries: renderDeliveries, catalog: renderCatalog, settings: renderSettings, yourplan: renderYourPlan, quiz: renderQuiz };
 
   function navigate(name) {
-    // clear plan-detail context when leaving plans
     if (name!=='yourplan') { _planDetailKey=null; _addPersonDefaultGroup=null; _removalMode=false; if(_pendingRemovals) _pendingRemovals.clear(); }
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     const view=document.getElementById('view-'+name);
     if (!view) return;
     view.classList.add('active');
-    const ni=document.querySelector(`[data-view="${name}"]`);
-    if (ni) ni.classList.add('active');
+    currentView=name;
+    renderSidebarNav();
     const meta=VIEW_META[name]||{title:name,actions:''};
-    document.getElementById('topbarTitle').textContent=meta.title;
+    // Use category-aware title for shared views
+    const catTitles = {
+      people:    { employee:'People — Employees', prospect:'People — Prospects', client:'People — Clients' },
+      overview:  { employee:'Overview', prospect:'Overview', client:'Overview' },
+      yourplan:  { employee:'Plans', prospect:'Lead lists', client:'Accounts' },
+      wishcards: { employee:'Wish cards', prospect:'Wish cards', client:'Recap videos' },
+      quiz:      { employee:'Personalisation quiz', prospect:'Prospect quiz', client:'Client quiz' },
+    };
+    const title = (catTitles[name] && catTitles[name][activeCategory]) || meta.title;
+    document.getElementById('topbarTitle').textContent=title;
     document.getElementById('topbarActions').innerHTML=meta.actions;
     if (renders[name]) renders[name]();
   }
-
-  document.querySelectorAll('.nav-item').forEach(item=>{
-    item.addEventListener('click',()=>navigate(item.dataset.view));
-  });
 
   // ── People helpers ──
   function allPeople() { return DB.get('people'); }
@@ -1219,69 +1290,131 @@
   }
 
   function typeBadge(t) {
-    const map={employee:['badge-orange','Employee'],team:['badge-blue','Team'],prospect:['badge-green','Prospect']};
+    const map={employee:['badge-orange','Employee'],team:['badge-orange','Employee'],prospect:['badge-green','Prospect'],client:['badge-purple','Client']};
     const [cls,lbl]=map[t]||['badge-grey',t];
     return `<span class="badge ${cls}">${lbl}</span>`;
   }
 
   // ── Overview ──
+  function greeting() {
+    const h = new Date().getHours();
+    return h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
+  }
+
   function renderOverview() {
-    const people=allPeople();
-    const emps=people.filter(p=>p.type==='employee').length;
-    const teams=people.filter(p=>p.type==='team').length;
-    const pros=people.filter(p=>p.type==='prospect').length;
-    const now=new Date();
-    const in30=new Date(now.getTime()+30*24*60*60*1000);
-    const thisMonthEnd=new Date(now.getFullYear(),now.getMonth()+1,0);
-    let upcoming=[];
-    people.forEach(p=>{
-      const d=nextDate(p);
-      if (d&&d>=now&&d<=in30) upcoming.push({...p,next:d});
-    });
-    upcoming.sort((a,b)=>a.next-b.next);
+    const people = allPeople();
+    const now = new Date();
+    const in30 = new Date(now.getTime() + 30*24*60*60*1000);
 
-    document.getElementById('stat-employees').textContent=emps;
-    document.getElementById('stat-teams').textContent=teams;
-    document.getElementById('stat-prospects').textContent=pros;
+    if (activeCategory === 'employee') {
+      const emps = people.filter(p => p.type==='employee'||p.type==='team');
+      const bdays = emps.filter(p => { const d=nextDate(p); return d&&d>=now&&d<=in30; });
+      const quizDone = emps.filter(p => p.quizDone).length;
+      document.getElementById('stat-employees').textContent = emps.length;
+      document.getElementById('stat-teams').textContent = bdays.length;
+      document.getElementById('stat-prospects').textContent = quizDone;
+      document.getElementById('stat-upcoming').textContent = emps.filter(p=>{ const d=nextDate(p); return d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); }).length;
 
-    let monthOcc=people.filter(p=>{
-      const d=nextDate(p);
-      return d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
-    });
-    document.getElementById('stat-upcoming').textContent=monthOcc.length;
+      const el = document.getElementById('view-overview');
+      if (el) {
+        const hello = el.querySelector('.hello-greeting');
+        if (hello) hello.textContent = greeting();
+        const dateEl = el.querySelector('#helloDate');
+        if (dateEl) dateEl.textContent = new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long'}).format(now).toUpperCase();
+      }
+      document.getElementById('stat-employees').closest('.stat-card').querySelector('.stat-label').textContent='Active employees';
+      document.getElementById('stat-teams').closest('.stat-card').querySelector('.stat-label').textContent='Birthdays in 30 days';
+      document.getElementById('stat-prospects').closest('.stat-card').querySelector('.stat-label').textContent='Quiz completed';
+      document.getElementById('stat-upcoming').closest('.stat-card').querySelector('.stat-label').textContent='Occasions this month';
 
-    const upEl=document.getElementById('upcomingList');
-    const dotColor={employee:'var(--accent)',team:'#2563eb',prospect:'#16a34a'};
-    if (!upcoming.length) {
-      upEl.innerHTML=`<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming deliveries in the next 30 days.</div>
-        <button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate('yourplan')">Add people →</button></div>`;
+      // Upcoming list
+      const upcoming = emps.map(p=>({...p,next:nextDate(p)})).filter(p=>p.next&&p.next>=now&&p.next<=in30).sort((a,b)=>a.next-b.next);
+      const upEl = document.getElementById('upcomingList');
+      if (!upcoming.length) {
+        upEl.innerHTML=`<div class="empty"><div class="empty-icon">🎂</div><div class="empty-text">No upcoming birthdays in 30 days.<br><button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate('people')">Add employees →</button></div></div>`;
+      } else {
+        upEl.innerHTML = upcoming.slice(0,6).map(p=>`
+          <div class="upcoming-item" style="cursor:pointer;" onclick="navigate('deliveries')">
+            <span class="upcoming-dot" style="background:var(--accent)"></span>
+            <div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div><div class="upcoming-type">🎂 Birthday</div></div>
+            <span class="upcoming-date">${fmtDateShort(p.next)}</span>
+          </div>`).join('');
+      }
+
+      const moEl = document.getElementById('monthOccasions');
+      const monthOcc = emps.filter(p=>{ const d=nextDate(p); return d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); });
+      if (!monthOcc.length) { moEl.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">No occasions this month.</div></div>'; }
+      else { moEl.innerHTML = monthOcc.map(p=>`<div class="upcoming-item" onclick="navigate('calendar')" style="cursor:pointer;"><span class="upcoming-dot" style="background:var(--accent)"></span><div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div><div class="upcoming-type">🎂 Birthday</div></div><span class="upcoming-date">${fmtDateShort(nextDate(p))}</span></div>`).join(''); }
+
+    } else if (activeCategory === 'prospect') {
+      const pros = people.filter(p => p.type==='prospect');
+      const lists = DB.get('planGroups').filter(g=>g.type==='prospects'||g.type==='leadlist');
+      const pipeline = pros.reduce((s,p)=>s+Number(p.deal||0),0);
+      const outreachSoon = pros.filter(p=>{ const d=p.sendDate?new Date(p.sendDate):null; return d&&d>=now&&d<=in30; });
+
+      document.getElementById('stat-employees').textContent = pros.length;
+      document.getElementById('stat-teams').textContent = outreachSoon.length;
+      document.getElementById('stat-prospects').textContent = pipeline ? `€${(pipeline/1000).toFixed(0)}k` : '—';
+      document.getElementById('stat-upcoming').textContent = lists.length;
+      document.getElementById('stat-employees').closest('.stat-card').querySelector('.stat-label').textContent='Prospects in flow';
+      document.getElementById('stat-teams').closest('.stat-card').querySelector('.stat-label').textContent='Outreach in 30 days';
+      document.getElementById('stat-prospects').closest('.stat-card').querySelector('.stat-label').textContent='Pipeline value';
+      document.getElementById('stat-upcoming').closest('.stat-card').querySelector('.stat-label').textContent='Active lead lists';
+
+      const upEl = document.getElementById('upcomingList');
+      if (!outreachSoon.length) {
+        upEl.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">No outreach scheduled in 30 days.<br><button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate('yourplan')">Create a lead list →</button></div></div>`;
+      } else {
+        upEl.innerHTML = outreachSoon.slice(0,6).map(p=>`
+          <div class="upcoming-item" style="cursor:pointer;" onclick="navigate('people')">
+            <span class="upcoming-dot" style="background:#16a34a"></span>
+            <div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''} ${p.company?'· '+p.company:''}</div><div class="upcoming-type">🎯 Prospect outreach</div></div>
+            <span class="upcoming-date">${fmtDateShort(p.sendDate)}</span>
+          </div>`).join('');
+      }
+
+      const moEl = document.getElementById('monthOccasions');
+      const thisMonth = pros.filter(p=>{ const d=p.sendDate?new Date(p.sendDate):null; return d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); });
+      if (!thisMonth.length) { moEl.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No outreach this month.</div></div>'; }
+      else { moEl.innerHTML=thisMonth.map(p=>`<div class="upcoming-item"><span class="upcoming-dot" style="background:#16a34a"></span><div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div><div class="upcoming-type">${p.company||'Prospect'}</div></div><span class="upcoming-date">${fmtDateShort(p.sendDate)}</span></div>`).join(''); }
+
     } else {
-      upEl.innerHTML=upcoming.slice(0,6).map(p=>`
-        <div class="upcoming-item" onclick="navigate('deliveries')" style="cursor:pointer;">
-          <span class="upcoming-dot" style="background:${dotColor[p.type]||'var(--accent)'}"></span>
-          <div class="upcoming-info">
-            <div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div>
-            <div class="upcoming-type">${p.type==='employee'?'🎂 Birthday':p.type==='team'?'🏢 Team celebration':'🎯 Prospect outreach'}</div>
-          </div>
-          <span class="upcoming-date">${fmtDateShort(p.next)}</span>
-        </div>`).join('')
-        +(upcoming.length>6?`<div style="padding:10px 0;font-size:12px;opacity:0.42;text-align:center;cursor:pointer;" onclick="navigate('deliveries')">+${upcoming.length-6} more →</div>`:'');
+      // client
+      const clients = people.filter(p => p.type==='client');
+      const accounts = DB.get('planGroups').filter(g=>g.type==='clients');
+      const totalContract = clients.reduce((s,p)=>s+Number(p.deal||0),0);
+      const renewalsSoon = clients.filter(p=>{ const d=p.sendDate?new Date(p.sendDate):null; return d&&d>=now&&d<=in30; });
+      const npsScores = clients.filter(p=>p.nps!=null).map(p=>Number(p.nps));
+      const avgNps = npsScores.length ? (npsScores.reduce((a,b)=>a+b,0)/npsScores.length).toFixed(1) : '—';
+
+      document.getElementById('stat-employees').textContent = clients.length;
+      document.getElementById('stat-teams').textContent = renewalsSoon.length;
+      document.getElementById('stat-prospects').textContent = avgNps;
+      document.getElementById('stat-upcoming').textContent = totalContract ? `€${(totalContract/1000).toFixed(0)}k` : '—';
+      document.getElementById('stat-employees').closest('.stat-card').querySelector('.stat-label').textContent='Active clients';
+      document.getElementById('stat-teams').closest('.stat-card').querySelector('.stat-label').textContent='Renewals in 30 days';
+      document.getElementById('stat-prospects').closest('.stat-card').querySelector('.stat-label').textContent='Avg NPS';
+      document.getElementById('stat-upcoming').closest('.stat-card').querySelector('.stat-label').textContent='Total contract value';
+
+      const upEl = document.getElementById('upcomingList');
+      if (!renewalsSoon.length) {
+        upEl.innerHTML=`<div class="empty"><div class="empty-icon">🤝</div><div class="empty-text">No renewals in 30 days.<br><button class="btn btn-outline" style="margin-top:12px;font-size:12px;" onclick="navigate('yourplan')">Add client accounts →</button></div></div>`;
+      } else {
+        upEl.innerHTML = renewalsSoon.slice(0,6).map(p=>`
+          <div class="upcoming-item" style="cursor:pointer;" onclick="navigate('people')">
+            <span class="upcoming-dot" style="background:#7c3aed"></span>
+            <div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''} ${p.company?'· '+p.company:''}</div><div class="upcoming-type">🤝 Renewal</div></div>
+            <span class="upcoming-date">${fmtDateShort(p.sendDate)}</span>
+          </div>`).join('');
+      }
+
+      const moEl = document.getElementById('monthOccasions');
+      const thisMonth = clients.filter(p=>{ const d=p.sendDate?new Date(p.sendDate):null; return d&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); });
+      if (!thisMonth.length) { moEl.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No renewals this month.</div></div>'; }
+      else { moEl.innerHTML=thisMonth.map(p=>`<div class="upcoming-item"><span class="upcoming-dot" style="background:#7c3aed"></span><div class="upcoming-info"><div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div><div class="upcoming-type">${p.company||'Client'}</div></div><span class="upcoming-date">${fmtDateShort(p.sendDate)}</span></div>`).join(''); }
     }
 
-    const moEl=document.getElementById('monthOccasions');
-    if (!monthOcc.length) { moEl.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">No occasions this month.</div></div>'; }
-    else {
-      moEl.innerHTML=monthOcc.map(p=>`
-        <div class="upcoming-item" onclick="navigate('calendar')" style="cursor:pointer;">
-          <span class="upcoming-dot" style="background:${dotColor[p.type]||'var(--accent)'}"></span>
-          <div class="upcoming-info">
-            <div class="upcoming-name">${p.first||p.name||''} ${p.last||''}</div>
-            <div class="upcoming-type">${p.type==='employee'?'🎂 Birthday':p.type==='team'?'🏢 Team celebration':'🎯 Prospect outreach'}</div>
-          </div>
-          <span class="upcoming-date">${fmtDateShort(nextDate(p))}</span>
-        </div>`).join('');
-    }
-
+    // Setup strip (shared)
     const s=DB.getObj('settings')||{};
     const hasCompany=!!s.companyName; const hasPeople=people.length>0; const hasAddress=!!s.officeAddress;
     const allDone=hasCompany&&hasPeople&&hasAddress;
@@ -1290,7 +1423,7 @@
     strip.style.display='flex';
     document.getElementById('setupStepsRow').innerHTML=[
       {done:hasCompany,label:'Set company name',view:'settings'},
-      {done:hasPeople,label:'Add your first person',view:'yourplan'},
+      {done:hasPeople,label:'Add your first person',view:'people'},
       {done:hasAddress,label:'Add delivery address',view:'settings'},
     ].map(s=>`<div class="setup-step-pill ${s.done?'done':''}" onclick="navigate('${s.view}')"><span class="setup-step-check">${s.done?'✓':'○'}</span>${s.label}</div>`).join('');
   }
@@ -1331,11 +1464,11 @@
   function renderGroupFilter() {
     const el=document.getElementById('groupFilterRow');
     if (!el) return;
-    // Teams tab has its own grouped view — no filter pills needed
-    if (currentFilter==='team') { el.style.display='none'; return; }
-    const inType = currentFilter==='employee'
+    const inType = activeCategory==='employee'
       ? allPeople().filter(p=>p.type==='employee'||p.type==='team')
-      : allPeople().filter(p=>p.type===currentFilter);
+      : activeCategory==='prospect'
+      ? allPeople().filter(p=>p.type==='prospect')
+      : allPeople().filter(p=>p.type==='client');
     const groups=[...new Set(inType.map(p=>p.group||'').filter(Boolean))].sort();
     if (!groups.length) { el.style.display='none'; return; }
     el.style.display='flex';
@@ -1352,35 +1485,70 @@
     renderPeople();
   }
 
+  function openAddPersonFromPeopleTab() {
+    const typeMap={employee:'employee',prospect:'prospect',client:'client'};
+    apPersonType=typeMap[activeCategory]||'employee';
+    _addPersonDefaultGroup='';
+    _addPersonDefaultType=activeCategory;
+    openAddPerson(true,true);
+  }
+
+  function renderPeopleAnalytics(everyone, now) {
+    const el = document.getElementById('peopleAnalytics');
+    if (!el) return;
+    const labelEl = document.getElementById('peopleFilterLabel');
+
+    if (activeCategory === 'employee') {
+      const emps = everyone.filter(p=>p.type==='employee'||p.type==='team');
+      const bdays = emps.filter(p=>p.birthday&&new Date(p.birthday).getMonth()===now.getMonth()).length;
+      const groups = new Set(emps.filter(p=>p.group).map(p=>p.group));
+      const quiz = emps.filter(p=>p.quizDone).length;
+      el.innerHTML=`
+        <div class="pa-card"><div class="pa-num">${emps.length}</div><div class="pa-label">Employees</div></div>
+        <div class="pa-card"><div class="pa-num">${groups.size}</div><div class="pa-label">Teams</div></div>
+        <div class="pa-card"><div class="pa-num">${bdays}</div><div class="pa-label">Birthdays this month</div></div>
+        <div class="pa-card" style="border-color:rgba(34,197,94,0.25);"><div class="pa-num" style="color:#16a34a;">${quiz}</div><div class="pa-label">Quiz done</div></div>`;
+      if (labelEl) labelEl.textContent='Employees';
+    } else if (activeCategory === 'prospect') {
+      const pros = everyone.filter(p=>p.type==='prospect');
+      const pipeline = pros.reduce((s,p)=>s+Number(p.deal||0),0);
+      const lists = DB.get('planGroups').filter(g=>g.type==='prospects'||g.type==='leadlist').length;
+      el.innerHTML=`
+        <div class="pa-card"><div class="pa-num">${pros.length}</div><div class="pa-label">Prospects</div></div>
+        <div class="pa-card"><div class="pa-num">${pipeline?`€${(pipeline/1000).toFixed(0)}k`:'—'}</div><div class="pa-label">Pipeline value</div></div>
+        <div class="pa-card"><div class="pa-num">${lists}</div><div class="pa-label">Lead lists</div></div>
+        <div class="pa-card" style="border-color:rgba(34,197,94,0.25);"><div class="pa-num" style="color:#16a34a;">${pros.filter(p=>p.quizDone).length}</div><div class="pa-label">Quiz done</div></div>`;
+      if (labelEl) labelEl.textContent='Prospects';
+    } else {
+      const clients = everyone.filter(p=>p.type==='client');
+      const npsScores = clients.filter(p=>p.nps!=null).map(p=>Number(p.nps));
+      const avgNps = npsScores.length ? (npsScores.reduce((a,b)=>a+b,0)/npsScores.length).toFixed(1) : '—';
+      const totalContract = clients.reduce((s,p)=>s+Number(p.deal||0),0);
+      el.innerHTML=`
+        <div class="pa-card"><div class="pa-num">${clients.length}</div><div class="pa-label">Clients</div></div>
+        <div class="pa-card"><div class="pa-num">${totalContract?`€${(totalContract/1000).toFixed(0)}k`:'—'}</div><div class="pa-label">Contract value</div></div>
+        <div class="pa-card"><div class="pa-num">${avgNps}</div><div class="pa-label">Avg NPS</div></div>
+        <div class="pa-card" style="border-color:rgba(34,197,94,0.25);"><div class="pa-num" style="color:#16a34a;">${clients.filter(p=>p.quizDone).length}</div><div class="pa-label">Quiz done</div></div>`;
+      if (labelEl) labelEl.textContent='Clients';
+    }
+  }
+
   function renderPeople() {
     // Analytics strip — always uses unfiltered data
     const everyone=allPeople();
     const now=new Date();
-    // Employees = type='employee' + type='team' (team members are still employees)
-    const allEmployees=everyone.filter(p=>p.type==='employee'||p.type==='team');
-    const bdays=allEmployees.filter(p=>p.birthday&&new Date(p.birthday).getMonth()===now.getMonth()).length;
-    document.getElementById('pa-total').textContent=everyone.length;
-    document.getElementById('pa-emp').textContent=allEmployees.length;
-    const teamGroups=new Set(allEmployees.filter(p=>p.group).map(p=>p.group));
-    document.getElementById('pa-teams').textContent=teamGroups.size;
-    document.getElementById('pa-prospects').textContent=everyone.filter(p=>p.type==='prospect').length;
-    document.getElementById('pa-bdays').textContent=bdays;
-    document.getElementById('pa-quiz').textContent=everyone.filter(p=>p.quizDone).length;
-
-    // Teams tab: grouped two-level view
-    if (currentFilter==='team') {
-      renderGroupFilter();
-      renderTeamsGroupView();
-      return;
-    }
+    // Render analytics strip for active category
+    renderPeopleAnalytics(everyone, now);
 
     renderGroupFilter();
 
     const q=(document.getElementById('peopleSearch')?.value||'').toLowerCase();
-    // Employees tab shows both type='employee' and type='team'
-    let people = currentFilter==='employee'
+    // Filter by active category
+    let people = activeCategory==='employee'
       ? everyone.filter(p=>p.type==='employee'||p.type==='team')
-      : everyone.filter(p=>p.type===currentFilter);
+      : activeCategory==='prospect'
+      ? everyone.filter(p=>p.type==='prospect')
+      : everyone.filter(p=>p.type==='client');
     if (currentGroupFilter==='__ungrouped__') people=people.filter(p=>!p.group);
     else if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
@@ -1575,9 +1743,11 @@
 
   function toggleAll(cb) {
     const q=(document.getElementById('peopleSearch')?.value||'').toLowerCase();
-    let people = currentFilter==='employee'
+    let people = activeCategory==='employee'
       ? allPeople().filter(p=>p.type==='employee'||p.type==='team')
-      : allPeople().filter(p=>p.type===currentFilter);
+      : activeCategory==='prospect'
+      ? allPeople().filter(p=>p.type==='prospect')
+      : allPeople().filter(p=>p.type==='client');
     if (currentGroupFilter==='__ungrouped__') people=people.filter(p=>!p.group);
     else if (currentGroupFilter!=='all') people=people.filter(p=>(p.group||'')==currentGroupFilter);
     if (q) people=people.filter(p=>`${p.first||p.name||''} ${p.last||''} ${p.email||''} ${p.company||''} ${p.group||''}`.toLowerCase().includes(q));
@@ -1771,13 +1941,13 @@
   function openAddPerson(keepType=false, skipToDetails=false) {
     apCurrentStep=0;
     _addingFromPlan=skipToDetails;
-    if (!keepType) apPersonType='employee';
+    if (!keepType) apPersonType=activeCategory==='prospect'?'prospect':activeCategory==='client'?'client':'employee';
     apDeliveryType='office';
     document.querySelectorAll('#apDeliveryOpts .type-opt').forEach(o=>o.classList.toggle('selected',o.dataset.delivery==='office'));
     document.querySelectorAll('#apAllergyGroup .allergy-label').forEach(l=>{ l.querySelector('input').checked=false; l.classList.remove('active'); });
     initAllergyToggle('apAllergyGroup');
 
-    const titleMap={employee:'Add employee',team:'Add team member',prospect:'Add prospect'};
+    const titleMap={employee:'Add employee',team:'Add employee',prospect:'Add prospect',client:'Add client'};
     document.getElementById('addPersonTitle').textContent=keepType?(titleMap[apPersonType]||'Add person'):'Add person';
 
     // Configure step dots — hide Type step when from plan
@@ -1835,8 +2005,19 @@
     if (_addingFromPlan && _planDetailKey) {
       const key=decodeURIComponent(_planDetailKey);
       const pg=DB.get('planGroups').find(g=>g.name===key);
-      const isLeadList=pg?.type==='leadlist';
-      if (isLeadList) {
+      const isLeadList=pg?.type==='leadlist'||pg?.type==='prospects';
+      const isClientPlan=pg?.type==='clients';
+      if (isClientPlan) {
+        wrap.innerHTML=`<div class="form-grid">
+          <div class="field-group"><label>Contact name</label><input type="text" id="ap-first" placeholder="Sarah" required></div>
+          <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Kim"></div>
+          <div class="field-group span2"><label>Company</label><input type="text" id="ap-company" placeholder="Acme Corp"></div>
+          <div class="field-group span2"><label>Email</label><input type="email" id="ap-email" placeholder="sarah@acme.com"></div>
+          <div class="field-group"><label>Contract value (€)</label><input type="number" id="ap-deal" placeholder="50000"></div>
+          <div class="field-group"><label>Renewal date</label><input type="date" id="ap-sendDate"></div>
+        </div>`;
+        return;
+      } else if (isLeadList) {
         wrap.innerHTML=`<div class="form-grid">
           <div class="field-group"><label>First name</label><input type="text" id="ap-first" placeholder="James" required></div>
           <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Chen"></div>
@@ -1888,7 +2069,7 @@
           </select>
         </div>
       </div>`;
-    } else {
+    } else if (apPersonType==='prospect') {
       wrap.innerHTML=`<div class="form-grid">
         <div class="field-group"><label>First name</label><input type="text" id="ap-first" placeholder="James" required></div>
         <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Chen" required></div>
@@ -1897,6 +2078,17 @@
         <div class="field-group span2"><label>Delivery address</label><input type="text" id="ap-address" placeholder="Herengracht 124, Amsterdam"></div>
         <div class="field-group"><label>Deal value (€)</label><input type="number" id="ap-deal" placeholder="25000"></div>
         <div class="field-group"><label>First send date</label><input type="date" id="ap-sendDate"></div>
+      </div>`;
+    } else {
+      // client
+      wrap.innerHTML=`<div class="form-grid">
+        <div class="field-group"><label>Contact name</label><input type="text" id="ap-first" placeholder="Sarah" required></div>
+        <div class="field-group"><label>Last name</label><input type="text" id="ap-last" placeholder="Kim" required></div>
+        <div class="field-group span2"><label>Company / account</label><input type="text" id="ap-company" placeholder="Acme Corp"></div>
+        <div class="field-group span2"><label>Email</label><input type="email" id="ap-email" placeholder="sarah@acme.com"></div>
+        <div class="field-group"><label>Contract value (€)</label><input type="number" id="ap-deal" placeholder="50000"></div>
+        <div class="field-group"><label>Renewal date</label><input type="date" id="ap-sendDate"></div>
+        <div class="field-group span2"><label>Group / account name</label><input type="text" id="ap-group" placeholder="EMEA Clients, Enterprise…" value="${_addPersonDefaultGroup||''}"></div>
       </div>`;
     }
   }
@@ -2322,18 +2514,64 @@
   // ── New plan creation ──
   let _newPlanTier='birthday';
   let _newPlanDelivery='office';
+  let _newPlanCategory=null;
 
-  function openNewPlanModal(type) {
-    const isTeam=type==='team';
+  function openNewPlanModal(defaultCategory) {
     _newPlanTier='birthday'; _newPlanDelivery='office';
-    document.getElementById('newPlanTitle').textContent=isTeam?'Create a team':'Create a lead list';
-    document.getElementById('newPlanSub').textContent=isTeam?'Group employees by department or office — they\'ll all receive the same plan.':'Track prospects for targeted gifting outreach.';
+    // Auto-map activeCategory → plan type
+    const catMap={employee:'employees',prospect:'prospects',client:'clients'};
+    _newPlanCategory=defaultCategory||(catMap[activeCategory]||null);
+    document.getElementById('newPlanTitle').textContent='New plan';
+    if (_newPlanCategory) {
+      _renderNewPlanForm(_newPlanCategory);
+    } else {
+      _renderNewPlanCategoryPicker();
+    }
+    openModal('modalNewPlan');
+  }
+
+  function _renderNewPlanCategoryPicker() {
+    document.getElementById('newPlanTitle').textContent='New plan';
+    document.getElementById('newPlanSub').textContent='Who is this plan for?';
     document.getElementById('newPlanBody').innerHTML=`
-      <div class="field-group" style="margin-bottom:20px;">
-        <label>${isTeam?'Team name':'List name'}</label>
-        <input type="text" id="newPlanName" placeholder="${isTeam?'e.g. Marketing, Engineering, Amsterdam Office…':'e.g. Q1 Enterprise Leads, VC Pipeline…'}" style="width:100%;" autofocus>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+        ${[['employees','👥','Employees','Birthday & milestone celebrations for your team'],
+           ['prospects','🎯','Prospects','3-touch gifting flow to close deals'],
+           ['clients','🤝','Clients','Renewal & retention plans for existing clients']
+          ].map(([type,icon,name,desc])=>`
+          <div class="type-opt" style="display:flex;align-items:center;gap:14px;text-align:left;" onclick="_selectNewPlanCategory('${type}')">
+            <span style="font-size:24px;flex-shrink:0;">${icon}</span>
+            <div><div class="type-opt-name">${name}</div><div class="type-opt-desc">${desc}</div></div>
+          </div>`).join('')}
       </div>
-      ${isTeam?`
+      <div class="form-actions" style="margin-top:4px;">
+        <button class="btn btn-outline" onclick="closeModal('modalNewPlan')">Cancel</button>
+      </div>`;
+  }
+
+  function _selectNewPlanCategory(type) {
+    _newPlanCategory=type;
+    _renderNewPlanForm(type);
+  }
+
+  function _renderNewPlanForm(type) {
+    const isEmployees=type==='employees';
+    const isClients=type==='clients';
+    const titles={employees:'Employee plan',prospects:'Prospect outreach',clients:'Client retention'};
+    const subs={employees:'Group employees for birthday & milestone deliveries.',prospects:'Track prospects for targeted gifting outreach.',clients:'Keep clients engaged with renewal gifting.'};
+    const placeholders={employees:'e.g. Marketing, Engineering, Amsterdam Office…',prospects:'e.g. Q1 Enterprise Leads, VC Pipeline…',clients:'e.g. EMEA Clients 2026, Renewal Q2…'};
+    const nameLabel={employees:'Team name',prospects:'List name',clients:'Account name'};
+    document.getElementById('newPlanTitle').textContent=titles[type];
+    document.getElementById('newPlanSub').textContent=subs[type];
+    document.getElementById('newPlanBody').innerHTML=`
+      <div style="margin-bottom:16px;">
+        <button class="btn btn-ghost" style="font-size:12px;padding:4px 0;opacity:0.5;" onclick="_renderNewPlanCategoryPicker()">← Back</button>
+      </div>
+      <div class="field-group" style="margin-bottom:20px;">
+        <label>${nameLabel[type]}</label>
+        <input type="text" id="newPlanName" placeholder="${placeholders[type]}" style="width:100%;" autofocus>
+      </div>
+      ${isEmployees?`
       <div style="margin-bottom:18px;">
         <div style="font-size:11px;opacity:0.42;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Plan tier</div>
         <div style="display:flex;flex-direction:column;gap:8px;" id="newPlanTierOpts">
@@ -2354,11 +2592,23 @@
           <button id="npd-home" class="btn btn-outline" onclick="selectNewPlanDelivery('home')" style="flex:1;padding:10px;font-size:12px;">🏠 Home delivery (+€2)</button>
         </div>
       </div>`:''}
+      ${isClients?`
+      <div style="margin-bottom:18px;">
+        <div style="font-size:11px;opacity:0.42;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Renewal tier</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="newPlanTierOpts">
+          ${[['renewal','📋 Renewal Tracker','€150/account/year','Digital recap video auto-triggered on renewal date'],
+             ['personalized','🎁 Personalized Renewal','€250/account/year','Renewal Tracker + quiz + preference-based physical gift']
+            ].map(([val,name,price,desc],i)=>`
+            <div class="plan-card-sel${i===0?' active':''}" data-tier="${val}" onclick="selectNewPlanTier('${val}',this)" style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;">
+              <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${name}</div><div style="font-size:11px;opacity:0.45;">${desc}</div></div>
+              <div style="font-family:'Kaisei Decol',serif;font-size:15px;flex-shrink:0;opacity:0.7;">${price}</div>
+            </div>`).join('')}
+        </div>
+      </div>`:''}
       <div class="form-actions" style="margin-top:4px;">
         <button class="btn btn-outline" onclick="closeModal('modalNewPlan')">Cancel</button>
-        <button class="btn btn-primary" onclick="createPlanGroup('${type}')">Create ${isTeam?'team':'list'} →</button>
+        <button class="btn btn-primary" onclick="createPlanGroup('${type}')">Create plan →</button>
       </div>`;
-    openModal('modalNewPlan');
     setTimeout(()=>document.getElementById('newPlanName')?.focus(),50);
   }
 
@@ -2384,8 +2634,9 @@
     const name=(document.getElementById('newPlanName')?.value||'').trim();
     if (!name) { toast('Please enter a name'); return; }
     if (DB.get('planGroups').some(g=>g.name===name)) { toast(`"${name}" already exists`); return; }
-    const tier=type==='team'?_newPlanTier:null;
-    const delivery=type==='team'?_newPlanDelivery:null;
+    const needsTier=type==='employees'||type==='clients'||type==='team';
+    const tier=needsTier?_newPlanTier:null;
+    const delivery=type==='employees'||type==='team'?_newPlanDelivery:null;
     DB.add('planGroups',{name,type,tier,delivery,status:'draft',createdAt:new Date().toISOString()});
     closeModal('modalNewPlan');
     navigate('yourplan');
@@ -2404,7 +2655,7 @@
     const enc=encodeURIComponent(g.key);
     const safeName=g.name.replace(/'/g,"\\'");
     const isActive=g.status==='active';
-    if (g.type==='team') {
+    if (g.type==='employees'||g.type==='team') {
       const count=g.employees.length;
       const tier=g.tier||[...g.tiers][0]||'birthday';
       const delivery=g.delivery||(g.deliveries.has('home')?'home':'office');
@@ -2413,9 +2664,9 @@
       const cakesYr=Math.round(count*(tier==='birthday'?1:tier==='christmas'?2:3)*monthFrac);
       return `<div class="plan-ov-card" onclick="showPlanDetail('${enc}')">
         <div class="plan-ov-top">
-          <div class="plan-ov-label">👥 Team &nbsp;<span style="font-size:10px;${isActive?'background:rgba(34,197,94,0.12);color:#16a34a':'background:rgba(246,77,37,0.08);color:var(--accent)'};border-radius:10px;padding:2px 8px;font-weight:500;">${isActive?'● Running':'Draft'}</span></div>
+          <div class="plan-ov-label">👥 Employees &nbsp;<span style="font-size:10px;${isActive?'background:rgba(34,197,94,0.12);color:#16a34a':'background:rgba(246,77,37,0.08);color:var(--accent)'};border-radius:10px;padding:2px 8px;font-weight:500;">${isActive?'● Running':'Draft'}</span></div>
           <div class="plan-ov-name" id="plan-name-${enc}">${g.name}</div>
-          <span class="plan-ov-tier">${TIER_LABEL[tier]}</span>
+          <span class="plan-ov-tier">${TIER_LABEL[tier]||tier}</span>
           <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${enc}','${safeName}')">✎</button>
         </div>
         <div class="plan-ov-bottom">
@@ -2428,12 +2679,31 @@
           <div style="font-size:11px;opacity:0.45;">${count?`€${monthly}/mo`:''}</div>
         </div>
       </div>`;
+    } else if (g.type==='clients') {
+      const count=g.employees.length+g.prospects.length;
+      const totalContract=allPeople().filter(p=>p.group===g.name).reduce((s,p)=>s+Number(p.deal||0),0);
+      const tier=g.tier||'renewal';
+      return `<div class="plan-ov-card" onclick="showPlanDetail('${enc}')">
+        <div class="plan-ov-top">
+          <div class="plan-ov-label">🤝 Clients &nbsp;<span style="font-size:10px;${isActive?'background:rgba(34,197,94,0.12);color:#16a34a':'background:rgba(246,77,37,0.08);color:var(--accent)'};border-radius:10px;padding:2px 8px;font-weight:500;">${isActive?'● Running':'Draft'}</span></div>
+          <div class="plan-ov-name" id="plan-name-${enc}">${g.name}</div>
+          <span class="plan-ov-tier">${tier==='personalized'?'Personalized':'Renewal Tracker'}</span>
+          <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${enc}','${safeName}')">✎</button>
+        </div>
+        <div class="plan-ov-bottom">
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count}</div><div class="plan-ov-stat-label">Clients</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${totalContract?`€${(totalContract/1000).toFixed(0)}k`:'—'}</div><div class="plan-ov-stat-label">Contract value</div></div>
+          <div class="plan-ov-stat"><div class="plan-ov-stat-num">${count?'Active':'—'}</div><div class="plan-ov-stat-label">Status</div></div>
+        </div>
+        <div class="plan-ov-footer"><div>${count?'Renewal tracking active':'No clients yet'}</div></div>
+      </div>`;
     } else {
+      // prospects / leadlist
       const count=g.prospects.length;
       const totalDeal=g.prospects.reduce((s,p)=>s+Number(p.deal||0),0);
       return `<div class="plan-ov-card" onclick="showPlanDetail('${enc}')">
         <div class="plan-ov-top">
-          <div class="plan-ov-label">🎯 Lead list</div>
+          <div class="plan-ov-label">🎯 Prospects</div>
           <div class="plan-ov-name" id="plan-name-${enc}">${g.name}</div>
           <span class="plan-ov-tier">${count} prospect${count!==1?'s':''}</span>
           <button class="plan-ov-rename" onclick="event.stopPropagation();startRenamePlan('${enc}','${safeName}')">✎</button>
@@ -2464,8 +2734,9 @@
 
     const groups=getPlanGroups();
     const grid=document.getElementById('plansOverviewGrid');
-    const teams=groups.filter(g=>g.type==='team');
-    const leads=groups.filter(g=>g.type==='leadlist');
+    const employees=groups.filter(g=>g.type==='employees'||g.type==='team');
+    const prospects=groups.filter(g=>g.type==='prospects'||g.type==='leadlist');
+    const clients=groups.filter(g=>g.type==='clients');
 
     const sectionHead=(title,sub,btnLabel,btnFn)=>`
       <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:4px 0 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
@@ -2479,28 +2750,42 @@
     const emptyRow=(msg)=>`<div style="grid-column:1/-1;padding:18px 0 4px;font-size:13px;opacity:0.38;">${msg}</div>`;
     const divider=`<div style="grid-column:1/-1;height:1px;background:var(--border);margin:20px 0;"></div>`;
 
-    grid.innerHTML=
-      sectionHead('Teams','Group employees — birthday &amp; holiday cakes','+ New team',"openNewPlanModal('team')")
-      +(teams.length?teams.map(renderPlanCard).join(''):emptyRow('No teams yet. Create your first team above.'))
-      +divider
-      +sectionHead('Lead Lists','Organize prospects for gifting outreach','+ New lead list',"openNewPlanModal('leadlist')")
-      +(leads.length?leads.map(renderPlanCard).join(''):emptyRow('No lead lists yet. Create your first list above.'));
-
-    // keep old grid layout but below add an info note if there are ungrouped people (shouldn't happen in new flow)
-    const groups2=getPlanGroups();
-    if (!groups2.length) {
-      grid.innerHTML=`
-        ${sectionHead('Teams','Group employees — birthday &amp; holiday cakes','+ New team',"openNewPlanModal('team')")}
-        ${emptyRow('No teams yet.')}
-        ${divider}
-        ${sectionHead('Lead Lists','Organize prospects for gifting outreach','+ New lead list',"openNewPlanModal('leadlist')")}
-        ${emptyRow('No lead lists yet.')}`;
+    // Show only current category's plans
+    if (activeCategory==='employee') {
+      grid.innerHTML=
+        sectionHead('Employee Plans','Birthday &amp; milestone celebrations','+ New plan',"openNewPlanModal('employees')")
+        +(employees.length?employees.map(renderPlanCard).join(''):emptyRow('No employee plans yet. Create your first above.'));
+      return;
     }
+    if (activeCategory==='prospect') {
+      grid.innerHTML=
+        sectionHead('Lead Lists','Gifting outreach to close deals','+ New plan',"openNewPlanModal('prospects')")
+        +(prospects.length?prospects.map(renderPlanCard).join(''):emptyRow('No lead lists yet. Create your first above.'));
+      return;
+    }
+    if (activeCategory==='client') {
+      grid.innerHTML=
+        sectionHead('Client Accounts','Renewal &amp; retention plans','+ New plan',"openNewPlanModal('clients')")
+        +(clients.length?clients.map(renderPlanCard).join(''):emptyRow('No client accounts yet. Create your first above.'));
+      return;
+    }
+
+    // Fallback: show all 3 sections
+    grid.innerHTML=
+      sectionHead('Employees','Birthday &amp; milestone celebrations for your team','+ New plan',"openNewPlanModal('employees')")
+      +(employees.length?employees.map(renderPlanCard).join(''):emptyRow('No employee plans yet. Create your first above.'))
+      +divider
+      +sectionHead('Prospects','Gifting outreach to close deals','+ New plan',"openNewPlanModal('prospects')")
+      +(prospects.length?prospects.map(renderPlanCard).join(''):emptyRow('No prospect plans yet. Create your first above.'))
+      +divider
+      +sectionHead('Clients','Renewal &amp; retention for existing clients','+ New plan',"openNewPlanModal('clients')")
+      +(clients.length?clients.map(renderPlanCard).join(''):emptyRow('No client plans yet. Create your first above.'));
   }
 
 
   let _planDetailKey=null;
   let _addPersonDefaultGroup=null;
+  let _addPersonDefaultType=null;
   let _removalMode=false;
   let _pendingRemovals=new Set();
   let _peopleListExpanded=false;
@@ -2737,8 +3022,10 @@
     _planDetailKey=null; // don't return to plan after saving
     const p=allPeople().find(x=>x.id===id);
     if (p) {
-      currentFilter=p.type==='prospect'?'prospect':'employee';
-      document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===currentFilter));
+      // Switch to the appropriate category so the person is visible
+      activeCategory=p.type==='client'?'client':p.type==='prospect'?'prospect':'employee';
+      document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.id==='catBtn-'+activeCategory));
+      currentFilter=activeCategory; // keep in sync
       currentGroupFilter=p.group||'all'; currentTeamGroup=null; selectedIds.clear();
     }
     navigate('people');
@@ -2834,9 +3121,10 @@
     const key=decodeURIComponent(encodedKey);
     const groups=getPlanGroups();
     const g=groups.find(x=>x.key===key);
-    const planType=g?getPlanDominantType(g):'employee';
-    _addPersonDefaultGroup=(key==='__ungrouped__'||planType==='prospect')?'':key;
-    apPersonType=planType;
+    const rawType=g?getPlanDominantType(g):'employee';
+    const typeMap={team:'employee',leadlist:'prospect',employees:'employee',prospects:'prospect',clients:'client'};
+    apPersonType=typeMap[rawType]||rawType;
+    _addPersonDefaultGroup=(key==='__ungrouped__'||apPersonType==='prospect'||apPersonType==='client')?'':key;
     openAddPerson(true, true); // keepType, skipToDetails — remove type step
   }
 
@@ -2959,11 +3247,12 @@
 
   function navigateToPeopleGroup(encodedGroupKey) {
     const groupKey=decodeURIComponent(encodedGroupKey);
+    activeCategory='employee';
     currentFilter='employee';
+    document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.id==='catBtn-employee'));
     currentGroupFilter=groupKey; // keep '__ungrouped__' so filter works correctly
     currentTeamGroup=null;
     selectedIds.clear();
-    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter==='employee'));
     navigate('people');
     const banner=document.getElementById('peopleGroupBanner');
     const label=document.getElementById('peopleGroupBannerName');
@@ -3320,7 +3609,8 @@
   let currentWishId=null;
 
   function renderWishCards() {
-    const people=allPeople().filter(p=>p.type==='employee'||(p.type==='prospect'));
+    const typesForCat = activeCategory==='employee' ? ['employee','team'] : activeCategory==='prospect' ? ['prospect'] : ['client'];
+    const people=allPeople().filter(p => typesForCat.includes(p.type));
     const el=document.getElementById('wishGrid');
     if (!people.length) {
       el.innerHTML='<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">✦</div><div class="empty-text">No people added yet.<br>Add employees or prospects to generate wish cards.</div></div>';
@@ -3391,7 +3681,8 @@
   // ── Deliveries ──
   let deliveryFilter='upcoming';
   function renderDeliveries() {
-    const people=allPeople();
+    const typesForCat = activeCategory==='employee' ? ['employee','team'] : activeCategory==='prospect' ? ['prospect'] : ['client'];
+    const people=allPeople().filter(p => typesForCat.includes(p.type));
     const now=new Date();
     const all=[];
     people.forEach(p=>{ const d=nextDate(p); if (d) all.push({...p,next:d}); });
@@ -3595,13 +3886,12 @@
     updateSidebarProfile(s);
 
     const now=new Date();
-    const h=now.getHours();
-    const g=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-    document.getElementById('helloGreeting').textContent=g+'.';
+    document.getElementById('helloGreeting').textContent=greeting();
     document.getElementById('helloDate').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
 
     setupCSVZone();
     initAllergyToggle('apAllergyGroup');
+    renderSidebarNav();
     renderOverview();
   }
 

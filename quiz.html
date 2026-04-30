@@ -25,13 +25,11 @@
     }
     .logo { font-family: 'Kaisei Decol', serif; font-size: 20px; color: var(--accent); text-decoration: none; }
 
-    /* Progress */
     .progress-wrap { width: 100%; max-width: 620px; margin-bottom: 48px; }
     .progress-label { font-size: 12px; opacity: 0.42; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
     .progress-bar { height: 3px; background: rgba(246,77,37,0.12); border-radius: 2px; }
     .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
 
-    /* Step card */
     .step-card { width: 100%; max-width: 620px; animation: fadeUp 0.32s ease forwards; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 
@@ -39,7 +37,6 @@
     .step-q { font-family: 'Kaisei Decol', serif; font-size: clamp(24px, 4.5vw, 36px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
     .step-hint { font-size: 14px; opacity: 0.5; margin-bottom: 28px; line-height: 1.45; }
 
-    /* Option grid — for art style & celebration */
     .opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 32px; }
     .opt {
       border: 1.5px solid var(--border); border-radius: 8px;
@@ -54,7 +51,6 @@
     .opt-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; line-height: 1.3; }
     .opt-desc { font-size: 11px; opacity: 0.48; line-height: 1.4; }
 
-    /* Hobby pill grid */
     .pill-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
     .pill {
       display: inline-flex; align-items: center; gap: 6px;
@@ -65,7 +61,6 @@
     .pill:hover { border-color: rgba(246,77,37,0.4); background: rgba(246,77,37,0.03); }
     .pill.selected { border-color: var(--accent); background: rgba(246,77,37,0.08); font-weight: 500; }
 
-    /* Other free-text */
     .other-field { display: none; margin-bottom: 28px; }
     .other-field.visible { display: block; }
     .other-input {
@@ -78,7 +73,6 @@
     .other-input:focus { border-color: var(--accent); }
     .other-input::placeholder { opacity: 0.35; }
 
-    /* Dietary pills (multi) */
     .diet-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
     .diet-pill {
       display: inline-flex; align-items: center; gap: 8px;
@@ -92,7 +86,32 @@
     .diet-pill.selected .diet-check { background: var(--accent); border-color: var(--accent); color: var(--bg); }
     .diet-pill.selected .diet-check::after { content: '✓'; }
 
-    /* Buttons */
+    /* NPS rating row */
+    .nps-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; }
+    .nps-btn {
+      width: 48px; height: 48px; border-radius: 6px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--accent); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+    .nps-btn:hover { border-color: rgba(246,77,37,0.4); background: rgba(246,77,37,0.04); }
+    .nps-btn.selected { border-color: var(--accent); background: rgba(246,77,37,0.1); font-weight: 700; }
+    .nps-labels { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.42; margin-top: 8px; margin-bottom: 24px; letter-spacing: 0.04em; }
+
+    /* Feedback text areas */
+    .feedback-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+    .feedback-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.48; margin-bottom: 6px; }
+    .feedback-ta {
+      width: 100%; padding: 12px 16px;
+      background: transparent; border: 1.5px solid var(--border);
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--accent); outline: none;
+      transition: border-color 0.2s; resize: vertical; min-height: 72px;
+    }
+    .feedback-ta:focus { border-color: var(--accent); }
+    .feedback-ta::placeholder { opacity: 0.35; }
+
     .btn-row { display: flex; gap: 10px; }
     .btn {
       padding: 14px 32px; border-radius: 100px;
@@ -104,18 +123,17 @@
     .btn-ghost { background: transparent; color: var(--accent); border: 1.5px solid rgba(246,77,37,0.25); }
     .btn:disabled { opacity: 0.28; cursor: not-allowed; }
 
-    /* Thank you */
     .thank-you { width: 100%; max-width: 620px; text-align: center; padding-top: 60px; animation: fadeUp 0.4s ease forwards; }
     .ty-icon { font-size: 52px; margin-bottom: 24px; }
     .ty-h { font-family: 'Kaisei Decol', serif; font-size: clamp(28px, 5vw, 46px); line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 16px; }
-    .ty-p { font-size: 16px; opacity: 0.55; line-height: 1.6; max-width: 40ch; margin: 0 auto; }
+    .ty-p { font-size: 16px; opacity: 0.55; line-height: 1.6; max-width: 40ch; margin: 0 auto 24px; }
+    .ty-detail { font-size: 13px; opacity: 0.38; line-height: 1.6; max-width: 44ch; margin: 0 auto; }
 
-    .invalid-wrap { width: 100%; max-width: 620px; text-align: center; padding-top: 80px; }
-    .invalid-wrap h2 { font-family: 'Kaisei Decol', serif; font-size: 32px; margin-bottom: 12px; }
-    .invalid-wrap p { font-size: 15px; opacity: 0.5; }
+    .preview-banner { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: rgba(246,77,37,0.08); border-radius: 100px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
 
     @media (max-width: 480px) {
       .opt-grid { grid-template-columns: 1fr 1fr; }
+      .nps-btn { width: 40px; height: 40px; font-size: 12px; }
     }
   </style>
 </head>
@@ -125,8 +143,8 @@
     <a class="logo" href="index.html">culturers</a>
   </div>
   <div class="progress-wrap" id="progressWrap" style="display:none;">
-    <div class="progress-label" id="progressLabel">Step 1 of 4</div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16.66%"></div></div>
   </div>
   <div id="quizContent"></div>
 </div>
@@ -139,149 +157,333 @@
 
   const params = new URLSearchParams(window.location.search);
   const personId = params.get('id');
-
-  // ─────────────────────────────────────────────
-  // STEP DEFINITIONS
-  // ─────────────────────────────────────────────
-  const STEPS = [
-
-    // ── Step 1: Art style (10 choices) ──
-    {
-      key: 'artStyle',
-      eyebrow: 'Step 1 — Your visual style',
-      q: 'Which visual style\nspeaks to you?',
-      hint: 'We use this to craft your personalised AI greeting card.',
-      type: 'single',
-      opts: [
-        { value: 'minimal-nordic',  icon: '◻',  name: 'Minimal & Nordic',     desc: 'Clean lines, white space, Scandinavian calm' },
-        { value: 'bold-maximalist', icon: '🌈', name: 'Bold & Maximalist',     desc: 'Vivid colours, pattern, big energy' },
-        { value: 'natural-botanic', icon: '🌿', name: 'Natural & Botanical',   desc: 'Earth tones, plants, organic textures' },
-        { value: 'retro-vintage',   icon: '📷', name: 'Retro & Vintage',       desc: '70s/80s nostalgia, warm film tones' },
-        { value: 'dreamy-soft',     icon: '🎨', name: 'Dreamy & Watercolour',  desc: 'Soft pastels, painterly, impressionistic' },
-        { value: 'urban-street',    icon: '🏙', name: 'Urban & Street',        desc: 'Raw, edgy, city textures, graffiti' },
-        { value: 'elegant-luxury',  icon: '✨', name: 'Elegant & Luxury',      desc: 'Gold accents, dark tones, refined' },
-        { value: 'playful-cartoon', icon: '🎭', name: 'Playful & Illustrated', desc: 'Fun, character-driven, cartoon warmth' },
-        { value: 'geometric',       icon: '📐', name: 'Geometric & Abstract',  desc: 'Shapes, patterns, contemporary art' },
-        { value: 'dark-cinematic',  icon: '🎬', name: 'Dark & Cinematic',      desc: 'Dramatic lighting, moody, deep tones' },
-      ],
-    },
-
-    // ── Step 2: Hobby (20 pills + Other) ──
-    {
-      key: 'hobby',
-      eyebrow: 'Step 2 — Your passion',
-      q: 'What do you love\ndoing in your spare time?',
-      hint: 'Pick everything that applies — we use this to find you the perfect interest voucher.',
-      type: 'hobby',
-      pills: [
-        { value: 'travel',      label: '✈️  Travel & adventure' },
-        { value: 'hiking',      label: '🏔  Hiking & outdoors' },
-        { value: 'photography', label: '📸  Photography' },
-        { value: 'painting',    label: '🎨  Drawing & painting' },
-        { value: 'music-listen',label: '🎵  Listening to music' },
-        { value: 'music-play',  label: '🎸  Playing music' },
-        { value: 'gym',         label: '🏋️  Gym & fitness' },
-        { value: 'running',     label: '🏃  Running & cycling' },
-        { value: 'yoga',        label: '🧘  Yoga & wellness' },
-        { value: 'cooking',     label: '🍳  Cooking & baking' },
-        { value: 'wine-dining', label: '🍷  Wine & fine dining' },
-        { value: 'reading',     label: '📚  Books & reading' },
-        { value: 'gaming',      label: '🎮  Gaming' },
-        { value: 'film',        label: '🎬  Film & TV' },
-        { value: 'plants',      label: '🌿  Gardening & plants' },
-        { value: 'pets',        label: '🐾  Pets & animals' },
-        { value: 'surfing',     label: '🏄  Watersports & snow' },
-        { value: 'theatre',     label: '🎭  Theatre & live events' },
-        { value: 'crafting',    label: '🧵  Crafting & DIY' },
-        { value: 'tech',        label: '💻  Tech & gadgets' },
-      ],
-    },
-
-    // ── Step 3: Celebration style ──
-    {
-      key: 'celebStyle',
-      eyebrow: 'Step 3 — How you love to be celebrated',
-      q: 'When someone goes\nout of their way for you,\nwhat matters most?',
-      hint: 'This shapes how we frame every moment we create for you.',
-      type: 'single',
-      opts: [
-        { value: 'surprise',   icon: '🎁', name: 'A surprise I didn\'t see coming',  desc: 'Unexpected is always the best' },
-        { value: 'message',    icon: '💌', name: 'A heartfelt personal message',      desc: 'The words behind it mean everything' },
-        { value: 'family',     icon: '👨‍👩‍👧', name: 'Something I can share with family',desc: 'The best moments are shared ones' },
-        { value: 'experience', icon: '🍽️', name: 'An experience over a thing',       desc: 'Memories outlast any object' },
-        { value: 'public',     icon: '🏆', name: 'Recognition in front of the team', desc: 'Being seen publicly matters to me' },
-        { value: 'private',    icon: '🤫', name: 'Quiet and private, just for me',   desc: 'Intimate over public, always' },
-        { value: 'creative',   icon: '🎨', name: 'Something creative & unique',      desc: 'Originality shows real thought' },
-        { value: 'quality',    icon: '💎', name: 'Quality that shows real thought',  desc: 'Better one perfect thing than many average ones' },
-      ],
-    },
-
-    // ── Step 4: Dietary (multi, moved last) ──
-    {
-      key: 'allergies',
-      eyebrow: 'Step 4 — Your cake',
-      q: 'Any dietary needs\nwe should know about?',
-      hint: 'Select all that apply so we can make your handmade cake perfect for you.',
-      type: 'dietary',
-      pills: [
-        { value: 'none',    icon: '🎂', label: 'No restrictions' },
-        { value: 'lactose', icon: '🥛', label: 'Lactose-free' },
-        { value: 'nuts',    icon: '🥜', label: 'Nut-free' },
-        { value: 'gluten',  icon: '🌾', label: 'Gluten-free' },
-        { value: 'vegan',   icon: '🌱', label: 'Vegan' },
-        { value: 'halal',   icon: '☪️',  label: 'Halal' },
-        { value: 'kosher',  icon: '✡️',  label: 'Kosher' },
-        { value: 'other',   icon: '✏️', label: 'Other' },
-      ],
-    },
-  ];
-
-  // ─────────────────────────────────────────────
-  // STATE
-  // ─────────────────────────────────────────────
-  let person = null;
-  let step = 0;
-  let answers = { artStyle: null, hobby: [], hobbyOther: '', celebStyle: null, allergies: [] };
-
-  // ─────────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────────
+  const typeParam = params.get('type'); // 'employee' | 'prospect' | 'client'
   const isPreview = !personId || personId === 'preview';
+
+  // ─── QUIZ DEFINITIONS ───────────────────────────────────────────────────────
+
+  const QUIZZES = {
+
+    employee: [
+      {
+        key: 'hobbies',
+        eyebrow: 'Step 1 of 6 — Your passions',
+        q: 'Top 2 hobbies\nor interests?',
+        hint: 'Pick everything that speaks to you — we use this to find the perfect interest voucher.',
+        type: 'pills',
+        max: null,
+        pills: [
+          { value: 'running',     label: '🏃 Running' },
+          { value: 'cooking',     label: '🍳 Cooking' },
+          { value: 'gaming',      label: '🎮 Gaming' },
+          { value: 'travel',      label: '✈️ Travel' },
+          { value: 'photography', label: '📸 Photography' },
+          { value: 'gym',         label: '🏋️ Gym & fitness' },
+          { value: 'reading',     label: '📚 Reading' },
+          { value: 'music',       label: '🎵 Music' },
+          { value: 'yoga',        label: '🧘 Yoga & wellness' },
+          { value: 'hiking',      label: '🏔 Hiking & outdoors' },
+          { value: 'wine-dining', label: '🍷 Wine & dining' },
+          { value: 'tech',        label: '💻 Tech & gadgets' },
+          { value: 'art',         label: '🎨 Art & design' },
+          { value: 'cycling',     label: '🚴 Cycling' },
+          { value: 'crafting',    label: '🧵 Crafting & DIY' },
+          { value: 'film',        label: '🎬 Film & TV' },
+        ],
+      },
+      {
+        key: 'giftVibe',
+        eyebrow: 'Step 2 of 6 — Gift vibe',
+        q: 'What gift vibe\ndo you prefer?',
+        hint: 'This shapes every gift we choose for you.',
+        type: 'single',
+        opts: [
+          { value: 'practical',    icon: '🛠', name: 'Practical',      desc: 'Useful things I\'ll actually use every day' },
+          { value: 'fun',          icon: '🎉', name: 'Fun & creative',  desc: 'Something playful or out of the ordinary' },
+          { value: 'luxurious',    icon: '✨', name: 'Luxurious',       desc: 'Quality over quantity, premium and refined' },
+          { value: 'sentimental',  icon: '💌', name: 'Sentimental',     desc: 'Thoughtful and personal, made with care' },
+        ],
+      },
+      {
+        key: 'favoriteTeeat',
+        eyebrow: 'Step 3 of 6 — Your treat',
+        q: 'Favourite treat\nor flavor?',
+        hint: 'We handcraft your birthday cake around this.',
+        type: 'single',
+        opts: [
+          { value: 'chocolate', icon: '🍫', name: 'Chocolate',      desc: 'Rich, dark, or milk — any chocolate' },
+          { value: 'fruit',     icon: '🍓', name: 'Fruit & fresh',  desc: 'Light, zesty, summery flavors' },
+          { value: 'savory',    icon: '🧀', name: 'Savory',         desc: 'Not a sweet tooth — savory all the way' },
+          { value: 'coffee',    icon: '☕', name: 'Coffee & tea',   desc: 'Tiramisu, chai, Earl Grey — all of it' },
+        ],
+      },
+      {
+        key: 'dietary',
+        eyebrow: 'Step 4 of 6 — Dietary needs',
+        q: 'Any dietary\nrestrictions?',
+        hint: 'Select all that apply — we\'ll never send something you can\'t eat.',
+        type: 'dietary',
+        pills: [
+          { value: 'none',       icon: '🎂', label: 'No restrictions' },
+          { value: 'vegan',      icon: '🌱', label: 'Vegan' },
+          { value: 'nuts',       icon: '🥜', label: 'Nut-free' },
+          { value: 'gluten',     icon: '🌾', label: 'Gluten-free' },
+          { value: 'lactose',    icon: '🥛', label: 'Lactose-free' },
+          { value: 'halal',      icon: '☪️',  label: 'Halal' },
+          { value: 'kosher',     icon: '✡️',  label: 'Kosher' },
+          { value: 'other',      icon: '✏️', label: 'Other' },
+        ],
+      },
+      {
+        key: 'recognitionStyle',
+        eyebrow: 'Step 5 of 6 — Recognition style',
+        q: 'How do you like\nto be recognised?',
+        hint: 'This shapes how we frame every milestone we create for you.',
+        type: 'single',
+        opts: [
+          { value: 'private',  icon: '🤫', name: 'Private note',       desc: 'A quiet, personal message just for me' },
+          { value: 'public',   icon: '🏆', name: 'Public shoutout',    desc: 'Celebrate me in front of the team' },
+          { value: 'gift',     icon: '🎁', name: 'Gift-focused',       desc: 'The gesture speaks — not the words' },
+          { value: 'surprise', icon: '🎊', name: 'Total surprise',     desc: 'I love not knowing what\'s coming' },
+        ],
+      },
+      {
+        key: 'personality',
+        eyebrow: 'Step 6 of 6 — You in one word',
+        q: 'Which trait\nbest describes you?',
+        hint: 'Your AI greeting card is crafted around this.',
+        type: 'single',
+        opts: [
+          { value: 'adventurous', icon: '🧗', name: 'Adventurous',   desc: 'First to try something new' },
+          { value: 'creative',    icon: '🎨', name: 'Creative',       desc: 'Always making, building, imagining' },
+          { value: 'thoughtful',  icon: '🌿', name: 'Thoughtful',     desc: 'Calm, reflective, considered' },
+          { value: 'social',      icon: '🥂', name: 'Social',         desc: 'Energy in the room, love people' },
+        ],
+      },
+    ],
+
+    client: [
+      {
+        key: 'interest',
+        eyebrow: 'Step 1 of 6 — Their interests',
+        q: 'Their top\npersonal interest?',
+        hint: 'Pick everything you know about them — this powers their personalised gift.',
+        type: 'pills',
+        pills: [
+          { value: 'golf',        label: '⛳ Golf' },
+          { value: 'wine',        label: '🍷 Wine' },
+          { value: 'art',         label: '🎨 Art & culture' },
+          { value: 'sports',      label: '⚽ Sports' },
+          { value: 'food',        label: '🍽 Fine dining' },
+          { value: 'travel',      label: '✈️ Travel' },
+          { value: 'tech',        label: '💻 Technology' },
+          { value: 'music',       label: '🎵 Music & concerts' },
+          { value: 'wellness',    label: '🧘 Wellness & fitness' },
+          { value: 'books',       label: '📚 Books & learning' },
+          { value: 'outdoors',    label: '🏔 Outdoors' },
+          { value: 'family',      label: '👨‍👩‍👧 Family time' },
+        ],
+      },
+      {
+        key: 'giftCategory',
+        eyebrow: 'Step 2 of 6 — Gift category',
+        q: 'Gift category\nthey\'d love?',
+        hint: 'We\'ll use this for their renewal gift — make it count.',
+        type: 'single',
+        opts: [
+          { value: 'books',       icon: '📚', name: 'Books & learning',   desc: 'Thought-provoking reads or masterclasses' },
+          { value: 'wellness',    icon: '🌿', name: 'Wellness',            desc: 'Spa vouchers, fitness, mindfulness' },
+          { value: 'experiences', icon: '🍽', name: 'Experiences',         desc: 'Dinner, concert, day trip, event' },
+          { value: 'gadgets',     icon: '💡', name: 'Gadgets & tech',      desc: 'Smart, practical, impressive' },
+        ],
+      },
+      {
+        key: 'treatType',
+        eyebrow: 'Step 3 of 6 — Office treats',
+        q: 'Preferred treat\ntype for the team?',
+        hint: 'For in-person visits and office deliveries.',
+        type: 'single',
+        opts: [
+          { value: 'sweets',    icon: '🍬', name: 'Sweets & cakes',   desc: 'Pastries, chocolate, celebration cakes' },
+          { value: 'savory',    icon: '🧀', name: 'Savory',           desc: 'Cheese, charcuterie, crackers' },
+          { value: 'beverages', icon: '☕', name: 'Beverages',         desc: 'Coffee hamper, tea selection, wine' },
+          { value: 'healthy',   icon: '🥗', name: 'Healthy',          desc: 'Fresh fruit, granola, wellness snacks' },
+        ],
+      },
+      {
+        key: 'dietary',
+        eyebrow: 'Step 4 of 6 — Dietary needs',
+        q: 'Dietary restrictions\nin their team?',
+        hint: 'Select all that apply for the office delivery.',
+        type: 'dietary',
+        pills: [
+          { value: 'none',       icon: '✅', label: 'None' },
+          { value: 'vegetarian', icon: '🥦', label: 'Vegetarian' },
+          { value: 'vegan',      icon: '🌱', label: 'Vegan' },
+          { value: 'dairy',      icon: '🥛', label: 'Dairy-free' },
+          { value: 'gluten',     icon: '🌾', label: 'Gluten-free' },
+          { value: 'nuts',       icon: '🥜', label: 'Nut-free' },
+          { value: 'halal',      icon: '☪️',  label: 'Halal' },
+          { value: 'other',      icon: '✏️', label: 'Other' },
+        ],
+      },
+      {
+        key: 'nps',
+        eyebrow: 'Step 5 of 6 — Satisfaction',
+        q: 'How likely are they\nto recommend you?',
+        hint: '0 = Not at all likely · 10 = Extremely likely. Your internal NPS for this account.',
+        type: 'nps',
+      },
+      {
+        key: 'feedback',
+        eyebrow: 'Step 6 of 6 — Quick feedback',
+        q: 'One strength,\none to improve.',
+        hint: 'Internal notes only — never shown to the client. Helps us spot upsell & save opportunities.',
+        type: 'feedback',
+      },
+    ],
+
+    prospect: [
+      {
+        key: 'challenge',
+        eyebrow: 'Step 1 of 6 — Their situation',
+        q: 'Main company\nchallenge right now?',
+        hint: 'This powers the AI landing page hook — pick what you know from research.',
+        type: 'single',
+        opts: [
+          { value: 'growth',     icon: '📈', name: 'Growth',      desc: 'Scaling fast, need to hire / expand' },
+          { value: 'efficiency', icon: '⚙️',  name: 'Efficiency',  desc: 'Streamlining ops, cutting overhead' },
+          { value: 'retention',  icon: '🔒', name: 'Retention',   desc: 'Keeping employees or customers longer' },
+          { value: 'brand',      icon: '✨', name: 'Brand',        desc: 'Building trust and market presence' },
+        ],
+      },
+      {
+        key: 'industry',
+        eyebrow: 'Step 2 of 6 — Their world',
+        q: 'Industry\nor role focus?',
+        hint: 'Used to tailor the page copy and imagery to their sector.',
+        type: 'single',
+        opts: [
+          { value: 'tech',    icon: '💻', name: 'Tech / SaaS',   desc: 'Software, platforms, digital-first' },
+          { value: 'events',  icon: '🎪', name: 'Events',         desc: 'Conferences, experiences, hospitality' },
+          { value: 'retail',  icon: '🛍', name: 'Retail & CPG',  desc: 'Consumer products, physical goods' },
+          { value: 'finance', icon: '📊', name: 'Finance / FS',  desc: 'Banking, insurance, professional services' },
+        ],
+      },
+      {
+        key: 'personalInterest',
+        eyebrow: 'Step 3 of 6 — Personal touch',
+        q: 'Known personal\ninterest of theirs?',
+        hint: 'From LinkedIn, your call notes, or mutual connections — makes the outreach feel personal.',
+        type: 'pills',
+        pills: [
+          { value: 'sports',    label: '⚽ Sports' },
+          { value: 'art',       label: '🎨 Art' },
+          { value: 'food',      label: '🍽 Food & dining' },
+          { value: 'travel',    label: '✈️ Travel' },
+          { value: 'golf',      label: '⛳ Golf' },
+          { value: 'running',   label: '🏃 Running' },
+          { value: 'music',     label: '🎵 Music' },
+          { value: 'tech',      label: '💻 Tech' },
+          { value: 'wine',      label: '🍷 Wine' },
+          { value: 'books',     label: '📚 Books' },
+          { value: 'family',    label: '👨‍👩‍👧 Family' },
+          { value: 'fitness',   label: '🏋️ Fitness' },
+        ],
+      },
+      {
+        key: 'officeTreat',
+        eyebrow: 'Step 4 of 6 — Office treat',
+        q: 'Preferred\noffice treat?',
+        hint: 'Delivered with the outreach package — the thing that gets you the meeting.',
+        type: 'single',
+        opts: [
+          { value: 'cakes',    icon: '🎂', name: 'Artisan cakes',    desc: 'Handmade, branded, impossible to ignore' },
+          { value: 'snacks',   icon: '🍿', name: 'Premium snacks',   desc: 'Curated snack box for the whole team' },
+          { value: 'drinks',   icon: '🥂', name: 'Drinks',           desc: 'Craft coffee, fine tea, or sparkling' },
+          { value: 'healthy',  icon: '🥗', name: 'Healthy box',      desc: 'Fresh, clean, wellness-focused' },
+        ],
+      },
+      {
+        key: 'dietary',
+        eyebrow: 'Step 5 of 6 — Dietary needs',
+        q: 'Dietary needs\nfor the treats?',
+        hint: 'Select all that apply for the prospect\'s office.',
+        type: 'dietary',
+        pills: [
+          { value: 'none',  icon: '✅', label: 'None' },
+          { value: 'nuts',  icon: '🥜', label: 'Nut-free' },
+          { value: 'vegan', icon: '🌱', label: 'Vegan' },
+          { value: 'halal', icon: '☪️',  label: 'Halal' },
+          { value: 'other', icon: '✏️', label: 'Other' },
+        ],
+      },
+      {
+        key: 'pageHook',
+        eyebrow: 'Step 6 of 6 — Landing page hook',
+        q: 'What will convert\nthis prospect?',
+        hint: 'The AI landing page is built around this priority — pick the angle most likely to land.',
+        type: 'single',
+        opts: [
+          { value: 'casestudy', icon: '📋', name: 'Case study',   desc: 'Proof from a similar company or role' },
+          { value: 'roi',       icon: '📈', name: 'ROI tool',     desc: 'Interactive calculator showing their upside' },
+          { value: 'demo',      icon: '🎬', name: 'Demo video',   desc: 'See it live before committing a minute' },
+          { value: 'social',    icon: '⭐', name: 'Social proof', desc: 'Reviews, logos, testimonials from peers' },
+        ],
+      },
+    ],
+
+  };
+
+  // ─── STATE ────────────────────────────────────────────────────────────────
+
+  let quizType = 'employee'; // default
+  let steps = [];
+  let step = 0;
+  let person = null;
+  let answers = {};
+
+  function resetAnswers() {
+    answers = { dietary: [], pills: {}, nps: null, feedbackGood: '', feedbackImprove: '' };
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
 
   function init() {
     const people = DB.getPeople();
     person = personId ? (people.find(p => p.id === personId) || null) : null;
 
-    if (!isPreview && !person) {
-      // Valid-looking ID but not found in this browser — still show quiz
-      // (it will save to fallback key on submit)
+    // Detect quiz type from person or URL param
+    if (person) {
+      const t = person.type;
+      quizType = (t === 'client' || t === 'clients') ? 'client'
+               : (t === 'prospect' || t === 'prospects') ? 'prospect'
+               : 'employee';
+    } else if (typeParam && QUIZZES[typeParam]) {
+      quizType = typeParam;
     }
 
-    if (person && person.quizDone) {
-      answers.artStyle   = person.artStyle   || null;
-      answers.hobby      = person.hobby      || [];
-      answers.hobbyOther = person.hobbyOther || '';
-      answers.celebStyle = person.celebStyle || null;
-      answers.allergies  = person.allergies  || [];
-    }
+    steps = QUIZZES[quizType];
+    resetAnswers();
+
     document.getElementById('progressWrap').style.display = 'block';
     renderStep();
   }
 
-  // ─────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────
+  // ─── RENDER ───────────────────────────────────────────────────────────────
+
   function renderStep() {
-    const s = STEPS[step];
-    const pct = ((step + 1) / STEPS.length) * 100;
-    document.getElementById('progressLabel').textContent = `Step ${step + 1} of ${STEPS.length}`;
+    const s = steps[step];
+    const pct = ((step + 1) / steps.length) * 100;
+    document.getElementById('progressLabel').textContent = `Step ${step + 1} of ${steps.length}`;
     document.getElementById('progressFill').style.width = pct + '%';
 
     const firstName = person ? (person.first || person.name || 'there') : 'there';
-    const greeting = step === 0
-      ? `${isPreview ? '<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(246,77,37,0.08);border-radius:100px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Preview mode</div>' : ''}
-         <p style="font-size:16px;opacity:0.52;line-height:1.5;margin-bottom:32px;">Hi <strong>${isPreview ? 'there' : firstName}</strong> 👋 &nbsp;This takes 60 seconds and helps us make every moment feel genuinely personal to you.</p>`
-      : '';
+    const greeting = step === 0 ? `
+      ${isPreview ? `<div class="preview-banner">Preview — ${quizType}</div>` : ''}
+      <p style="font-size:16px;opacity:0.52;line-height:1.5;margin-bottom:32px;">
+        Hi <strong>${isPreview ? 'there' : firstName}</strong> 👋 &nbsp;This takes under 90 seconds${quizType === 'employee' ? ' and helps us make every moment feel genuinely personal to you' : quizType === 'client' ? ' — your answers help us personalise our partnership' : ' — your answers help us tailor our outreach to you'}.
+      </p>` : '';
 
     const qLines = s.q.split('\n').join('<br>');
     let bodyHTML = '';
@@ -296,28 +498,43 @@
           </div>`).join('')}
       </div>`;
 
-    } else if (s.type === 'hobby') {
-      const otherSelected = answers.hobbyOther.length > 0 || answers.hobby.includes('other');
-      bodyHTML = `<div class="pill-grid" id="hobbyPills">
+    } else if (s.type === 'pills') {
+      const sel = answers.pills[s.key] || [];
+      bodyHTML = `<div class="pill-grid">
         ${s.pills.map(p => `
-          <div class="pill${answers.hobby.includes(p.value) ? ' selected' : ''}" onclick="toggleHobbyPill('${p.value}',this)">${p.label}</div>`).join('')}
-        <div class="pill${otherSelected ? ' selected' : ''}" id="hobbyOtherPill" onclick="toggleOtherPill(this)">✏️ Other</div>
-      </div>
-      <div class="other-field${otherSelected ? ' visible' : ''}" id="hobbyOtherField">
-        <input class="other-input" id="hobbyOtherInput" type="text" placeholder="Type your hobby…" value="${answers.hobbyOther}" oninput="answers.hobbyOther=this.value;refreshNext()">
+          <div class="pill${sel.includes(p.value) ? ' selected' : ''}" onclick="togglePill('${s.key}','${p.value}',this)">${p.label}</div>`).join('')}
       </div>`;
 
     } else if (s.type === 'dietary') {
       bodyHTML = `<div class="diet-grid">
         ${s.pills.map(p => `
-          <div class="diet-pill${answers.allergies.includes(p.value) ? ' selected' : ''}" onclick="toggleDiet('${p.value}',this)">
+          <div class="diet-pill${answers.dietary.includes(p.value) ? ' selected' : ''}" onclick="toggleDiet('${p.value}',this)">
             <span>${p.icon}</span><span>${p.label}</span>
             <span class="diet-check"></span>
           </div>`).join('')}
       </div>`;
+
+    } else if (s.type === 'nps') {
+      bodyHTML = `<div class="nps-grid">
+        ${[0,1,2,3,4,5,6,7,8,9,10].map(n => `
+          <button class="nps-btn${answers.nps === n ? ' selected' : ''}" onclick="selectNPS(${n},this)">${n}</button>`).join('')}
+      </div>
+      <div class="nps-labels"><span>Not likely</span><span>Extremely likely</span></div>`;
+
+    } else if (s.type === 'feedback') {
+      bodyHTML = `<div class="feedback-grid">
+        <div>
+          <div class="feedback-label">What do we do great?</div>
+          <textarea class="feedback-ta" id="fbGood" placeholder="e.g. Response time, product quality, team communication…" oninput="answers.feedbackGood=this.value;refreshNext()">${answers.feedbackGood}</textarea>
+        </div>
+        <div>
+          <div class="feedback-label">One thing to improve?</div>
+          <textarea class="feedback-ta" id="fbImprove" placeholder="e.g. Onboarding could be smoother, more case studies…" oninput="answers.feedbackImprove=this.value;refreshNext()">${answers.feedbackImprove}</textarea>
+        </div>
+      </div>`;
     }
 
-    const isLast = step === STEPS.length - 1;
+    const isLast = step === steps.length - 1;
 
     document.getElementById('quizContent').innerHTML = `
       <div class="step-card">
@@ -337,10 +554,12 @@
   }
 
   function canProceed() {
-    const s = STEPS[step];
-    if (s.type === 'single')  return answers[s.key] !== null;
-    if (s.type === 'hobby')   return answers.hobby.length > 0 || answers.hobbyOther.trim().length > 0;
-    if (s.type === 'dietary') return answers.allergies.length > 0;
+    const s = steps[step];
+    if (s.type === 'single') return answers[s.key] != null;
+    if (s.type === 'pills')  return (answers.pills[s.key] || []).length > 0;
+    if (s.type === 'dietary') return answers.dietary.length > 0;
+    if (s.type === 'nps')    return answers.nps != null;
+    if (s.type === 'feedback') return answers.feedbackGood.trim().length > 0 || answers.feedbackImprove.trim().length > 0;
     return true;
   }
 
@@ -349,9 +568,8 @@
     if (btn) btn.disabled = !canProceed();
   }
 
-  // ─────────────────────────────────────────────
-  // INTERACTIONS
-  // ─────────────────────────────────────────────
+  // ─── INTERACTIONS ─────────────────────────────────────────────────────────
+
   function selectSingle(key, value, el) {
     answers[key] = value;
     document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
@@ -359,48 +577,41 @@
     refreshNext();
   }
 
-  function toggleHobbyPill(value, el) {
-    const idx = answers.hobby.indexOf(value);
-    if (idx === -1) answers.hobby.push(value);
-    else answers.hobby.splice(idx, 1);
-    el.classList.toggle('selected', answers.hobby.includes(value));
-    refreshNext();
-  }
-
-  function toggleOtherPill(el) {
-    const field = document.getElementById('hobbyOtherField');
-    const isOpen = field.classList.contains('visible');
-    if (isOpen) {
-      field.classList.remove('visible');
-      answers.hobbyOther = '';
-      el.classList.remove('selected');
-    } else {
-      field.classList.add('visible');
-      el.classList.add('selected');
-      document.getElementById('hobbyOtherInput').focus();
-    }
+  function togglePill(key, value, el) {
+    if (!answers.pills[key]) answers.pills[key] = [];
+    const arr = answers.pills[key];
+    const idx = arr.indexOf(value);
+    if (idx === -1) arr.push(value);
+    else arr.splice(idx, 1);
+    el.classList.toggle('selected', arr.includes(value));
     refreshNext();
   }
 
   function toggleDiet(value, el) {
     if (value === 'none') {
-      answers.allergies = ['none'];
+      answers.dietary = ['none'];
       document.querySelectorAll('.diet-pill').forEach(p => p.classList.remove('selected'));
       el.classList.add('selected');
     } else {
-      answers.allergies = answers.allergies.filter(v => v !== 'none');
+      answers.dietary = answers.dietary.filter(v => v !== 'none');
       document.querySelector('.diet-pill[onclick*="\'none\'"]')?.classList.remove('selected');
-      const idx = answers.allergies.indexOf(value);
-      if (idx === -1) answers.allergies.push(value);
-      else answers.allergies.splice(idx, 1);
-      el.classList.toggle('selected', answers.allergies.includes(value));
+      const idx = answers.dietary.indexOf(value);
+      if (idx === -1) answers.dietary.push(value);
+      else answers.dietary.splice(idx, 1);
+      el.classList.toggle('selected', answers.dietary.includes(value));
     }
     refreshNext();
   }
 
-  // ─────────────────────────────────────────────
-  // NAV
-  // ─────────────────────────────────────────────
+  function selectNPS(n, el) {
+    answers.nps = n;
+    document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    refreshNext();
+  }
+
+  // ─── NAV ──────────────────────────────────────────────────────────────────
+
   function nextStep() {
     if (!canProceed()) return;
     step++;
@@ -414,11 +625,13 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ─────────────────────────────────────────────
-  // SUBMIT — saves back to cult_people localStorage
-  // ─────────────────────────────────────────────
+  // ─── SUBMIT ───────────────────────────────────────────────────────────────
+
   function submitQuiz() {
     if (!canProceed()) return;
+
+    const npsScore = answers.nps;
+    const npsFlag = npsScore != null && npsScore <= 6 ? '⚠️ Low NPS — consider proactive outreach' : '';
 
     if (isPreview) {
       document.getElementById('progressWrap').style.display = 'none';
@@ -426,20 +639,18 @@
         <div class="thank-you">
           <div class="ty-icon">👀</div>
           <div class="ty-h">Preview complete.</div>
-          <p class="ty-p">This was a preview of the quiz. Employees will see the same flow with their name personalised and their answers saved to the dashboard.</p>
+          <p class="ty-p">This was a preview of the ${quizType} quiz. The real quiz personalises everything around the person and saves directly to the dashboard.</p>
         </div>`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     const quizData = {
-      artStyle:    answers.artStyle,
-      hobby:       answers.hobby,
-      hobbyOther:  answers.hobbyOther.trim(),
-      celebStyle:  answers.celebStyle,
-      allergies:   answers.allergies,
-      quizDone:    true,
-      quizDate:    new Date().toISOString(),
+      ...answers,
+      quizType,
+      quizDone: true,
+      quizDate: new Date().toISOString(),
+      ...(npsFlag ? { npsFlag } : {}),
     };
 
     const people = DB.getPeople();
@@ -452,12 +663,37 @@
     }
 
     const firstName = person ? (person.first || person.name || '') : '';
+
+    const tyMessages = {
+      employee: {
+        icon: '🎂',
+        h: `You're all set${firstName ? ', ' + firstName : ''}.`,
+        p: 'Every moment we create for you will be built around who you actually are. We can\'t wait to surprise you.',
+        detail: 'Your answers have been recorded — your team will never see your responses. It\'s all between you and your next delivery.',
+      },
+      client: {
+        icon: '🤝',
+        h: 'Your feedback is recorded.',
+        p: 'Thank you — this helps us make our partnership even better. We\'ll use your answers to personalise every touchpoint going forward.',
+        detail: npsFlag ? `${npsFlag} — we\'ll be in touch shortly.` : 'We\'ll use your gift preferences for our next milestone together.',
+      },
+      prospect: {
+        icon: '🎯',
+        h: 'Profile saved.',
+        p: 'Your personalised page and outreach are being prepared. Expect something in your office within the week.',
+        detail: 'These notes power our AI landing page — built around what you actually care about.',
+      },
+    };
+
+    const { icon, h, p, detail } = tyMessages[quizType] || tyMessages.employee;
+
     document.getElementById('progressWrap').style.display = 'none';
     document.getElementById('quizContent').innerHTML = `
       <div class="thank-you">
-        <div class="ty-icon">🎂</div>
-        <div class="ty-h">You're all set${firstName ? ', ' + firstName : ''}.</div>
-        <p class="ty-p">Every moment we create for you will be built around who you actually are. We can't wait to surprise you.</p>
+        <div class="ty-icon">${icon}</div>
+        <div class="ty-h">${h}</div>
+        <p class="ty-p">${p}</p>
+        <p class="ty-detail">${detail}</p>
       </div>`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

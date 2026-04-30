@@ -7,13 +7,12 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  const DEV_MODE = !process.env.NEXT_PUBLIC_SUPABASE_URL
 
-  if (!session) {
-    redirect('/login')
+  if (!DEV_MODE) {
+    const supabase = createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) redirect('/login')
   }
 
   return (

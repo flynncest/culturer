@@ -15,6 +15,10 @@ async function sendEmail(
   subject: string,
   html: string
 ): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.log(`[DEV] Email not sent (no RESEND_API_KEY). Would send to: ${to} | Subject: ${subject}`)
+    return
+  }
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -38,6 +42,12 @@ async function callKieRunway(
   prompt: string,
   callbackUrl: string
 ): Promise<string> {
+  if (!process.env.KIE_API_KEY) {
+    const mockId = `dev-runway-${Date.now()}`
+    console.log(`[DEV] Kie Runway not called (no KIE_API_KEY). Mock task_id: ${mockId}`)
+    console.log(`[DEV] Prompt: ${prompt.slice(0, 100)}...`)
+    return mockId
+  }
   const res = await fetch('https://api.kie.ai/api/v1/runway/generate', {
     method: 'POST',
     headers: {
@@ -58,6 +68,11 @@ async function callKieVeo(
   prompt: string,
   callbackUrl: string
 ): Promise<string> {
+  if (!process.env.KIE_API_KEY) {
+    const mockId = `dev-veo-${Date.now()}`
+    console.log(`[DEV] Kie Veo not called (no KIE_API_KEY). Mock task_id: ${mockId}`)
+    return mockId
+  }
   const res = await fetch('https://api.kie.ai/api/v1/veo/generate', {
     method: 'POST',
     headers: {
@@ -340,19 +355,30 @@ async function conversionLandingFlow(
 
   await updateTriggerStatus(triggerId, 'processing')
 
-  // Generate personalised landing page via Anthropic
-  const Anthropic = (await import('@anthropic-ai/sdk')).default
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
+  // Generate personalised landing page via Anthropic (mock if no key)
+  let htmlContent = ''
   const prompt = landingPagePrompt(firstName, companyName, quiz ?? {})
-  const message = await anthropic.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 4096,
-    messages: [{ role: 'user', content: prompt }],
-  })
 
-  const htmlContent =
-    message.content[0].type === 'text' ? message.content[0].text : ''
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.log(`[DEV] Anthropic not called (no ANTHROPIC_API_KEY). Using placeholder landing page.`)
+    htmlContent = `<!DOCTYPE html><html><head><title>${firstName} — Culturers</title>
+    <style>body{font-family:sans-serif;background:#f7f6f2;color:#f64d25;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;}
+    .card{max-width:600px;padding:60px 40px;text-align:center;}h1{font-size:48px;margin-bottom:16px;}p{opacity:0.7;font-size:18px;line-height:1.6;}</style></head>
+    <body><div class="card"><h1>Hi ${firstName} 👋</h1>
+    <p>We built this page just for you at <strong>${companyName || 'your company'}</strong>.<br/>
+    Culturers helps businesses make their people feel truly valued — through hyper-personalised gifting and recognition, on autopilot.</p>
+    <p style="margin-top:32px;"><a href="https://culturers.io" style="background:#f64d25;color:#fff;padding:14px 28px;border-radius:4px;text-decoration:none;font-weight:600;">Book a call →</a></p>
+    </div></body></html>`
+  } else {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt }],
+    })
+    htmlContent = message.content[0].type === 'text' ? message.content[0].text : ''
+  }
 
   // Create slug
   const slug = `${firstName.toLowerCase()}-${companyName.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`
@@ -416,13 +442,13 @@ export async function fireAction(triggerId: string): Promise<ActionResult> {
     }
 
     // Fetch quiz response (optional)
-    const { data: quiz } = await supabase
+    const { data: quizRows } = await supabase
       .from('quiz_responses')
       .select('*')
       .eq('person_id', person.id)
       .order('submitted_at', { ascending: false })
       .limit(1)
-      .maybeSingle()
+    const quiz = Array.isArray(quizRows) ? (quizRows[0] ?? null) : quizRows
 
     // Route to correct flow
     const type = trigger.type as string

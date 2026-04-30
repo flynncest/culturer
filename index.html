@@ -335,10 +335,8 @@
 
     .p-cta { margin-top: 18px; margin-bottom: 20px; }
 
-    /* 2-image row at bottom */
-    .p-imgs { display: grid; grid-template-columns: 1fr 1fr; flex-shrink: 0; border-top: 1px solid currentColor; order: 2; }
-    .p-img  { height: 161px; background: var(--ph); }
-    .p-img-b { background: var(--ph2); }
+    /* Single image at bottom of plan card */
+    .p-img-single { height: 210px; background: var(--ph); flex-shrink: 0; border-top: 1px solid currentColor; order: 2; }
 
     /* ════════ PROSPECT PANEL ════════ */
     .prospect-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
@@ -429,8 +427,7 @@
     #plans.section-dark .btn-fill { background: var(--bg); color: var(--accent); }
     #plans.section-dark .flow-list { border-top-color: rgba(247,246,242,0.2); }
     #plans.section-dark .flow-list li { border-bottom-color: rgba(247,246,242,0.2); }
-    #plans.section-dark .p-img { background: rgba(247,246,242,0.15); }
-    #plans.section-dark .p-img-b { background: rgba(247,246,242,0.1); }
+    #plans.section-dark .p-img-single { background: rgba(247,246,242,0.12); }
 
     /* ════════ VIDEO — cream background ════════ */
     .video-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; padding-bottom: 28px; border-bottom: 1px solid rgba(246,77,37,0.12); }
@@ -702,24 +699,21 @@
 
   <div class="values-grid">
     <div class="val-card">
-
       <div class="val-body">
-        <h3>Retain your<br>best people</h3>
-        <p>Your top performers want to feel known, not just noticed. Each person fills a 60-second onboarding quiz about their interests. Their birthday triggers a handmade cake, a personalised card, and an AI digital greeting card built around who they actually are — shareable in one click with family and colleagues. The ones who feel truly seen stay.</p>
+        <h3>Make your employees<br>feel valued</h3>
+        <p>Each person fills a 60-second quiz. Their birthday triggers a handmade cake, AI greeting card, and shareable video — all built around who they actually are.</p>
       </div>
     </div>
     <div class="val-card">
-
       <div class="val-body">
-        <h3>Convert prospects<br>into clients</h3>
-        <p>Every competitor sends emails. You send a handmade cake followed by a digital greeting card personalised to their world — designed in your brand, built around their interests. They share it with their team in one click. Impossible to forget. Gets you the meeting the cold email never could.</p>
+        <h3>Turn prospects<br>into clients</h3>
+        <p>While competitors send emails, you send a personalised experience built around their world. They share it in one click. Gets you the meeting the cold email never could.</p>
       </div>
     </div>
     <div class="val-card">
-
       <div class="val-body">
         <h3>Keep clients<br>for life</h3>
-        <p>A €20 voucher for their favourite hobby. A digital card on their 5-year work anniversary, shareable in one click. Renewal decisions are made before the contract lands. culturers keeps you present at every milestone — automatically, personally, every time.</p>
+        <p>A preference-based gift at renewal. A digital recap video they share on LinkedIn. culturers keeps you present at every milestone — automatically.</p>
       </div>
     </div>
   </div>
@@ -744,22 +738,22 @@
       <div class="why-matters-card">
         <div class="why-matters-num">€15,000</div>
         <div class="why-matters-label">Average cost to replace one employee</div>
-        <div class="why-matters-desc">Recruitment, onboarding, lost productivity, team disruption. The ROI on retention is enormous — and care is the cheapest tool available.</div>
+        <div class="why-matters-desc">The ROI on retention is enormous. Care is the cheapest tool you have.</div>
       </div>
       <div class="why-matters-card">
         <div class="why-matters-num">4.6×</div>
         <div class="why-matters-label">More likely to stay when regularly recognised</div>
-        <div class="why-matters-desc">Gallup data. Employees who feel consistently seen are dramatically less likely to leave within 12 months of their last milestone.</div>
+        <div class="why-matters-desc">Gallup data. Employees who feel consistently seen are far less likely to leave.</div>
       </div>
       <div class="why-matters-card">
         <div class="why-matters-num">82%</div>
         <div class="why-matters-label">Remember an unexpected gesture for months</div>
-        <div class="why-matters-desc">A birthday cake outlasts any team lunch. Physical, personal gestures create emotional memory that digital perks simply don't.</div>
+        <div class="why-matters-desc">Physical, personal gestures create emotional memory that digital perks simply don't.</div>
       </div>
       <div class="why-matters-card">
         <div class="why-matters-num">40%</div>
         <div class="why-matters-label">Faster prospect conversion with gift outreach</div>
-        <div class="why-matters-desc">Sales teams using physical gifting see shorter cycles and warmer calls. The cake gets you the meeting the cold email never could.</div>
+        <div class="why-matters-desc">Sales teams using physical gifting see shorter cycles and warmer calls.</div>
       </div>
     </div>
     <div style="text-align:center;padding-top:12px;">
@@ -796,7 +790,7 @@
     <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Each person fills a 60-second quiz. From birthdays to work anniversaries to day one — every moment is hyper-personalised and fully automated.</p>
     <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);">
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Birthday Basic</div>
           <div class="p-price">€10</div>
@@ -810,7 +804,7 @@
         </div>
       </div>
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Full Tracking</div>
           <div class="p-price">€22</div>
@@ -824,16 +818,16 @@
         </div>
       </div>
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Onboarding Kickstart</div>
           <div class="p-price">€150</div>
           <div class="p-unit">per person / one-time</div>
           <ul class="p-features">
-            <li>Welcome care package — branded T-shirt + water bottle</li>
-            <li>Personalised onboarding quiz intake</li>
-            <li>Digital welcome greeting card</li>
-            <li>Optional upgrade to Full Tracking</li>
+            <li>Branded welcome care package — T-shirt + water bottle</li>
+            <li>Onboarding quiz auto-sent on day one</li>
+            <li>AI welcome card in your brand's style</li>
+            <li>Auto-switches to your chosen recurring plan after kickstart</li>
           </ul>
         </div>
       </div>
@@ -846,7 +840,7 @@
     <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">While competitors flood inboxes, you send a personalised experience. Treats to their office, a digital card, or a landing page built around them.</p>
     <div class="pricing-grid">
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Treat Outreach</div>
           <div class="p-price">€150</div>
@@ -860,7 +854,7 @@
         </div>
       </div>
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Conversion Landing</div>
           <div class="p-price">€250</div>
@@ -882,7 +876,7 @@
     <p style="font-size:15px;opacity:0.62;max-width:52ch;line-height:1.40;margin-bottom:28px;">Renewal decisions are made months before the contract lands. Stay present with something personal — automatically triggered every year.</p>
     <div class="pricing-grid">
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Renewal Tracker</div>
           <div class="p-price">€150</div>
@@ -896,7 +890,7 @@
         </div>
       </div>
       <div class="p-card">
-        <div class="p-imgs"><div class="p-img"></div><div class="p-img p-img-b"></div></div>
+        <div class="p-img-single"></div>
         <div class="p-body">
           <div class="p-tier">Personalized Renewal</div>
           <div class="p-price">€250</div>

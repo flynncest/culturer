@@ -31,8 +31,8 @@
     }
     .nav-logo { font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--accent); flex-shrink: 0; }
     .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 36px; list-style: none; }
-    .nav-links a { font-size: 13px; color: var(--accent); opacity: 0.52; transition: opacity 0.2s; }
-    .nav-links a:hover { opacity: 1; }
+    .nav-links a { font-size: 14px; color: var(--accent); opacity: 0.52; transition: opacity 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
     .nav-right { margin-left: auto; }
     .nav-cta { font-size: 13px; font-weight: 500; color: var(--accent); opacity: 0.85; transition: opacity 0.2s; }
     .nav-cta:hover { opacity: 1; }
@@ -194,8 +194,11 @@
 <nav>
   <a class="nav-logo" href="index.html">culturers</a>
   <ul class="nav-links">
+    <li><a href="employees.html">Employees</a></li>
+    <li><a href="prospects.html">Prospects</a></li>
+    <li><a href="clients.html">Clients</a></li>
     <li><a href="automations.html">How it works</a></li>
-    <li><a href="contact.html">Contact us</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
   </ul>
   <div class="nav-right">
     <a href="login.html" class="nav-cta">Get started ↗</a>

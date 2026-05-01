@@ -31,7 +31,7 @@
     .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; opacity: 0.62; transition: all 0.15s; margin-bottom: 1px; }
     .nav-item:hover { opacity: 0.9; background: rgba(246,77,37,0.06); }
     .nav-item.active { opacity: 1; background: rgba(246,77,37,0.1); font-weight: 500; }
-    .nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+    .nav-icon { font-size: 11px; width: 16px; text-align: center; flex-shrink: 0; opacity: 0.55; }
 
     .sidebar-foot { padding: 14px 20px; border-top: 1px solid var(--border); }
     .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -43,15 +43,18 @@
     .btn-logout:hover { opacity: 0.85; background: rgba(246,77,37,0.06); }
 
     /* ── Category switcher ── */
-    .cat-switch { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 4px; }
+    .cat-switch { padding: 10px 10px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+    .cat-switch-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.36; margin: 0 4px 6px; }
     .cat-btn {
-      flex: 1; padding: 7px 4px; border-radius: 4px; border: none; background: transparent;
-      color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
-      letter-spacing: 0.04em; cursor: pointer; opacity: 0.45; transition: all 0.15s; text-align: center;
+      width: 100%; padding: 10px 14px; border-radius: 5px; border: none; background: transparent;
+      color: var(--accent); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      cursor: pointer; opacity: 0.48; transition: all 0.15s; text-align: left;
+      display: flex; align-items: center; gap: 10px;
     }
-    .cat-btn:hover { opacity: 0.8; background: rgba(246,77,37,0.06); }
-    .cat-btn.active { opacity: 1; background: rgba(246,77,37,0.1); color: var(--accent); }
-    .cat-btn-icon { display: block; font-size: 15px; margin-bottom: 2px; }
+    .cat-btn:hover { opacity: 0.85; background: rgba(246,77,37,0.06); }
+    .cat-btn.active { opacity: 1; background: rgba(246,77,37,0.1); font-weight: 600; }
+    .cat-btn-dot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid rgba(246,77,37,0.4); flex-shrink: 0; transition: all 0.15s; }
+    .cat-btn.active .cat-btn-dot { background: var(--accent); border-color: var(--accent); }
 
     /* ── Main ── */
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
@@ -462,14 +465,15 @@
 
     <!-- Category switcher -->
     <div class="cat-switch" id="catSwitch">
+      <div class="cat-switch-label">Workspace</div>
       <button class="cat-btn active" id="catBtn-employee" onclick="switchCategory('employee')">
-        <span class="cat-btn-icon">👥</span>Employees
+        <span class="cat-btn-dot"></span>Employees
       </button>
       <button class="cat-btn" id="catBtn-prospect" onclick="switchCategory('prospect')">
-        <span class="cat-btn-icon">🎯</span>Prospects
+        <span class="cat-btn-dot"></span>Prospects
       </button>
       <button class="cat-btn" id="catBtn-client" onclick="switchCategory('client')">
-        <span class="cat-btn-icon">🤝</span>Clients
+        <span class="cat-btn-dot"></span>Clients
       </button>
     </div>
 
@@ -824,17 +828,14 @@
       <div class="step-panel active" id="ap-step-0">
         <div class="type-opts" id="typeOpts">
           <div class="type-opt selected" data-type="employee" onclick="selectPersonType('employee',this)">
-            <div class="type-opt-icon">👤</div>
             <div class="type-opt-name">Employee</div>
             <div class="type-opt-desc">Birthday & holiday cakes, tracked automatically</div>
           </div>
           <div class="type-opt" data-type="team" onclick="selectPersonType('team',this)">
-            <div class="type-opt-icon">🏢</div>
             <div class="type-opt-name">Team member</div>
             <div class="type-opt-desc">Add a person to a named team — grouped for shared deliveries</div>
           </div>
           <div class="type-opt" data-type="prospect" onclick="selectPersonType('prospect',this)">
-            <div class="type-opt-icon">🎯</div>
             <div class="type-opt-name">Prospect</div>
             <div class="type-opt-desc">3-touch gifting flow to close deals</div>
           </div>
@@ -864,12 +865,10 @@
           <div style="font-size:12px;font-weight:500;margin-bottom:10px;opacity:0.75;">Delivery preference</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="apDeliveryOpts">
             <div class="type-opt selected" data-delivery="office" onclick="selectDelivery('office',this)">
-              <div class="type-opt-icon">🏢</div>
               <div class="type-opt-name">Office delivery</div>
               <div class="type-opt-desc">Batch delivered every Monday to your office address. Standard rate.</div>
             </div>
             <div class="type-opt" data-delivery="home" onclick="selectDelivery('home',this)">
-              <div class="type-opt-icon">🏠</div>
               <div class="type-opt-name">Home delivery</div>
               <div class="type-opt-desc">Sent to each employee's home address. +€2 / person / month.</div>
             </div>
@@ -926,15 +925,15 @@
               <div class="plan-card-sel-desc">Reads 'type' column from CSV; defaults to Employee</div>
             </div>
             <div class="plan-card-sel" data-type="employee" onclick="setCsvType('employee',this)">
-              <div class="plan-card-sel-name" style="font-size:12px;">👤 Employees</div>
+              <div class="plan-card-sel-name" style="font-size:12px;">Employees</div>
               <div class="plan-card-sel-desc">Individual birthday cakes, one per person</div>
             </div>
             <div class="plan-card-sel" data-type="team" onclick="setCsvType('team',this)">
-              <div class="plan-card-sel-name" style="font-size:12px;">🏢 Teams</div>
+              <div class="plan-card-sel-name" style="font-size:12px;">Teams</div>
               <div class="plan-card-sel-desc">Quarterly group celebration cakes</div>
             </div>
             <div class="plan-card-sel" data-type="prospect" onclick="setCsvType('prospect',this)">
-              <div class="plan-card-sel-name" style="font-size:12px;">🎯 Prospects</div>
+              <div class="plan-card-sel-name" style="font-size:12px;">Prospects</div>
               <div class="plan-card-sel-desc">3-touch gifting flow to close deals</div>
             </div>
           </div>
@@ -945,17 +944,17 @@
           <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4;margin-bottom:10px;">Plan tier for employees</div>
           <div class="plan-cards" id="csvPlanTabs">
             <div class="plan-card-sel active" data-plan="birthday" onclick="setCsvPlan('birthday',this)">
-              <div class="plan-card-sel-name">🎂 Essentials</div>
+              <div class="plan-card-sel-name">Essentials</div>
               <div class="plan-card-sel-price">€8<span> / person / month</span></div>
               <div class="plan-card-sel-desc">Birthday cake + personalised card + AI greeting video</div>
             </div>
             <div class="plan-card-sel" data-plan="christmas" onclick="setCsvPlan('christmas',this)">
-              <div class="plan-card-sel-name">✦ Standard</div>
+              <div class="plan-card-sel-name">Standard</div>
               <div class="plan-card-sel-price">€12<span> / person / month</span></div>
               <div class="plan-card-sel-desc">Essentials + €20 interest voucher + work anniversary card</div>
             </div>
             <div class="plan-card-sel" data-plan="premium" onclick="setCsvPlan('premium',this)">
-              <div class="plan-card-sel-name">⬆ Premium</div>
+              <div class="plan-card-sel-name">Premium</div>
               <div class="plan-card-sel-price">€20<span> / person / month</span></div>
               <div class="plan-card-sel-desc">Everything + seasonal gift + priority delivery &amp; support</div>
             </div>
@@ -967,12 +966,12 @@
           <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.4;margin-bottom:10px;">Delivery preference</div>
           <div class="plan-cards two-col" id="csvDeliveryTabs">
             <div class="plan-card-sel active" data-delivery="office" onclick="setCsvDelivery('office',this)">
-              <div class="plan-card-sel-name">🏢 Office delivery</div>
+              <div class="plan-card-sel-name">Office delivery</div>
               <div class="plan-card-sel-price" style="font-size:14px;">Standard rate</div>
               <div class="plan-card-sel-desc">Batch delivered every Monday to your office address</div>
             </div>
             <div class="plan-card-sel" data-delivery="home" onclick="setCsvDelivery('home',this)">
-              <div class="plan-card-sel-name">🏠 Home delivery</div>
+              <div class="plan-card-sel-name">Home delivery</div>
               <div class="plan-card-sel-price">+€2<span> / person / month</span></div>
               <div class="plan-card-sel-desc">Sent to each person's home address</div>
             </div>
@@ -1181,39 +1180,39 @@
 
   const CAT_NAV = {
     employee: [
-      { view: 'overview',    icon: '◎',  label: 'Overview' },
-      { view: 'yourplan',    icon: '✦',  label: 'Plans' },
-      { view: 'people',      icon: '👥', label: 'People' },
-      { view: 'calendar',    icon: '📅', label: 'Calendar' },
+      { view: 'overview',    icon: '○',  label: 'Overview' },
+      { view: 'yourplan',    icon: '≡',  label: 'Plans' },
+      { view: 'people',      icon: '·',  label: 'People' },
+      { view: 'calendar',    icon: '◻', label: 'Calendar' },
       { view: 'wishcards',   icon: '✦',  label: 'Wish cards' },
-      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { view: 'deliveries',  icon: '→',  label: 'Deliveries' },
       { type: 'label', text: 'Catalog' },
-      { view: 'catalog',     icon: '🎂', label: 'Cake catalog' },
-      { view: 'onboarding',  icon: '🎁', label: 'Onboarding catalog' },
+      { view: 'catalog',     icon: '≡',  label: 'Cake catalog' },
+      { view: 'onboarding',  icon: '≡',  label: 'Onboarding catalog' },
       { type: 'label', text: 'Account' },
-      { view: 'quiz',        icon: '✏️', label: 'Personalisation quiz' },
-      { view: 'settings',    icon: '⚙',  label: 'Settings' },
+      { view: 'quiz',        icon: '·',  label: 'Personalisation quiz' },
+      { view: 'settings',    icon: '◈',  label: 'Settings' },
     ],
     prospect: [
-      { view: 'overview',    icon: '◎',  label: 'Overview' },
-      { view: 'yourplan',    icon: '📋', label: 'Lead lists' },
-      { view: 'people',      icon: '🎯', label: 'Prospects' },
-      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { view: 'overview',    icon: '○',  label: 'Overview' },
+      { view: 'yourplan',    icon: '≡',  label: 'Lead lists' },
+      { view: 'people',      icon: '·',  label: 'Prospects' },
+      { view: 'deliveries',  icon: '→',  label: 'Deliveries' },
       { type: 'label', text: 'Tools' },
-      { view: 'quiz',        icon: '✏️', label: 'Landing page quiz' },
+      { view: 'quiz',        icon: '·',  label: 'Landing page quiz' },
       { type: 'label', text: 'Account' },
-      { view: 'settings',    icon: '⚙',  label: 'Settings' },
+      { view: 'settings',    icon: '◈',  label: 'Settings' },
     ],
     client: [
-      { view: 'overview',    icon: '◎',  label: 'Overview' },
-      { view: 'yourplan',    icon: '📋', label: 'Accounts' },
-      { view: 'people',      icon: '🤝', label: 'Clients' },
+      { view: 'overview',    icon: '○',  label: 'Overview' },
+      { view: 'yourplan',    icon: '≡',  label: 'Accounts' },
+      { view: 'people',      icon: '·',  label: 'Clients' },
       { view: 'wishcards',   icon: '✦',  label: 'Recap videos' },
-      { view: 'deliveries',  icon: '📦', label: 'Deliveries' },
+      { view: 'deliveries',  icon: '→',  label: 'Deliveries' },
       { type: 'label', text: 'Tools' },
-      { view: 'quiz',        icon: '✏️', label: 'Client feedback quiz' },
+      { view: 'quiz',        icon: '·',  label: 'Client feedback quiz' },
       { type: 'label', text: 'Account' },
-      { view: 'settings',    icon: '⚙',  label: 'Settings' },
+      { view: 'settings',    icon: '◈',  label: 'Settings' },
     ],
   };
 

@@ -243,7 +243,7 @@ class MockQuery {
 
     // DELETE
     if (this.isDelete) {
-      const before = tbl.length
+      void tbl.length // length checked implicitly below
       let keep = [...tbl]
       for (const f of this.filters) keep = keep.filter(r => !f(r) || false)
       // actually remove matching

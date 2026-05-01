@@ -58,7 +58,7 @@ export default function LoginPage() {
           </div>
           <div className="art-quote">
             <blockquote>
-              "culturers completely changed<br />how our team feels about<br />coming to work."
+              &ldquo;culturers completely changed<br />how our team feels about<br />coming to work.&rdquo;
             </blockquote>
             <cite>Head of People, Series B startup · Amsterdam</cite>
           </div>

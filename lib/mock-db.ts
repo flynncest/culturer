@@ -243,7 +243,8 @@ class MockQuery {
 
     // DELETE
     if (this.isDelete) {
-      void tbl.length // length checked implicitly below
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const before = tbl.length
       let keep = [...tbl]
       for (const f of this.filters) keep = keep.filter(r => !f(r) || false)
       // actually remove matching

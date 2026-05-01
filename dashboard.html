@@ -645,7 +645,7 @@
             <div style="font-family:'Kaisei Decol',serif;font-size:22px;letter-spacing:-0.01em;margin-bottom:4px;">Personalisation quiz</div>
             <div style="font-size:13px;opacity:0.48;">Each employee fills a 60-second quiz so every delivery is built around who they actually are.</div>
           </div>
-          <button class="btn btn-outline" style="font-size:12px;" onclick="window.open('quiz.html?id=preview','_blank')">Preview quiz ↗</button>
+          <button class="btn btn-outline" style="font-size:12px;" onclick="window.open('/quiz.html?id=preview&type='+activeCategory,'_blank')">Preview quiz ↗</button>
         </div>
         <div id="quizStats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;"></div>
         <div class="card">
@@ -1832,16 +1832,26 @@
     toast('Removed');
   }
 
+  function _quizTypeForPerson(person) {
+    const t = person ? person.type : activeCategory;
+    if (t === 'client' || t === 'clients') return 'client';
+    if (t === 'prospect' || t === 'prospects') return 'prospect';
+    return 'employee';
+  }
+
   function openQuizLink(id) {
-    window.open('quiz.html?id=' + id, '_blank');
+    const person = allPeople().find(p => p.id === id);
+    const type = _quizTypeForPerson(person);
+    window.open('/quiz.html?id=' + id + '&type=' + type, '_blank');
   }
 
   let _quizLinkCurrentId = null;
 
   function showQuizLinkModal(person) {
     _quizLinkCurrentId = person.id;
-    const base = window.location.href.replace(/[^/]*$/, '');
-    const url = base + 'quiz.html?id=' + person.id;
+    const type = _quizTypeForPerson(person);
+    const base = window.location.origin;
+    const url = base + '/quiz.html?id=' + person.id + '&type=' + type;
     const firstName = person.first || person.name || 'them';
     document.getElementById('quizLinkPersonName').textContent = `${firstName} ${person.last || ''}`.trim();
     document.getElementById('quizLinkFirstName').textContent = firstName;
@@ -1861,7 +1871,7 @@
   }
 
   function openQuizFromModal() {
-    if (_quizLinkCurrentId) window.open('quiz.html?id=' + _quizLinkCurrentId, '_blank');
+    if (_quizLinkCurrentId) { const p=allPeople().find(x=>x.id===_quizLinkCurrentId); window.open('/quiz.html?id='+_quizLinkCurrentId+'&type='+_quizTypeForPerson(p),'_blank'); }
   }
 
   // ── Quiz view ──
@@ -1870,12 +1880,123 @@
   const CELEB_LABELS = {surprise:'A surprise',message:'Heartfelt message',family:'Share with family',experience:'An experience',public:'Public recognition',private:'Private & quiet',creative:'Creative & unique',quality:'Quality & thoughtful'};
 
   function renderQuiz() {
-    const employees = allPeople().filter(p => p.type === 'employee' || p.type === 'team');
+    const everyone = allPeople();
+
+    // ── Prospect mode: internal landing-page quiz ──────────────────────────
+    if (activeCategory === 'prospect') {
+      const prospects = everyone.filter(p => p.type === 'prospect');
+      document.getElementById('quizStats').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-num">${prospects.length}</div>
+          <div class="stat-label">Prospects</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(34,197,94,0.3);">
+          <div class="stat-num" style="color:#16a34a;">${prospects.filter(p=>p.quizDone).length}</div>
+          <div class="stat-label">Pages generated</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${prospects.filter(p=>!p.quizDone).length}</div>
+          <div class="stat-label">Awaiting quiz</div>
+        </div>`;
+      document.getElementById('quizTableCount').textContent = `${prospects.length} prospect${prospects.length!==1?'s':''}`;
+      if (!prospects.length) {
+        document.getElementById('quizTable').innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">No prospects yet. Add prospects in Lead lists to get started.</div></div>';
+        return;
+      }
+      const sorted = [...prospects.filter(p=>!p.quizDone), ...prospects.filter(p=>p.quizDone)];
+      document.getElementById('quizTable').innerHTML = sorted.map(p => {
+        const name = `${p.first||p.name||''} ${p.last||''}`.trim();
+        const initials = ((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
+        const company = p.company ? ` · ${p.company}` : '';
+        if (p.quizDone) {
+          return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+            <div class="roster-av" style="flex-shrink:0;">${initials}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:14px;font-weight:500;">${name}<span style="opacity:0.45;font-weight:400;">${company}</span></div>
+              <div style="font-size:12px;color:#16a34a;margin-top:2px;">✓ Landing page generated</div>
+            </div>
+            <div style="display:flex;gap:5px;">
+              <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="openQuizLink('${p.id}')">Edit quiz ↗</button>
+            </div>
+          </div>`;
+        }
+        return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+          <div class="roster-av" style="flex-shrink:0;opacity:0.45;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:500;">${name}<span style="opacity:0.45;font-weight:400;">${company}</span></div>
+            <div style="font-size:12px;opacity:0.42;margin-top:2px;">No landing page yet</div>
+          </div>
+          <span class="quiz-badge-pending" style="flex-shrink:0;">Not started</span>
+          <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;flex-shrink:0;" onclick="openQuizLink('${p.id}')">Create landing page →</button>
+        </div>`;
+      }).join('') + '<div style="padding:10px 20px;font-size:12px;opacity:0.38;">Fill in the landing page quiz for each prospect — we generate a personalised page and send you the shareable link.</div>';
+      return;
+    }
+
+    // ── Client mode: client feedback quiz ─────────────────────────────────
+    if (activeCategory === 'client') {
+      const clients = everyone.filter(p => p.type === 'client');
+      const done = clients.filter(p => p.quizDone);
+      const pending = clients.filter(p => !p.quizDone);
+      const npsScores = done.filter(p=>p.nps!=null).map(p=>Number(p.nps));
+      const avgNps = npsScores.length ? (npsScores.reduce((a,b)=>a+b,0)/npsScores.length).toFixed(1) : '—';
+      document.getElementById('quizStats').innerHTML = `
+        <div class="stat-card" style="border-color:rgba(34,197,94,0.3);">
+          <div class="stat-num" style="color:#16a34a;">${done.length}</div>
+          <div class="stat-label">Feedback received</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(201,95,0,0.2);">
+          <div class="stat-num" style="color:#c95f00;">${pending.length}</div>
+          <div class="stat-label">Awaiting feedback</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${avgNps}</div>
+          <div class="stat-label">Avg NPS</div>
+        </div>`;
+      document.getElementById('quizTableCount').textContent = `${clients.length} client${clients.length!==1?'s':''}`;
+      if (!clients.length) {
+        document.getElementById('quizTable').innerHTML = '<div class="empty"><div class="empty-icon">🤝</div><div class="empty-text">No clients yet. Add clients in Accounts to get started.</div></div>';
+        return;
+      }
+      const sorted = [...pending, ...done];
+      document.getElementById('quizTable').innerHTML = sorted.map(p => {
+        const name = `${p.first||p.name||''} ${p.last||''}`.trim();
+        const initials = ((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
+        const company = p.company ? ` · ${p.company}` : '';
+        const npsFlag = p.nps!=null && Number(p.nps)<=6 ? `<span class="badge badge-amber" style="margin-left:6px;">⚠ NPS ${p.nps}</span>` : p.nps!=null ? `<span class="badge badge-green" style="margin-left:6px;">NPS ${p.nps}</span>` : '';
+        if (p.quizDone) {
+          return `<div style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+            <div class="roster-av" style="flex-shrink:0;margin-top:2px;">${initials}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:14px;font-weight:500;margin-bottom:4px;">${name}<span style="opacity:0.45;font-weight:400;">${company}</span> <span class="quiz-badge-done">✓ Feedback received</span>${npsFlag}</div>
+              ${p.feedbackGood ? `<div style="font-size:12px;opacity:0.55;margin-top:4px;">👍 ${p.feedbackGood}</div>` : ''}
+              ${p.feedbackImprove ? `<div style="font-size:12px;opacity:0.55;margin-top:2px;">💡 ${p.feedbackImprove}</div>` : ''}
+            </div>
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;flex-shrink:0;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">Resend link</button>
+          </div>`;
+        }
+        return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+          <div class="roster-av" style="flex-shrink:0;opacity:0.45;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:500;">${name}<span style="opacity:0.45;font-weight:400;">${company}</span></div>
+            <div style="font-size:12px;opacity:0.42;margin-top:2px;">${p.email||'No email on file'}</div>
+          </div>
+          <span class="quiz-badge-pending" style="flex-shrink:0;">Pending</span>
+          <div style="display:flex;gap:5px;flex-shrink:0;">
+            <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">📋 Copy link</button>
+            <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;" onclick="openQuizLink('${p.id}')">Send quiz ↗</button>
+          </div>
+        </div>`;
+      }).join('') + '<div style="padding:10px 20px;font-size:12px;opacity:0.38;">Send the feedback quiz to each client — they get 4 personalisation questions + NPS + open feedback.</div>';
+      return;
+    }
+
+    // ── Employee mode: personalisation quiz ───────────────────────────────
+    const employees = everyone.filter(p => p.type === 'employee' || p.type === 'team');
     const done = employees.filter(p => p.quizDone);
     const pending = employees.filter(p => !p.quizDone);
     const pct = employees.length ? Math.round((done.length / employees.length) * 100) : 0;
 
-    // Stats strip
     document.getElementById('quizStats').innerHTML = `
       <div class="stat-card" style="border-color:rgba(34,197,94,0.3);">
         <div class="stat-num" style="color:#16a34a;">${done.length}</div>
@@ -1890,52 +2011,49 @@
         <div class="stat-label">Completion rate</div>
       </div>`;
 
-    document.getElementById('quizTableCount').textContent = `${employees.length} employee${employees.length !== 1 ? 's' : ''}`;
+    document.getElementById('quizTableCount').textContent = `${employees.length} employee${employees.length!==1?'s':''}`;
 
     if (!employees.length) {
       document.getElementById('quizTable').innerHTML = '<div class="empty"><div class="empty-icon">✏️</div><div class="empty-text">No employees yet. Add people in Plans to get started.</div></div>';
       return;
     }
 
-    // Sort: pending first, then done
     const sorted = [...pending, ...done];
-
     document.getElementById('quizTable').innerHTML = sorted.map(p => {
-      const name = `${p.first || p.name || ''} ${p.last || ''}`.trim();
-      const initials = ((p.first || p.name || '?')[0] + ((p.last || '')[0] || '')).toUpperCase();
+      const name = `${p.first||p.name||''} ${p.last||''}`.trim();
+      const initials = ((p.first||p.name||'?')[0]+((p.last||'')[0]||'')).toUpperCase();
+      const hobbies = (p.pills?.hobbies||p.hobby||[]);
       if (p.quizDone) {
         return `<div style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
           <div class="roster-av" style="flex-shrink:0;margin-top:2px;">${initials}</div>
           <div style="flex:1;min-width:0;">
             <div style="font-size:14px;font-weight:500;margin-bottom:6px;">${name} <span class="quiz-badge-done" style="margin-left:6px;">✓ Completed</span></div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;">
-              ${p.artStyle ? `<span class="badge badge-grey">🎨 ${ART_LABELS[p.artStyle]||p.artStyle}</span>` : ''}
-              ${(p.hobby||[]).length ? `<span class="badge badge-blue">💡 ${(p.hobby||[]).map(h=>HOBBY_LABELS[h]||h).join(', ')}${p.hobbyOther?', '+p.hobbyOther:''}</span>` : ''}
-              ${p.celebStyle ? `<span class="badge badge-purple">✦ ${CELEB_LABELS[p.celebStyle]||p.celebStyle}</span>` : ''}
-              ${(p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${p.allergies.join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary info</span>'}
+              ${p.giftVibe ? `<span class="badge badge-grey">🎁 ${p.giftVibe}</span>` : ''}
+              ${hobbies.length ? `<span class="badge badge-blue">💡 ${hobbies.slice(0,3).join(', ')}</span>` : ''}
+              ${p.recognitionStyle ? `<span class="badge badge-purple">✦ ${p.recognitionStyle}</span>` : ''}
+              ${(p.dietary||p.allergies||[]).length ? `<span class="badge badge-amber">🍰 ${(p.dietary||p.allergies||[]).join(', ')}</span>` : '<span class="badge badge-grey" style="opacity:0.5;">No dietary info</span>'}
             </div>
           </div>
           <div style="display:flex;gap:5px;flex-shrink:0;">
-            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="showQuizLinkModal(allPeople().find(p=>p.id==='${p.id}'))">Copy link</button>
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">Copy link</button>
             <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="openQuizLink('${p.id}')">Re-open ↗</button>
           </div>
         </div>`;
-      } else {
-        return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
-          <div class="roster-av" style="flex-shrink:0;opacity:0.45;">${initials}</div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:14px;font-weight:500;">${name}</div>
-            <div style="font-size:12px;opacity:0.42;margin-top:2px;">${p.email || 'No email on file'}</div>
-          </div>
-          <span class="quiz-badge-pending" style="flex-shrink:0;">Pending</span>
-          <div style="display:flex;gap:5px;flex-shrink:0;">
-            <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">📋 Copy link</button>
-            <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;" onclick="openQuizLink('${p.id}')">Open ↗</button>
-          </div>
-        </div>`;
       }
-    }).join('')
-    + (employees.length ? '<div style="padding:10px 20px;font-size:12px;opacity:0.38;">Click "Open quiz ↗" to open the quiz link for that person in a new tab — share the URL with them directly.</div>' : '');
+      return `<div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
+        <div class="roster-av" style="flex-shrink:0;opacity:0.45;">${initials}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:500;">${name}</div>
+          <div style="font-size:12px;opacity:0.42;margin-top:2px;">${p.email||'No email on file'}</div>
+        </div>
+        <span class="quiz-badge-pending" style="flex-shrink:0;">Pending</span>
+        <div style="display:flex;gap:5px;flex-shrink:0;">
+          <button class="btn btn-outline" style="font-size:11px;padding:6px 12px;" onclick="showQuizLinkModal(allPeople().find(q=>q.id==='${p.id}'))">📋 Copy link</button>
+          <button class="btn btn-primary" style="font-size:11px;padding:6px 14px;" onclick="openQuizLink('${p.id}')">Send quiz ↗</button>
+        </div>
+      </div>`;
+    }).join('') + '<div style="padding:10px 20px;font-size:12px;opacity:0.38;">Send the quiz link to each employee — takes under 90 seconds, shapes every delivery we make for them.</div>';
   }
 
   // ── Add Person Modal ──
@@ -3506,12 +3624,12 @@
             <div class="quiz-answer-row"><span class="quiz-answer-label">Celebration</span><span class="quiz-answer-val">${CELEB_LABELS[person.celebStyle]||person.celebStyle||'—'}</span></div>
             <div class="quiz-answer-row"><span class="quiz-answer-label">Dietary</span><span class="quiz-answer-val">${(person.allergies||[]).join(', ')||'None'}</span></div>
           </div>
-          <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="window.open('quiz.html?id=${person.id}','_blank')">Re-send quiz link ↗</button>`;
+          <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:6px 14px;" onclick="window.open('/quiz.html?id='+person.id+'&type='+_quizTypeForPerson(person),'_blank')">Re-send quiz link ↗</button>`;
       } else {
         quizEl.innerHTML = `
           <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
             <div style="font-size:12px;opacity:0.45;margin-bottom:10px;">No quiz completed yet.</div>
-            <button class="btn btn-outline" style="font-size:12px;padding:7px 16px;" onclick="window.open('quiz.html?id=${person.id}','_blank')">Open quiz for this person ↗</button>
+            <button class="btn btn-outline" style="font-size:12px;padding:7px 16px;" onclick="window.open('/quiz.html?id='+person.id+'&type='+_quizTypeForPerson(person),'_blank')">Open quiz for this person ↗</button>
           </div>`;
       }
     }
